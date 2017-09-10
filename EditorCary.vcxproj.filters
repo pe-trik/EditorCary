@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Distribution Files">
+      <UniqueIdentifier>{B83CAF91-C7BF-462F-B76C-EA11631F866C}</UniqueIdentifier>
+      <Extensions>*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Distribution Files">
+      <UniqueIdentifier>{B83CAF91-C7BF-462F-B76C-EA11631F866C}</UniqueIdentifier>
+      <Extensions>*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Komponenty\ciara.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Nastroje\ciaranastroj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dokumenty\dokument.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Komponenty\dvojbodovy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Nastroje\dvojbodovynastroj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hlavneokno.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Komponenty\komponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Nastroje\kurzor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Komponenty\manipulator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Nastroje\nastroj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="panelvlastnosti.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pracovnaplocha.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dokumenty\qrealvlastnost.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qrealvlastnostmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Komponenty\spojenie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Komponenty\spojenieslot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dokumenty\vlastnost.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vlastnostmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_panelvlastnosti.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_panelvlastnosti.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_nastroj.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_nastroj.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_vlastnost.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_vlastnost.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_qrealvlastnost.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_qrealvlastnost.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_pracovnaplocha.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_pracovnaplocha.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_kurzor.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_kurzor.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_dokument.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_dokument.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_ikonky.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_manipulator.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_manipulator.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Komponenty\ciara.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Nastroje\ciaranastroj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="Dokumenty\dokument.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="Komponenty\dvojbodovy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Nastroje\dvojbodovynastroj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="hlavneokno.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="Komponenty\komponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="Nastroje\kurzor.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Nastroje\nastroj.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="panelvlastnosti.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="pracovnaplocha.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Dokumenty\qrealvlastnost.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="qrealvlastnostmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Komponenty\spojenie.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Komponenty\spojenieslot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="Dokumenty\vlastnost.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="vlastnostmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_hlavneokno.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="debug\moc_hlavneokno.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="release\moc_hlavneokno.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <CustomBuild Include="debug\moc_predefs.h.cbt">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="release\moc_predefs.h.cbt">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="hlavneokno.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Komponenty\manipulator.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ikonky\KruhovyVysek.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ikonky\ciara.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <CustomBuild Include="ikonky.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <None Include="ikonky\kursor.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ikonky\odbocka.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ikonky\spline.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ikonky\KruhovyVysek.svg" />
+    <None Include="ikonky\ciara.svg" />
+    <None Include="ikonky\kursor.svg" />
+    <None Include="ikonky\odbocka.svg" />
+    <None Include="ikonky\spline.svg" />
+    <None Include="ikonky\KruhovyVysek.svg" />
+    <None Include="ikonky\ciara.svg" />
+    <None Include="ikonky\kursor.svg" />
+    <None Include="ikonky\odbocka.svg" />
+    <None Include="ikonky\spline.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ikonky\KruhovyVysek.svg">
+      <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="ikonky\ciara.svg">
+      <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="ikonky\kursor.svg">
+      <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="ikonky\odbocka.svg">
+      <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="ikonky\spline.svg">
+      <Filter>Distribution Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

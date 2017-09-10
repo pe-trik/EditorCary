@@ -1,0 +1,19 @@
+<svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    xmlns:se="http://svg-edit.googlecode.com" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xmlns:dc="http://purl.org/dc/elements/1.1/" 
+    xmlns:cc="http://creativecommons.org/ns#" 
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="256" height="256">
+    <title>my vector image</title>
+    <!-- Created with Vector Paint - http://www.vectorpaint.yaks.com/ https://chrome.google.com/webstore/detail/hnbpdiengicdefcjecjbnjnoifekhgdo -->
+    <rect id="backgroundrect" width="256" height="256" x="0" y="0" fill="#FFFFFF" stroke="none"/>
+    <g class="currentLayer">
+        <title>Layer 1</title>
+        <path fill="none" fill-opacity="1" stroke="#222222" stroke-opacity="1" stroke-width="2" stroke-dasharray="none" stroke-linejoin="round" stroke-linecap="butt" stroke-dashoffset="" fill-rule="nonzero" opacity="1" marker-start="" marker-mid="" marker-end="" id="svg_17" d="M30.882389587402344,24.933619587402347 C31.387439587402355,25.438669587402345 30.673199587402337,26.239579587402346 31.387439587402355,26.95381958740235 C32.101679587402344,27.66805958740234 32.48134958740235,28.018339587402338 32.39754958740235,27.963929587402347 C32.313749587402356,27.909519587402343 32.81391958740235,32.08983958740234 33.40764958740235,29.47907958740234 C34.00137958740234,26.86831958740234 33.94457958740233,31.00773958740234 34.41774958740234,31.49927958740234 C34.89091958740235,31.990819587402342 34.92279958740235,32.00432958740234 34.92279958740235,32.50937958740235 C34.92279958740235,33.01442958740235 35.65956958740233,32.85959958740234 35.932899587402346,33.519479587402344 C36.20622958740233,34.179359587402345 36.85432958740233,33.56891958740235 37.44804958740235,34.52957958740234 C38.04176958740234,35.49023958740234 38.18481958740233,35.38484958740234 38.458149587402346,36.044729587402344 C38.65141958740233,36.51133958740235 38.96319958740236,36.54977958740234 38.96319958740236,37.05482958740234 L39.46824958740234,37.05482958740234 L47.04400958740234,36.044729587402344 C195.52885958740234,25.94371958740234 86.94299958740234,254.22654958740236 204.11471958740236,209.78209958740234 " style="color: rgb(0, 0, 0);" class=""/>
+        <rect fill="#ffffff" stroke="#222222" stroke-width="2" stroke-linejoin="round" stroke-dashoffset="" fill-rule="nonzero" id="svg_4" x="23.142857253551483" y="22.285714209079742" width="29" height="29" style="color: rgb(0, 0, 0);" class="" opacity="1" fill-opacity="1"/>
+        <rect fill="#ffffff" stroke="#222222" stroke-width="2" stroke-linejoin="round" stroke-dashoffset="" fill-rule="nonzero" x="196.55555725097656" y="195.5757598876953" width="29" height="29" style="color: rgb(0, 0, 0);" class="" id="svg_9" fill-opacity="1"/>
+        <polyline fill="none" stroke="#222222" stroke-width="2" stroke-linejoin="round" stroke-dashoffset="" fill-rule="nonzero" marker-start="" marker-mid="" marker-end="" id="svg_17" points="35.07070796590182,33.55555646534586 35.07070796590182,33.55555646534586 " style="color: rgb(0, 0, 0);"/>
+    </g>
+</svg>

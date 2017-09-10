@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ikonky/ciara.svg</file>
+        <file>ikonky/KruhovyVysek.svg</file>
+        <file>ikonky/kursor.svg</file>
+        <file>ikonky/odbocka.svg</file>
+        <file>ikonky/spline.svg</file>
+    </qresource>
+</RCC>
