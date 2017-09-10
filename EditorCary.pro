@@ -51,7 +51,9 @@ SOURCES += \
     Nastroje/ciaranastroj.cpp \
     Nastroje/ciaranastroj.cpp \
     Komponenty/spojenie.cpp \
-    Komponenty/spojenieslot.cpp
+    Komponenty/spojenieslot.cpp \
+    Komponenty/spline.cpp \
+    Nastroje/splinenastroj.cpp
 
 HEADERS += \
         hlavneokno.h \
@@ -73,7 +75,9 @@ HEADERS += \
     Nastroje/ciaranastroj.h \
     Nastroje/ciaranastroj.h \
     Komponenty/spojenie.h \
-    Komponenty/spojenieslot.h
+    Komponenty/spojenieslot.h \
+    Komponenty/spline.h \
+    Nastroje/splinenastroj.h
 
 FORMS += \
         hlavneokno.ui

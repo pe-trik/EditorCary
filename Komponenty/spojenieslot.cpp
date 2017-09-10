@@ -8,8 +8,9 @@ void SpojenieSlot::NastavSpojenie(std::shared_ptr<Komponent> spojenie) {
     s->PridajKomponent(_komponent, _manipulator);
 }
 
-SpojenieSlot::SpojenieSlot(Komponent *komponent, Komponent *manipulator)
-    : _komponent(komponent), _manipulator(manipulator) {}
+SpojenieSlot::SpojenieSlot(Komponent *komponent, Komponent *manipulator,
+                           std::function<QPointF()> smer)
+    : _komponent(komponent), _manipulator(manipulator), _smer(smer) {}
 
 void SpojenieSlot::ZrusSpojenie() {
   if (auto spojenie = _spojenie.lock()) {

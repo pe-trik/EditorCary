@@ -11,14 +11,24 @@ Dvojbodovy::Dvojbodovy() {
   _y1 = std::make_unique<QrealVlastnost>("Y1", 10);
   _x2 = std::make_unique<QrealVlastnost>("X2", 200);
   _y2 = std::make_unique<QrealVlastnost>("Y2", 200);
+  _nasobokZaciatok = std::make_unique<QrealVlastnost>("Násobok začiatok", 1);
+  _nasobokKoniec = std::make_unique<QrealVlastnost>("Násobok koniec", 1);
 
   auto manipulator = std::make_unique<Manipulator>(_x1.get(), _y1.get());
   _spojenieSloty.push_back(
-      std::make_unique<SpojenieSlot>(this, manipulator.get()));
+      std::make_unique<SpojenieSlot>(this, manipulator.get(), [this]() {
+        return QPointF(
+            (_x2->hodnota() - _x1->hodnota()) * _nasobokZaciatok->hodnota(),
+            (_y2->hodnota() - _y1->hodnota()) * _nasobokZaciatok->hodnota());
+      }));
   _manipulatory.push_back(std::move(manipulator));
 
   manipulator = std::make_unique<Manipulator>(_x2.get(), _y2.get());
   _spojenieSloty.push_back(
-      std::make_unique<SpojenieSlot>(this, manipulator.get()));
+      std::make_unique<SpojenieSlot>(this, manipulator.get(), [this]() {
+        return QPointF(
+            (_x2->hodnota() - _x1->hodnota()) * _nasobokKoniec->hodnota(),
+            (_y2->hodnota() - _y1->hodnota()) * _nasobokKoniec->hodnota());
+      }));
   _manipulatory.push_back(std::move(manipulator));
 }
