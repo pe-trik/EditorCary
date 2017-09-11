@@ -40,6 +40,28 @@ void Dokument::Vykresli(QPainter &painter) {
     for (auto &m : k->Manipulatory())
       m->Vykresli(painter);
   }
+
+  if(_vybranyKomponent)
+  {
+      qreal x1 = _sirka->hodnota();
+      qreal x2 = 0;
+      qreal y1 = _vyska->hodnota();
+      qreal y2 = 0;
+      for(auto&& m: _vybranyKomponent->Manipulatory())
+      {
+          if(auto man = dynamic_cast<Komponenty::Manipulator*>(m.get()))
+            {
+              auto b = man->getBod();
+              x1 = qMin(x1, b.x());
+              x2 = qMax(x2, b.x());
+              y1 = qMin(y1, b.y());
+              y2 = qMax(y2, b.y());
+            }
+      }
+      painter.setPen(QPen(QBrush(Qt::red),1));
+      painter.drawRect(QRectF(QPointF(x1,y1) - Komponenty::Manipulator::Polomer(),
+                              QPointF(x2,y2) + Komponenty::Manipulator::Polomer()));
+  }
 }
 
 void Dokument::VytvorSpojenia(QPointF bod) {
@@ -77,19 +99,40 @@ void Dokument::VytvorSpojenia(QPointF bod) {
 
 Komponenty::Komponent * Dokumenty::Dokument::Komponent(QPointF bod)
 {
-	auto&& s = std::find_if(_spojenia.begin(), _spojenia.end(), [bod](auto&& s) {return s->Obsahuje(bod); });
-	if (s != _spojenia.end())
+    auto&& s = std::find_if(_spojenia.rbegin(), _spojenia.rend(), [bod](auto&& s) {return s->Obsahuje(bod); });
+    if (s != _spojenia.rend())
+    {
+        _vybranyKomponent = (*s).get();
 		return (*s).get();
+    }
 
-	auto&& k = std::find_if(_komponenty.begin(), _komponenty.end(), [bod](auto&& k) {return k->Obsahuje(bod); });
-	if (k != _komponenty.end())
+    auto&& k = std::find_if(_komponenty.rbegin(), _komponenty.rend(), [bod](auto&& k) {return k->Obsahuje(bod); });
+    if (k != _komponenty.rend())
 	{
-		auto&& m = std::find_if((*k)->Manipulatory().begin(), (*k)->Manipulatory().end(), [bod](auto&& m) {return m->Obsahuje(bod); });
-		if (m != (*k)->Manipulatory().end())
-			return (*m).get();
-
-		return (*k).get();
+        auto&& m = std::find_if((*k)->Manipulatory().rbegin(), (*k)->Manipulatory().rend(), [bod](auto&& m) {return m->Obsahuje(bod); });
+        if (m != (*k)->Manipulatory().rend())
+        {
+            _vybranyKomponent = (*k).get();
+            return (*m).get();
+        }
+        else
+        {
+            _vybranyKomponent = (*k).get();
+            return (*k).get();
+        }
 	}
 
-	return nullptr;
+    _vybranyKomponent = nullptr;
+    return nullptr;
+}
+
+void Dokument::PridajKomponent(Komponenty::KomponentPtr komponent)
+{
+    _vybranyKomponent = komponent.get();
+    _komponenty.push_back(std::move(komponent));
+}
+
+Komponenty::Komponent *Dokument::vybranyKomponent() const
+{
+    return _vybranyKomponent;
 }

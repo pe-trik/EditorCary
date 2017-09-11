@@ -20,7 +20,8 @@ public slots:
 
 private:
   bool _mysStlacena = false;
-  Komponenty::Manipulator *_vybranyKomponent = nullptr;
+  Komponenty::Komponent *_vybranyKomponent = nullptr;
+  QPointF _polohaMysi;
 };
 
 class KurzorPresenter : public NastrojPresenter {

@@ -5,6 +5,7 @@
 #include "komponent.h"
 #include "manipulator.h"
 #include "Dokumenty\qrealvlastnost.h"
+#include "Dokumenty/spojeniezoznamvlastnost.h"
 
 namespace Komponenty {
 class Komponent;
@@ -30,6 +31,7 @@ private:
 	Dokumenty::QrealVlastnostPtr _y;
   std::vector<Komponent *> _komponenty;
   std::vector<Komponent *> _manipulatoryKomponent;
+  Dokumenty::SpojenieZoznamVlastnostPtr _spojenieZoznamVlastnost;
 };
 }
 

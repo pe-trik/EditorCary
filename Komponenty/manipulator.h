@@ -4,13 +4,15 @@
 #include "Dokumenty/qrealvlastnost.h"
 #include "komponent.h"
 #include <Nastroje/nastroj.h>
+#include "spojenie.h"
 #include <QPainter>
 
 namespace Komponenty {
 class Manipulator : public Komponent {
+    friend class Spojenie;
 	Q_OBJECT
 public:
-  Manipulator(Dokumenty::QrealVlastnost *x, Dokumenty::QrealVlastnost *y);
+  Manipulator(Dokumenty::QrealVlastnost *x, Dokumenty::QrealVlastnost *y, Komponent *vlastnik);
   void Vykresli(QPainter &painter) const;
   Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument);
 
@@ -18,17 +20,21 @@ public:
 
   bool Obsahuje(QPointF bod) const;
 
-  const QPointF Polomer = QPointF(7.5, 7.5);
+  static const QPointF Polomer() {
+      return QPointF(10, 10);
+  }
 
+  Komponenty::Komponent *Vlastnik() const;
 
-  public slots:
+public slots:
   void setBod(QPointF bod);
 
-  signals:
+signals:
   void BodZmeneny(QPointF bod);
 
 private:
   Dokumenty::QrealVlastnost *_x, *_y;
+  Komponenty::Komponent *_vlastnik;
 };
 using ManipulatorPtr = std::unique_ptr<Manipulator>;
 }

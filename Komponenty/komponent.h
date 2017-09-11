@@ -3,6 +3,7 @@
 
 #include "Nastroje/nastroj.h"
 #include "spojenieslot.h"
+#include "Dokumenty/stringvlastnost.h"
 #include <QPainter>
 #include <memory>
 #include <vector>
@@ -35,9 +36,16 @@ public:
   }
   virtual bool Obsahuje(QPointF bod) const = 0;
 
+  std::vector<Dokumenty::Vlastnost *> Vlastnosti() const;
+
+  QString nazov() const;
+
 protected:
   std::vector<KomponentPtr> _manipulatory;
   std::vector<SpojenieSlotPtr> _spojenieSloty;
+  std::vector<Dokumenty::Vlastnost*> _vlastnosti;
+  Dokumenty::StringVlastnostPtr _nazov;
+  static int id;
 };
 }
 

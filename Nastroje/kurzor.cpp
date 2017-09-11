@@ -9,6 +9,7 @@ NastrojPresenterPtr Kurzor::NastrojPresenter() const {
 }
 
 void Kurzor::MysStlacena(QPointF bod) { 
+    _polohaMysi = bod;
 	_mysStlacena = true;
 	_vybranyKomponent = nullptr;
 	auto k = _dokument->Komponent(bod);
@@ -19,13 +20,29 @@ void Kurzor::MysStlacena(QPointF bod) {
 				_vybranyKomponent = dynamic_cast<Komponenty::Manipulator*>( m.get());
 		}
 		if(!_vybranyKomponent)
-			_vybranyKomponent = dynamic_cast<Komponenty::Manipulator*>(k);
+            _vybranyKomponent = k;
 	}
 }
 
 void Kurzor::MysPohyb(QPointF bod) {
-	if (_vybranyKomponent)
-		_vybranyKomponent->setBod(bod);
+    if (_vybranyKomponent)
+    {
+        if(_vybranyKomponent->Manipulatory().size() == 0)
+        {
+            if(auto m = dynamic_cast<Komponenty::Manipulator*>(_vybranyKomponent))
+                    m->setBod(bod);
+        }
+        else
+        {
+            for (auto&& m : _vybranyKomponent->Manipulatory())
+            {
+                auto manipulator = dynamic_cast<Komponenty::Manipulator*>(m.get());
+                manipulator->setBod(manipulator->getBod() + bod - _polohaMysi);
+            }
+        }
+    }
+
+    _polohaMysi = bod;
 }
 
 inline void Nastroje::Kurzor::MysUvolnena(QPointF) {

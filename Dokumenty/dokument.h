@@ -38,13 +38,18 @@ public:
 
   Komponenty::Komponent* Komponent(QPointF bod);
 
-  std::vector<Komponenty::KomponentPtr> &Komponenty() { return _komponenty; }
+  const std::vector<Komponenty::KomponentPtr> &Komponenty() const { return _komponenty; }
+
+  void PridajKomponent(Komponenty::KomponentPtr komponent);
+
+  Komponenty::Komponent *vybranyKomponent() const;
 
 private:
   QrealVlastnostPtr _sirka;
   QrealVlastnostPtr _vyska;
   std::vector<Komponenty::KomponentPtr> _komponenty;
   std::vector<std::shared_ptr<Komponenty::Komponent>> _spojenia;
+  Komponenty::Komponent* _vybranyKomponent = nullptr;
 };
 }
 

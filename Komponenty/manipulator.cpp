@@ -5,22 +5,23 @@
 using namespace Komponenty;
 
 Manipulator::Manipulator(Dokumenty::QrealVlastnost *x,
-                         Dokumenty::QrealVlastnost *y)
-    : _x(x), _y(y) {}
+                         Dokumenty::QrealVlastnost *y,
+                         Komponenty::Komponent *vlastnik)
+    : _x(x), _y(y), _vlastnik(vlastnik) {}
 
 void Manipulator::Vykresli(QPainter &painter) const {
   auto center = QPointF(_x->hodnota(), _y->hodnota());
 
-  painter.fillRect(QRectF(center - Polomer, center + Polomer), Qt::black);
+  painter.fillRect(QRectF(center - Polomer(), center + Polomer()), Qt::black);
 }
 
 Nastroje::NastrojPtr Manipulator::Nastroj(Dokumenty::Dokument *dokument) {
-  return std::make_unique<Nastroje::Kurzor>(dokument);
+  return _vlastnik->Nastroj(dokument);
 }
 
 bool Manipulator::Obsahuje(QPointF bod) const {
-  return qAbs(_x->hodnota() - bod.x()) <= Polomer.x() &&
-         qAbs(_y->hodnota() - bod.y()) <= Polomer.y();
+  return qAbs(_x->hodnota() - bod.x()) <= Polomer().x() &&
+         qAbs(_y->hodnota() - bod.y()) <= Polomer().y();
 }
 
 void Komponenty::Manipulator::setBod(QPointF bod) {
@@ -29,4 +30,9 @@ void Komponenty::Manipulator::setBod(QPointF bod) {
 		_y->setHodnota(bod.y());
 		emit BodZmeneny(bod);
 	}
+}
+
+Komponenty::Komponent *Manipulator::Vlastnik() const
+{
+    return _vlastnik;
 }

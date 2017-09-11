@@ -11,9 +11,14 @@ void CiaraNastroj::vytvorNovyKomponent(QPointF bod) {
   _komponent = ciara.get();
   for (auto &&m : _komponent->Manipulatory())
     dynamic_cast<Komponenty::Manipulator *>(m.get())->setBod(bod);
-  _dokument->Komponenty().push_back(std::move(ciara));
+  _dokument->PridajKomponent(std::move(ciara));
 }
 
 NastrojPresenterPtr CiaraNastroj::NastrojPresenter() const {
-  return std::make_unique<CiaraPresenter>();
+    return std::make_unique<CiaraPresenter>();
+}
+
+Komponenty::Dvojbodovy *CiaraNastroj::otestujTyp(Komponenty::Komponent *komponent)
+{
+    return dynamic_cast<Komponenty::Ciara*>(komponent);
 }

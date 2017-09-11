@@ -11,11 +11,13 @@ class PanelVlastnosti : public QWidget {
 public:
   explicit PanelVlastnosti(QWidget *parent = nullptr);
   void Reset();
-  void NastavVlastnosti(std::vector<Dokumenty::Vlastnost *> vlastnosti);
+
 
 signals:
+  void VlastnostZmenena();
 
 public slots:
+  void NastavVlastnosti(std::vector<Dokumenty::Vlastnost *> vlastnosti);
 
 private:
   QFormLayout *_layout;

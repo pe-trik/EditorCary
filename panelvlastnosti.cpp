@@ -8,16 +8,20 @@ PanelVlastnosti::PanelVlastnosti(QWidget *parent) : QWidget(parent) {
 
 void PanelVlastnosti::Reset() {
   QLayoutItem *item;
-  while ((_layout->count() > 0) && (item = _layout->takeAt(0)))
-    delete item;
+  while ((_layout->count() > 0))
+    _layout->removeRow(0);
 }
 
 void PanelVlastnosti::NastavVlastnosti(
     std::vector<Dokumenty::Vlastnost *> vlastnosti) {
   Reset();
   for (auto polozka : vlastnosti) {
-    auto nastroj = polozka->NastrojVlastnosti();
-    _layout->addRow(nastroj->Nazov(), nastroj->Nastroj());
-    _nastroje.push_back(std::move(nastroj));
+    auto vlastnost = polozka->NastrojVlastnosti();
+    auto nastroj = vlastnost->Nastroj();
+    nastroj->setParent(this);
+    connect(polozka, &Dokumenty::Vlastnost::VlastnostZmenena,
+            [this]() { emit VlastnostZmenena(); });
+    _layout->addRow(vlastnost->Nazov(), nastroj);
+    _nastroje.push_back(std::move(vlastnost));
   }
 }

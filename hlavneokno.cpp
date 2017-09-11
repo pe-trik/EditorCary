@@ -19,6 +19,12 @@ HlavneOkno::HlavneOkno(QWidget *parent)
 
   connect(ui->pracovnaPlocha, SIGNAL(NastrojZmeneny(Nastroje::Nastroj *)), this,
           SLOT(nastavNastrojToolBar(Nastroje::Nastroj *)));
+
+  connect(ui->pracovnaPlocha, SIGNAL(VlastnostiZmenene(std::vector<Dokumenty::Vlastnost*>)),
+          ui->vlastnostiObjektu, SLOT(NastavVlastnosti(std::vector<Dokumenty::Vlastnost*>)));
+
+  connect(ui->vlastnostiObjektu, SIGNAL(VlastnostZmenena()), ui->pracovnaPlocha, SLOT(PrekresliAPrepocitajPlochu()));
+  connect(ui->vlastnostiDokumentu, SIGNAL(VlastnostZmenena()), ui->pracovnaPlocha, SLOT(PrekresliAPrepocitajPlochu()));
 }
 
 HlavneOkno::~HlavneOkno() { delete ui; }

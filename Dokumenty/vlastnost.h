@@ -13,7 +13,7 @@ public:
   virtual VlastnostManagerPtr NastrojVlastnosti() = 0;
   QString Nazov() const { return _nazov; }
 signals:
-
+    void VlastnostZmenena();
 public slots:
 private:
   QString _nazov = "";

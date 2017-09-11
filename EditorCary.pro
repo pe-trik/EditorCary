@@ -53,7 +53,11 @@ SOURCES += \
     Komponenty/spojenie.cpp \
     Komponenty/spojenieslot.cpp \
     Komponenty/spline.cpp \
-    Nastroje/splinenastroj.cpp
+    Nastroje/splinenastroj.cpp \
+    Dokumenty/stringvlastnost.cpp \
+    stringvlastnostmanager.cpp \
+    Dokumenty/spojeniezoznamvlastnost.cpp \
+    spojeniezoznamvlastnostmanager.cpp
 
 HEADERS += \
         hlavneokno.h \
@@ -77,7 +81,11 @@ HEADERS += \
     Komponenty/spojenie.h \
     Komponenty/spojenieslot.h \
     Komponenty/spline.h \
-    Nastroje/splinenastroj.h
+    Nastroje/splinenastroj.h \
+    Dokumenty/stringvlastnost.h \
+    stringvlastnostmanager.h \
+    Dokumenty/spojeniezoznamvlastnost.h \
+    spojeniezoznamvlastnostmanager.h
 
 FORMS += \
         hlavneokno.ui

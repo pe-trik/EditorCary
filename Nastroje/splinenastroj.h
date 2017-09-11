@@ -9,6 +9,8 @@ public:
   SplineNastroj(Dokumenty::Dokument *dokument);
   void vytvorNovyKomponent(QPointF bod);
   virtual NastrojPresenterPtr NastrojPresenter() const;
+protected:
+  Komponenty::Dvojbodovy* otestujTyp(Komponenty::Komponent *komponent);
 };
 class SplinePresenter : public NastrojPresenter {
   QString Nazov() const { return "Spline"; }

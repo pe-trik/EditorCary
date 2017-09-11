@@ -6,113 +6,131 @@
 using namespace Dokumenty;
 
 PracovnaPlocha::PracovnaPlocha(QWidget *parent) : QWidget(parent) {
-	setMouseTracking(
-		true); // zapne sledovanie mysi, aj ked nie su stlacene ziadne tlacitka
-	_transformacia = QTransform();
+  setMouseTracking(
+      true); // zapne sledovanie mysi, aj ked nie su stlacene ziadne tlacitka
+  _transformacia = QTransform();
+  connect(&_timerVykresli, SIGNAL(timeout()), this,
+          SLOT(timerVykresliTimeout()));
+  _timerVykresli.setInterval(1000 / 30); // 30fps
 }
 
 // vykresli pracovnu plochu; tranformacia pre PracovnuPlochu
 void PracovnaPlocha::VykresliPlochu(QPainter &painter,
-	bool aplikujTranformaciu) {
-	painter.setRenderHint(QPainter::HighQualityAntialiasing);
-	if (_dokument != nullptr) {
-		_sirka = _dokument->sirka();
-		_vyska = _dokument->vyska();
+                                    bool aplikujTranformaciu) {
+  painter.setRenderHint(QPainter::HighQualityAntialiasing);
+  if (_dokument != nullptr) {
+    _sirka = _dokument->sirka();
+    _vyska = _dokument->vyska();
 
-		if (aplikujTranformaciu) {
-			qreal pomer = static_cast<qreal>(width()) / static_cast<qreal>(height());
-			painter.setWorldTransform(_transformacia);
+    if (aplikujTranformaciu) {
+      qreal pomer = static_cast<qreal>(width()) / static_cast<qreal>(height());
+      painter.setWorldTransform(_transformacia);
 
-			if ((_dokument->sirka() / _dokument->vyska()) < pomer)
-				_sirka = _dokument->vyska() * pomer;
-			else
-				_vyska = _dokument->sirka() / pomer;
-		}
+      if ((_dokument->sirka() / _dokument->vyska()) < pomer)
+        _sirka = _dokument->vyska() * pomer;
+      else
+        _vyska = _dokument->sirka() / pomer;
+    }
 
-		painter.setWindow(0, 0, static_cast<int>(_sirka), static_cast<int>(_vyska));
+    painter.setWindow(0, 0, static_cast<int>(_sirka), static_cast<int>(_vyska));
 
-		_dokument->Vykresli(painter);
-	}
+    _dokument->Vykresli(painter);
+  }
 }
 
 void PracovnaPlocha::NastavDokument(Dokument *dokument) {
-	_dokument = dokument;
-	connect(dokument, SIGNAL(prekreslit()), this, SLOT(repaint()));
+  _dokument = dokument;
+  connect(dokument, SIGNAL(prekreslit()), this, SLOT(repaint()));
 }
 
 QPointF PracovnaPlocha::PolohaMysi() {
-	return _inverznaTransformacia.map(QPointF(_polohaMysi.x() / static_cast<qreal>(width()) * _sirka,
-		_polohaMysi.y() / static_cast<qreal>(height()) * _vyska));
+  return _inverznaTransformacia.map(
+      QPointF(_polohaMysi.x() / static_cast<qreal>(width()) * _sirka,
+              _polohaMysi.y() / static_cast<qreal>(height()) * _vyska));
 }
 
-void PracovnaPlocha::NastavNastroj(Nastroje::NastrojPtr nastroj)
-{
-	_nastroj = std::move(nastroj);
-	NastrojZmeneny(_nastroj.get());
+void PracovnaPlocha::NastavNastroj(Nastroje::NastrojPtr nastroj) {
+  _nastroj = std::move(nastroj);
+  NastrojZmeneny(_nastroj.get());
 }
+
+void PracovnaPlocha::PrekresliAPrepocitajPlochu() {
+  if (!_timerVykresli.isActive())
+    _timerVykresli.start();
+}
+
+void PracovnaPlocha::timerVykresliTimeout() { repaint(); }
 
 void PracovnaPlocha::mouseMoveEvent(QMouseEvent *event) {
-	if (_mysStlacena && !_nastroj) {
-		auto delta = (event->localPos() - _polohaMysi) / _zoom;
-		_transformacia.translate(delta.x() / static_cast<qreal>(width()) * _sirka,
-			delta.y() / static_cast<qreal>(height()) * _vyska);
-		_inverznaTransformacia = _transformacia.inverted();
-	}
-	else if (_nastroj)
-		_nastroj->MysPohyb(PolohaMysi());
+  if (_mysStlacena && !_nastroj) {
+    auto delta = (event->localPos() - _polohaMysi) / _zoom;
+    _transformacia.translate(delta.x() / static_cast<qreal>(width()) * _sirka,
+                             delta.y() / static_cast<qreal>(height()) * _vyska);
+    _inverznaTransformacia = _transformacia.inverted();
+  } else if (_nastroj)
+    _nastroj->MysPohyb(PolohaMysi());
 
-	_polohaMysi = event->localPos();
+  _polohaMysi = event->localPos();
 
-	repaint();
+  repaint();
 }
 
 void PracovnaPlocha::mousePressEvent(QMouseEvent *event) {
-	_mysStlacena = true;
+  _mysStlacena = true;
 
-	auto b = PolohaMysi();
+  auto b = PolohaMysi();
 
-	if (_nastroj == nullptr) {
-		if (auto k = _dokument->Komponent(b))
-			_nastroj = k->Nastroj(_dokument);
-	}
+  if (_nastroj == nullptr) {
+    if (auto k = _dokument->Komponent(b))
+      _nastroj = k->Nastroj(_dokument);
+  }
 
-	if (_nastroj)
-		_nastroj->MysStlacena(b);
+  if (_nastroj)
+    _nastroj->MysStlacena(b);
 
-	NastrojZmeneny(_nastroj.get());
+  NastrojZmeneny(_nastroj.get());
+  if (_dokument->vybranyKomponent() != nullptr)
+    emit VlastnostiZmenene(_dokument->vybranyKomponent()->Vlastnosti());
+  else
+    emit VlastnostiZmenene({});
 }
 
 void PracovnaPlocha::mouseReleaseEvent(QMouseEvent *event) {
-		_dokument->VytvorSpojenia(PolohaMysi());
+  _dokument->VytvorSpojenia(PolohaMysi());
 
-	_mysStlacena = false;
-	if (_nastroj)
-		_nastroj->MysUvolnena(PolohaMysi());
+  _mysStlacena = false;
+  if (_nastroj)
+    _nastroj->MysUvolnena(PolohaMysi());
+
+  if (_dokument->vybranyKomponent() != nullptr)
+    emit VlastnostiZmenene(_dokument->vybranyKomponent()->Vlastnosti());
+  else
+    emit VlastnostiZmenene({});
 }
 
 void PracovnaPlocha::wheelEvent(QWheelEvent *event) {
-	if (event->delta() > 0) {
-		_zoom *= 1.2;
-		_transformacia.scale(1.2, 1.2);
-	}
-	else {
-		_zoom /= 1.2;
-		_transformacia.scale(1 / 1.2, 1 / 1.2);
-	}
-	_inverznaTransformacia = _transformacia.inverted();
-	repaint();
+  if (event->delta() > 0) {
+    _zoom *= 1.2;
+    _transformacia.scale(1.2, 1.2);
+  } else {
+    _zoom /= 1.2;
+    _transformacia.scale(1 / 1.2, 1 / 1.2);
+  }
+  _inverznaTransformacia = _transformacia.inverted();
+  repaint();
 }
 
-void PracovnaPlocha::mouseDoubleClickEvent(QMouseEvent * event)
-{
-	if (_nastroj)
-		_nastroj->MysDvojklik(PolohaMysi());
-	_dokument->VytvorSpojenia(PolohaMysi());
+void PracovnaPlocha::mouseDoubleClickEvent(QMouseEvent *event) {
+  if (_nastroj)
+    _nastroj->MysDvojklik(PolohaMysi());
+  _dokument->VytvorSpojenia(PolohaMysi());
+  if (_dokument->vybranyKomponent() != nullptr)
+    emit VlastnostiZmenene(_dokument->vybranyKomponent()->Vlastnosti());
 }
 
 void PracovnaPlocha::paintEvent(QPaintEvent *event) {
-	QPainter painter(this);
-	VykresliPlochu(painter, true);
-	if (_mysStlacena)
-		painter.fillRect(QRectF(PolohaMysi(), QSizeF(10, 10)), Qt::red);
+  QPainter painter(this);
+  VykresliPlochu(painter, true);
+  if (_mysStlacena)
+    painter.fillRect(QRectF(PolohaMysi(), QSizeF(10, 10)), Qt::red);
 }

@@ -11,9 +11,14 @@ void SplineNastroj::vytvorNovyKomponent(QPointF bod) {
   _komponent = ciara.get();
   for (auto &&m : _komponent->Manipulatory())
     dynamic_cast<Komponenty::Manipulator *>(m.get())->setBod(bod);
-  _dokument->Komponenty().push_back(std::move(ciara));
+  _dokument->PridajKomponent(std::move(ciara));
 }
 
 NastrojPresenterPtr SplineNastroj::NastrojPresenter() const {
-  return std::make_unique<SplinePresenter>();
+    return std::make_unique<SplinePresenter>();
+}
+
+Komponenty::Dvojbodovy *SplineNastroj::otestujTyp(Komponenty::Komponent *komponent)
+{
+    return dynamic_cast<Komponenty::Spline*>(komponent);
 }

@@ -17,6 +17,7 @@ void QrealVlastnost::setHodnota(qreal hodnota) {
   if (_hodnota != hodnota) {
     _hodnota = hodnota;
     emit hodnotaZmenena(hodnota);
+    emit VlastnostZmenena();
   }
 }
 

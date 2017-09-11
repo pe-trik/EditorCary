@@ -26,7 +26,7 @@ void Nastroje::DvojbodovyNastroj::MysStlacena(QPointF bod)
 		else
 			_manipulator = dynamic_cast<Komponenty::Manipulator*>(komponent);;
 
-		_komponent = dynamic_cast<Komponenty::Dvojbodovy*>(komponent);
+        _komponent = otestujTyp(komponent);//dynamic_cast<Komponenty::Dvojbodovy*>(komponent);
 	}
 }
 

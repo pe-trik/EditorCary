@@ -18,6 +18,7 @@ namespace Nastroje {
 		void MysDvojklik(QPointF);
 
 	protected:
+        virtual Komponenty::Dvojbodovy* otestujTyp(Komponenty::Komponent* komponent) = 0;
 		virtual void vytvorNovyKomponent(QPointF bod) = 0;
 		Komponenty::Dvojbodovy *_komponent = nullptr;
 		Komponenty::Manipulator *_manipulator = nullptr;

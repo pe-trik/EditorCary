@@ -2,7 +2,7 @@
 #define PRACOVNAPLOCHA_H
 
 #include <QWidget>
-
+#include <QTimer>
 #include "Dokumenty/dokument.h"
 #include "Komponenty/komponent.h"
 #include "Nastroje/nastroj.h"
@@ -23,6 +23,11 @@ public:
 
 signals:
   void NastrojZmeneny(Nastroje::Nastroj* nastroj);
+  void VlastnostiZmenene(const std::vector<Dokumenty::Vlastnost*>& vlastnosti);
+
+public slots:
+  void PrekresliAPrepocitajPlochu();
+  void timerVykresliTimeout();
 
 protected:
   void mouseMoveEvent(QMouseEvent *event);
@@ -43,6 +48,7 @@ private:
   QPointF _polohaMysi;
   Dokumenty::Dokument *_dokument = nullptr;
   Nastroje::NastrojPtr _nastroj;
+  QTimer _timerVykresli;
 };
 
 #endif // PRACOVNAPLOCHA_H
