@@ -1,11 +1,11 @@
 #ifndef SPOJENIE_H
 #define SPOJENIE_H
 
+#include "Dokumenty/spojeniezoznamvlastnost.h"
+#include "Dokumenty\qrealvlastnost.h"
 #include "Nastroje/nastroj.h"
 #include "komponent.h"
 #include "manipulator.h"
-#include "Dokumenty\qrealvlastnost.h"
-#include "Dokumenty/spojeniezoznamvlastnost.h"
 
 namespace Komponenty {
 class Komponent;
@@ -20,17 +20,15 @@ public:
 
   bool Obsahuje(QPointF bod) const { return _manipulator->Obsahuje(bod); }
 
-  void PridajKomponent(Komponent *komponent, Komponent *manipulator);
+  void PridajKomponent(Komponent *manipulator);
 
-  void OdstranKomponent(Komponent *komponent, Komponent *manipulator);
+  void OdstranKomponent(Komponent *manipulator);
 
 private:
-	void obnovHodnoty();
-	Komponent* _manipulator;
-	Dokumenty::QrealVlastnostPtr _x;
-	Dokumenty::QrealVlastnostPtr _y;
-  std::vector<Komponent *> _komponenty;
-  std::vector<Komponent *> _manipulatoryKomponent;
+  void obnovHodnoty();
+  Komponent *_manipulator;
+  Dokumenty::QrealVlastnostPtr _x;
+  Dokumenty::QrealVlastnostPtr _y;
   Dokumenty::SpojenieZoznamVlastnostPtr _spojenieZoznamVlastnost;
 };
 }
