@@ -2,8 +2,8 @@
 #define SPOJENIESLOT_H
 
 #include "Dokumenty/qrealvlastnost.h"
-#include "komponent.h"
 #include <functional>
+#include "komponent.h"
 
 namespace Komponenty {
 class Komponent;
@@ -12,9 +12,9 @@ public:
   SpojenieSlot(Komponent *komponent, Komponent *manipulator,
                std::function<QPointF()> smer);
 
-  bool JeVolny() const { return _spojenie.use_count() == 0; }
+  bool JeVolny() const { return _spojenie == nullptr; }
 
-  void NastavSpojenie(std::shared_ptr<Komponent> spojenie);
+  void NastavSpojenie(Komponent* spojenie);
 
   void ZrusSpojenie();
 
@@ -22,8 +22,12 @@ public:
 
   QPointF Smer() const { return _smer(); }
 
+  Komponent *manipulator();
+
+  Komponent *komponent() const;
+
 private:
-  std::weak_ptr<Komponent> _spojenie;
+  Komponent* _spojenie = nullptr;
   Komponent *_komponent;
   Komponent *_manipulator;
   std::function<QPointF()> _smer;

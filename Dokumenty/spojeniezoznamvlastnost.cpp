@@ -7,21 +7,20 @@ SpojenieZoznamVlastnost::SpojenieZoznamVlastnost(
     QString nazov, Komponenty::Komponent *spojenie)
     : Vlastnost(nazov), _spojenie(spojenie) {}
 
-SpojenieZoznamVlastnost::SpojenieZoznamVlastnost(
-    QString nazov, Komponenty::Komponent *spojenie,
-    std::vector<Komponenty::Komponent *> hodnota)
+SpojenieZoznamVlastnost::SpojenieZoznamVlastnost(QString nazov, Komponenty::Komponent *spojenie,
+    std::vector<Komponenty::SpojenieSlot *> hodnota)
     : Vlastnost(nazov), _spojenie(spojenie), _hodnota(hodnota) {}
 
 VlastnostManagerPtr SpojenieZoznamVlastnost::NastrojVlastnosti() {
   return std::make_unique<SpojenieZoznamVlastnostManager>(this);
 }
 
-std::vector<Komponenty::Komponent *> SpojenieZoznamVlastnost::hodnota() const {
+std::vector<Komponenty::SpojenieSlot *> SpojenieZoznamVlastnost::hodnota() const {
   return _hodnota;
 }
 
 void SpojenieZoznamVlastnost::setHodnota(
-    std::vector<Komponenty::Komponent *> hodnota) {
+    std::vector<Komponenty::SpojenieSlot *> hodnota) {
   _hodnota = hodnota;
 }
 

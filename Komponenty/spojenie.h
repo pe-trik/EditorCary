@@ -5,7 +5,6 @@
 #include "Dokumenty\qrealvlastnost.h"
 #include "Nastroje/nastroj.h"
 #include "komponent.h"
-#include "manipulator.h"
 
 namespace Komponenty {
 class Komponent;
@@ -20,9 +19,9 @@ public:
 
   bool Obsahuje(QPointF bod) const { return _manipulator->Obsahuje(bod); }
 
-  void PridajKomponent(Komponent *manipulator);
+  void PridajKomponent(SpojenieSlot *slot);
 
-  void OdstranKomponent(Komponent *manipulator);
+  void OdstranKomponent(SpojenieSlot *slot);
 
   bool JePrazdne() const {
       return _spojenieZoznamVlastnost->hodnota().size() == 1;

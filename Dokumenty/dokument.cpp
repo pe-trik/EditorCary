@@ -92,7 +92,7 @@ void Dokument::VytvorSpojenia(QPointF bod) {
     }
 
     for (auto &&slot : sloty) {
-      slot->NastavSpojenie(spojenie);
+      slot->NastavSpojenie(spojenie.get());
     }
   }
 }

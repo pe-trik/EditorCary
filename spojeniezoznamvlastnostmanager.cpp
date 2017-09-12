@@ -18,8 +18,7 @@ QWidget *SpojenieZoznamVlastnostManager::Nastroj() {
   layout->addWidget(list);
 
   for (auto &&i : _vlastnost->hodnota()) {
-    if (auto manipulator = dynamic_cast<Komponenty::Manipulator *>(i))
-      list->addItem(manipulator->Vlastnik()->nazov());
+      list->addItem(i->komponent()->nazov());
   }
 
   auto btn = new QPushButton("Zmazať");

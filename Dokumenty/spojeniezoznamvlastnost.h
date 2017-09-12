@@ -1,8 +1,8 @@
 #ifndef SPOJENIEZOZNAMVLASTNOST_H
 #define SPOJENIEZOZNAMVLASTNOST_H
 
-#include "Komponenty/komponent.h"
 #include "vlastnost.h"
+#include "Komponenty/spojenieslot.h"
 
 namespace Dokumenty {
 class SpojenieZoznamVlastnost : public Vlastnost {
@@ -10,20 +10,20 @@ class SpojenieZoznamVlastnost : public Vlastnost {
 public:
   SpojenieZoznamVlastnost(QString nazov, Komponenty::Komponent *spojenie);
   SpojenieZoznamVlastnost(QString nazov, Komponenty::Komponent *spojenie,
-                          std::vector<Komponenty::Komponent *> hodnota);
+                          std::vector<Komponenty::SpojenieSlot *> hodnota);
   VlastnostManagerPtr NastrojVlastnosti();
-  std::vector<Komponenty::Komponent *> hodnota() const;
+  std::vector<Komponenty::SpojenieSlot *> hodnota() const;
 
   Komponenty::Komponent *spojenie();
 
 public slots:
-  void setHodnota(std::vector<Komponenty::Komponent *> hodnota);
+  void setHodnota(std::vector<Komponenty::SpojenieSlot *> hodnota);
 
 signals:
-  void hodnotaZmenena(std::vector<Komponenty::Komponent *> &novaHodnota);
+  void hodnotaZmenena(std::vector<Komponenty::SpojenieSlot *> &novaHodnota);
 
 private:
-  std::vector<Komponenty::Komponent *> _hodnota;
+  std::vector<Komponenty::SpojenieSlot *> _hodnota;
   Komponenty::Komponent *_spojenie;
 };
 using SpojenieZoznamVlastnostPtr = std::unique_ptr<SpojenieZoznamVlastnost>;
