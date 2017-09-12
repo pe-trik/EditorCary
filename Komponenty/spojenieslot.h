@@ -26,6 +26,8 @@ public:
 
   Komponent *komponent() const;
 
+  Komponent *spojenie() const;
+
 private:
   Komponent* _spojenie = nullptr;
   Komponent *_komponent;

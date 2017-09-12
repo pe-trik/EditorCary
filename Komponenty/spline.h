@@ -10,6 +10,11 @@ public:
   void Vykresli(QPainter &painter) const;
   Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument);
   bool Obsahuje(QPointF) const;
+  bool pouzite() const;
+  void setPouzite(bool pouzite);
+
+private:
+  bool _pouzite = false;
 };
 }
 

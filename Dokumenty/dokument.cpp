@@ -1,7 +1,8 @@
 #include "dokument.h"
 #include "Komponenty/ciara.h"
 #include "Komponenty/spojenieslot.h"
-#include "Komponenty\spojenie.h"
+#include "Komponenty/spojenie.h"
+#include "Komponenty/splinegroup.h"
 
 using namespace Dokumenty;
 
@@ -151,4 +152,9 @@ void Dokument::VycistiSpojenia()
             return false;
         }
     });
+}
+
+void Dokument::Prepocitaj()
+{
+    Komponenty::SplineGroup g(_komponenty, _spojenia);
 }

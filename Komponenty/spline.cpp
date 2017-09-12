@@ -28,3 +28,13 @@ bool Spline::Obsahuje(QPointF bod) const {
 
   return dist <= 10;
 }
+
+bool Spline::pouzite() const
+{
+    return _pouzite;
+}
+
+void Spline::setPouzite(bool pouzite)
+{
+    _pouzite = pouzite;
+}

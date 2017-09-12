@@ -46,6 +46,8 @@ public:
 
   void VycistiSpojenia();
 
+  void Prepocitaj();
+
 private:
   QrealVlastnostPtr _sirka;
   QrealVlastnostPtr _vyska;

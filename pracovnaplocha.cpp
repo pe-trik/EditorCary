@@ -62,6 +62,7 @@ void PracovnaPlocha::PrekresliAPrepocitajPlochu() {
 
 void PracovnaPlocha::timerVykresliTimeout() {
     _dokument->VycistiSpojenia();
+    _dokument->Prepocitaj();
     repaint();
     _timerVykresli.stop();
 }

@@ -32,3 +32,8 @@ Komponent *SpojenieSlot::komponent() const
 {
     return _komponent;
 }
+
+Komponent *SpojenieSlot::spojenie() const
+{
+    return _spojenie;
+}

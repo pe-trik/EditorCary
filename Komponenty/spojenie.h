@@ -2,13 +2,14 @@
 #define SPOJENIE_H
 
 #include "Dokumenty/spojeniezoznamvlastnost.h"
-#include "Dokumenty\qrealvlastnost.h"
+#include "Dokumenty/qrealvlastnost.h"
 #include "Nastroje/nastroj.h"
 #include "komponent.h"
 
 namespace Komponenty {
 class Komponent;
 class Spojenie : public Komponent {
+    friend class SplineGroup;
 public:
   Spojenie();
   void Vykresli(QPainter &painter) const { _manipulator->Vykresli(painter); }
