@@ -65,6 +65,10 @@ void Spojenie::OdstranKomponent(Komponent *manipulator) {
                  &Dokumenty::QrealVlastnost::hodnotaZmenena, manipulator,
                  nullptr);
     }
+
+    if(auto m = dynamic_cast<Manipulator*>(manipulator))
+        m->setBod(m->getBod() + 2 * Manipulator::Polomer());
+
     manipulatory.erase(m);
   }
   _spojenieZoznamVlastnost->setHodnota(manipulatory);

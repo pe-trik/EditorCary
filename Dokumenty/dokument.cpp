@@ -136,3 +136,14 @@ Komponenty::Komponent *Dokument::vybranyKomponent() const
 {
     return _vybranyKomponent;
 }
+
+void Dokument::VycistiSpojenia()
+{
+    std::remove_if(_spojenia.begin(), _spojenia.end(),
+                   [](auto& s) {
+        if(auto spojenie = dynamic_cast<Komponenty::Spojenie*>(s.get()))
+            return spojenie->JePrazdne();
+        else
+            return false;
+    });
+}

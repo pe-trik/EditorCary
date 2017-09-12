@@ -42,6 +42,7 @@ QWidget *SpojenieZoznamVlastnostManager::Nastroj() {
                 dynamic_cast<Komponenty::Spojenie *>(spojenie->spojenie())) {
           s->OdstranKomponent(_vlastnost->hodnota().at(
               static_cast<size_t>(list->currentRow())));
+          list->takeItem(list->currentRow());
         }
       }
     }

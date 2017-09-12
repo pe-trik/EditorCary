@@ -24,6 +24,10 @@ public:
 
   void OdstranKomponent(Komponent *manipulator);
 
+  bool JePrazdne() const {
+      return _spojenieZoznamVlastnost->hodnota().size() == 1;
+  }
+
 private:
   void obnovHodnoty();
   Komponent *_manipulator;

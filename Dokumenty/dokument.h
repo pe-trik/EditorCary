@@ -44,6 +44,8 @@ public:
 
   Komponenty::Komponent *vybranyKomponent() const;
 
+  void VycistiSpojenia();
+
 private:
   QrealVlastnostPtr _sirka;
   QrealVlastnostPtr _vyska;

@@ -11,7 +11,8 @@ PracovnaPlocha::PracovnaPlocha(QWidget *parent) : QWidget(parent) {
   _transformacia = QTransform();
   connect(&_timerVykresli, SIGNAL(timeout()), this,
           SLOT(timerVykresliTimeout()));
-  _timerVykresli.setInterval(1000 / 30); // 30fps
+  _timerVykresli.setSingleShot(true);
+  _timerVykresli.setInterval(1000 / 60); // 30fps
 }
 
 // vykresli pracovnu plochu; tranformacia pre PracovnuPlochu
@@ -40,7 +41,7 @@ void PracovnaPlocha::VykresliPlochu(QPainter &painter,
 
 void PracovnaPlocha::NastavDokument(Dokument *dokument) {
   _dokument = dokument;
-  connect(dokument, SIGNAL(prekreslit()), this, SLOT(repaint()));
+  connect(dokument, SIGNAL(prekreslit()), this, SLOT(PrekresliAPrepocitajPlochu()));
 }
 
 QPointF PracovnaPlocha::PolohaMysi() {
@@ -59,7 +60,11 @@ void PracovnaPlocha::PrekresliAPrepocitajPlochu() {
     _timerVykresli.start();
 }
 
-void PracovnaPlocha::timerVykresliTimeout() { repaint(); }
+void PracovnaPlocha::timerVykresliTimeout() {
+    _dokument->VycistiSpojenia();
+    repaint();
+    _timerVykresli.stop();
+}
 
 void PracovnaPlocha::mouseMoveEvent(QMouseEvent *event) {
   if (_mysStlacena && !_nastroj) {
@@ -72,7 +77,7 @@ void PracovnaPlocha::mouseMoveEvent(QMouseEvent *event) {
 
   _polohaMysi = event->localPos();
 
-  repaint();
+  PrekresliAPrepocitajPlochu();
 }
 
 void PracovnaPlocha::mousePressEvent(QMouseEvent *event) {
@@ -93,6 +98,8 @@ void PracovnaPlocha::mousePressEvent(QMouseEvent *event) {
     emit VlastnostiZmenene(_dokument->vybranyKomponent()->Vlastnosti());
   else
     emit VlastnostiZmenene({});
+
+  PrekresliAPrepocitajPlochu();
 }
 
 void PracovnaPlocha::mouseReleaseEvent(QMouseEvent *event) {
@@ -106,6 +113,8 @@ void PracovnaPlocha::mouseReleaseEvent(QMouseEvent *event) {
     emit VlastnostiZmenene(_dokument->vybranyKomponent()->Vlastnosti());
   else
     emit VlastnostiZmenene({});
+
+  PrekresliAPrepocitajPlochu();
 }
 
 void PracovnaPlocha::wheelEvent(QWheelEvent *event) {
@@ -117,7 +126,8 @@ void PracovnaPlocha::wheelEvent(QWheelEvent *event) {
     _transformacia.scale(1 / 1.2, 1 / 1.2);
   }
   _inverznaTransformacia = _transformacia.inverted();
-  repaint();
+
+  PrekresliAPrepocitajPlochu();
 }
 
 void PracovnaPlocha::mouseDoubleClickEvent(QMouseEvent *event) {
@@ -126,6 +136,8 @@ void PracovnaPlocha::mouseDoubleClickEvent(QMouseEvent *event) {
   _dokument->VytvorSpojenia(PolohaMysi());
   if (_dokument->vybranyKomponent() != nullptr)
     emit VlastnostiZmenene(_dokument->vybranyKomponent()->Vlastnosti());
+
+  PrekresliAPrepocitajPlochu();
 }
 
 void PracovnaPlocha::paintEvent(QPaintEvent *event) {
