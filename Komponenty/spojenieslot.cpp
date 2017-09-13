@@ -1,5 +1,6 @@
 #include "spojenieslot.h"
 #include "spojenie.h"
+#include "manipulator.h"
 using namespace Komponenty;
 
 void SpojenieSlot::NastavSpojenie(Komponent *spojenie) {
@@ -36,4 +37,14 @@ Komponent *SpojenieSlot::komponent() const
 Komponent *SpojenieSlot::spojenie() const
 {
     return _spojenie;
+}
+
+QPointF SpojenieSlot::bod() const
+{
+    return dynamic_cast<Manipulator*>(_manipulator)->getBod();
+}
+
+void SpojenieSlot::setSmer(const std::function<QPointF ()> &smer)
+{
+    _smer = smer;
 }

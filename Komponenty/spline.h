@@ -2,6 +2,7 @@
 #define SPLINE_H
 
 #include "dvojbodovy.h"
+#include <QVector>
 
 namespace Komponenty {
 class Spline : public Dvojbodovy {
@@ -13,8 +14,12 @@ public:
   bool pouzite() const;
   void setPouzite(bool pouzite);
 
+  QVector<QPointF> krivka() const;
+  void setKrivka(const QVector<QPointF> &krivka);
+
 private:
   bool _pouzite = false;
+  QVector<QPointF> _krivka;
 };
 }
 

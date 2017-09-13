@@ -15,10 +15,6 @@ Dokument::Dokument() {
             SLOT(velkostDokumentuZmenena(qreal)));
     connect(_vyska.get(), SIGNAL(hodnotaZmenena(qreal)), this,
             SLOT(velkostDokumentuZmenena(qreal)));
-
-    auto ciara = std::make_unique<Komponenty::Ciara>();
-
-    _komponenty.push_back(std::move(ciara));
 }
 
 qreal Dokument::sirka() const { return _sirka->hodnota(); }

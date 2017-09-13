@@ -28,6 +28,10 @@ public:
 
   Komponent *spojenie() const;
 
+  QPointF bod() const;
+
+  void setSmer(const std::function<QPointF ()> &smer);
+
 private:
   Komponent* _spojenie = nullptr;
   Komponent *_komponent;
