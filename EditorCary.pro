@@ -58,7 +58,8 @@ SOURCES += \
     stringvlastnostmanager.cpp \
     Dokumenty/spojeniezoznamvlastnost.cpp \
     spojeniezoznamvlastnostmanager.cpp \
-    Komponenty/splinegroup.cpp
+    Komponenty/splinegroup.cpp \
+    Komponenty/tridiagonalnamatica.cpp
 
 HEADERS += \
         hlavneokno.h \
@@ -87,7 +88,8 @@ HEADERS += \
     stringvlastnostmanager.h \
     Dokumenty/spojeniezoznamvlastnost.h \
     spojeniezoznamvlastnostmanager.h \
-    Komponenty/splinegroup.h
+    Komponenty/splinegroup.h \
+    Komponenty/tridiagonalnamatica.h
 
 FORMS += \
         hlavneokno.ui
