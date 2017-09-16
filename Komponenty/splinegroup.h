@@ -32,11 +32,12 @@ class TridiagonalnaMatica
 public:
     TridiagonalnaMatica(size_t m, qreal a = 0, qreal b = 0, qreal c = 0, qreal d = 0, qreal tr = 0, qreal ll = 0);
     Pole Vyries();
-    qreal& a(size_t i) { return _a[i]; }
-    qreal& b(size_t i) { return _b[i]; }
-    qreal& c(size_t i) { return _c[i]; }
-    qreal& d(size_t i) { return _d[i]; }
-    qreal& rc(size_t i) { return _rc[i]; }
+    qreal& a(size_t i);
+    qreal& b(size_t i);
+    qreal& c(size_t i);
+    qreal& d(size_t i);
+    qreal& rc(size_t i);
+    qreal& lc(size_t i);
 private:
     size_t _m;
     qreal _tr;

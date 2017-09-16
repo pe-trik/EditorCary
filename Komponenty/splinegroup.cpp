@@ -237,51 +237,112 @@ TridiagonalnaMatica::TridiagonalnaMatica(size_t m, qreal a, qreal b, qreal c, qr
     //inicializacia
     for(size_t i = 0; i < m; i++)
     {
-        _a[i] = a;
-        _b[i] = b;
-        _c[i] = c;
-        _d[i] = d;
-        _rc[i] = 0;
+        rc(i) = 0;
+        lc(i) = 0;
+        this->a(i) = a;
+        this->b(i) = b;
+        this->c(i) = c;
+        this->d(i) = d;
     }
+
+    rc(0) = tr;
+    lc(_m - 1) = ll;
 }
 
+//riesenie tridiagonalnej matice v O(n)
 Pole TridiagonalnaMatica::Vyries()
 {
-    //riesenie tridiagonalnej matice v O(n)
-    if(_m == 0)
+    //matica musi mat nenulovu velkost
+    if (_m == 0)
         return 0;
 
-    c(0) /= b(0);
-    d(0) /= b(0);
-    rc(0) /= b(0);
+    auto riesenie = std::make_unique<double[]>(_m);
 
-    auto riesenie = std::make_unique<qreal[]>(_m);
-
-    //dopredna substitucia
-    for(size_t i = 1; i < _m - 1; i++)
-        c(i) /= b(i) - a(i)*c(i-1);
-
-    for(size_t i = 1; i < _m; i++)
+    //odstranenie spodnej diagonaly - po posledne 2 riadky bez konfliktov
+    for (size_t i = 1; i < _m; i++)
     {
-        if(i < _m - 1)
-            rc(i) = (rc(i) - a(i)*rc(i-1))/(b(i) - a(i)*c(i-1));
-        if(i == _m - 2)
-            c(i) += rc(i);
-        if(i >= _m - 1)
-            rc(i) = c(i);
-        d(i) = (d(i) - a(i)*d(i-1))/(b(i) - a(i)*c(i-1));
+        double koef = a(i) / b(i - 1);
+        a(i) -= koef * b(i - 1);
+        if (i < _m - 1)
+            b(i) -= koef * c(i - 1);
+        d(i) -= koef * d(i - 1);
+        rc(i) -= koef * rc(i - 1);
     }
 
+    //vynormovanie
+    for (size_t i = 0; i < _m; i++)
+    {
+        double koef = b(i);
+        if(i > 1)
+            lc(i) /= koef;
+        c(i) /= koef;
+        if(i < _m - 2)
+            rc(i) /= koef;
+        d(i) /= koef;
+        b(i) /= koef;
+    }
 
+    //odstranenie praveho stlpca
+    //vytvori sa lavy
+    for (size_t i = 0; i < _m - 1; i++)
+    {
+        double koef = rc(i);
+        lc(i) -= lc(_m - 1) * koef;
+        d(i) -= d(_m - 1) * koef;
+        rc(i) -= rc(_m - 1) * koef;
+    }
 
-    //spatna substitucia
-    riesenie[_m - 1] = d(_m - 1) / rc(_m - 1);
+    //odstranenie hornej diagonaly
+    for (size_t i = 0; i < _m - 1; i++)
+    {
+        double koef = -c(i) * b(i + 1);
+        c(i) = 0;
+        lc(i) += koef * lc(i + 1);
+        d(i) += koef * d(i + 1);
+    }
 
-    for(size_t i = 0; i < _m - 1; i++)
-        d(i) -= rc(i) * riesenie[_m - 1];
+    //vynormovanie prveho riadku
+    d(0) /= lc(0);
+    lc(0) /= lc(0);
 
-    for(size_t i = 2; i <= _m; i++)
-        riesenie[_m - i] = d(_m - i) - c(_m - i) * riesenie[_m - i + 1];
+    //odstranenie laveho stlpca
+    for (size_t i = 1; i < _m; i++)
+    {
+        double koef = lc(i);
+        lc(i) -= lc(0) * koef;
+        d(i) -= d(0) * koef;
+    }
+
+    for (size_t i = 0; i < _m; i++)
+        riesenie[i] = d(i);
 
     return riesenie;
+}
+
+qreal &TridiagonalnaMatica::a(size_t i) { return _a[i]; }
+
+qreal &TridiagonalnaMatica::b(size_t i) { return _b[i]; }
+
+qreal &TridiagonalnaMatica::c(size_t i) { return _c[i]; }
+
+qreal &TridiagonalnaMatica::d(size_t i) { return _d[i]; }
+
+qreal &TridiagonalnaMatica::rc(size_t i)
+{
+    if(i < _m - 2)
+        return  _rc[i];
+    else if (i == _m - 2)
+        return _c[i];
+    else if (i == _m - 1)
+        return _b[i];
+}
+
+qreal &TridiagonalnaMatica::lc(size_t i)
+{
+    if(i > 1)
+        return _lc[i];
+    if(i == 0)
+        return _b[0];
+    else if(i == 1)
+        return _a[1];
 }
