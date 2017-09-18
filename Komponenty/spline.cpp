@@ -1,6 +1,6 @@
 #include "spline.h"
 
-#include <Nastroje/ciaranastroj.h>
+#include <Nastroje/splinenastroj.h>
 
 using namespace Komponenty;
 using namespace Dokumenty;
@@ -17,7 +17,7 @@ void Spline::Vykresli(QPainter &painter) const {
 }
 
 Nastroje::NastrojPtr Spline::Nastroj(Dokument *dokument) {
-    return std::make_unique<Nastroje::CiaraNastroj>(dokument);
+    return std::make_unique<Nastroje::SplineNastroj>(dokument);
 }
 
 bool Spline::Obsahuje(QPointF bod) const {
@@ -45,6 +45,25 @@ void Spline::setPouzite(bool pouzite)
 QVector<QPointF> Spline::krivka() const
 {
     return _krivka;
+}
+
+void Spline::resetKrivka()
+{
+    _krivka.clear();
+    _krivka.push_back(QPointF(_x1->hodnota(), _y1->hodnota()));
+    _krivka.push_back(QPointF(_x2->hodnota(), _y2->hodnota()));
+
+    _spojenieSloty.at(0)->setSmer([this]() {
+        return QPointF(
+                    -(_x1->hodnota() - _x2->hodnota()),
+                    -(_y1->hodnota() - _y2->hodnota()));
+    });
+
+    _spojenieSloty.at(1)->setSmer([this]() {
+        return QPointF(
+                    -(_x2->hodnota() - _x1->hodnota()),
+                    -(_y2->hodnota() - _y1->hodnota()));
+    });
 }
 
 void Spline::setKrivka(const QVector<QPointF> &krivka)

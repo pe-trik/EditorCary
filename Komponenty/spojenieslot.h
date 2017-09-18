@@ -9,7 +9,9 @@ namespace Komponenty {
 class Komponent;
 class SpojenieSlot {
 public:
-  SpojenieSlot(Komponent *komponent, Komponent *manipulator,
+  SpojenieSlot(Komponent *komponent,
+               Komponent *manipulator,
+               Dokumenty::QrealVlastnost* nasobok,
                std::function<QPointF()> smer);
 
   bool JeVolny() const { return _spojenie == nullptr; }
@@ -20,7 +22,7 @@ public:
 
   bool Obsahuje(QPointF bod) const;
 
-  QPointF Smer() const { return _smer(); }
+  QPointF Smer() const { return _nasobok->hodnota() * _smer(); }
 
   Komponent *manipulator();
 
@@ -36,6 +38,7 @@ private:
   Komponent* _spojenie = nullptr;
   Komponent *_komponent;
   Komponent *_manipulator;
+  Dokumenty::QrealVlastnost* _nasobok;
   std::function<QPointF()> _smer;
 };
 using SpojenieSlotPtr = std::unique_ptr<SpojenieSlot>;

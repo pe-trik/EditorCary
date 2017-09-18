@@ -2,28 +2,43 @@
 #include <algorithm>
 #include "manipulator.h"
 #include <QVector>
+#include <iterator>
 #include <QtMath>
 
 using namespace Komponenty;
 
-#include <stack>
-
 SplineGroup::SplineGroup(std::vector<Komponenty::KomponentPtr> &komponenty, std::vector<std::shared_ptr<Komponenty::Komponent> > &spojenia)
     : _komponenty(komponenty), _spojenia(spojenia)
 {
+    //resetuj vypocitane spliny
+    for(auto&& k : _komponenty){
+        if(auto spline = dynamic_cast<Spline*>(k.get()))
+            spline->resetKrivka();
+    }
+
+    std::vector<Spline*> samostatne = najdiSamostatne();
+
+    //najdi hlavne cesty
     for(auto&& k : komponenty){
         if(auto spline = dynamic_cast<Spline*>(k.get()))
         {
-            auto&& sloty = spline->SpojenieSloty();
-            std::vector<SpojenieSlot*> cesta;
-            if(sloty.at(0)->JeVolny() || poradieSlotuVSpojeni(sloty.at(0).get()) < 2)
-                cesta = najdiCestu(sloty.at(0).get());
-            else if(sloty.at(1)->JeVolny()|| poradieSlotuVSpojeni(sloty.at(1).get()) < 2)
-                cesta = najdiCestu(sloty.at(1).get());
+            if(!spline->pouzite()){
+                auto cesta = najdiCestu(spline);
 
-            if(cesta.size() > 2)
-                vypocitajSpline(cesta);
+                if(cesta.size() >= 2)
+                    vypocitajSpline(cesta, true);
+            }
         }
+    }
+
+    for(auto&& spline : samostatne){
+        std::vector<SpojenieSlot*> cesta;
+        for(auto&& slot : spline->SpojenieSloty())
+        {
+            cesta.push_back(slot.get());
+            nastavSmer(slot.get());
+        }
+        vypocitajSpline(cesta, false);
     }
 
     for(auto&& k : komponenty){
@@ -32,24 +47,39 @@ SplineGroup::SplineGroup(std::vector<Komponenty::KomponentPtr> &komponenty, std:
     }
 }
 
+std::vector<SpojenieSlot *> SplineGroup::najdiCestu(Spline *spline)
+{
+    auto slot = spline->SpojenieSloty().at(0).get();
+    auto cesta = najdiCestu(slot);
+    auto slot2 = druhyKomponentVSpojeni(slot);
+    if(slot2 && dynamic_cast<Spline*>(slot2->komponent()))
+    {
+        auto cesta2 = najdiCestu(slot2);
+        if(cesta2.size() > 1)
+        {
+            cesta.erase(cesta.begin());
+            std::reverse(cesta2.begin(), cesta2.end());
+            cesta.insert(cesta.begin(), cesta2.begin(), cesta2.end());
+        }
+    }
+
+    return cesta;
+}
+
 std::vector<SpojenieSlot *> SplineGroup::najdiCestu(SpojenieSlot *slot)
 {
     std::vector<SpojenieSlot*> cesta;
 
-    nastavSmer(slot);
+    cesta.push_back(slot);
 
     while (auto spline = dynamic_cast<Spline*>(slot->komponent())) {
-        if(spline->pouzite()){
-            //uzavrena cesta
-            if(cesta.size() > 0 && cesta.at(0) == slot)
-                cesta.push_back(slot);
+        if(spline->pouzite())
             break;
-        }
         else
         {
-            cesta.push_back(slot);
             spline->setPouzite(true);
 
+            //druhy slot aktualneho useku
             slot = druhySlot(slot);
 
             if(auto spojenie = dynamic_cast<Spojenie*>(slot->spojenie())){
@@ -57,7 +87,6 @@ std::vector<SpojenieSlot *> SplineGroup::najdiCestu(SpojenieSlot *slot)
                 if(sloty.size() <= 1)
                 {
                     cesta.push_back(slot);
-                    nastavSmer(slot);
                     break;
                 }
                 else{
@@ -65,12 +94,12 @@ std::vector<SpojenieSlot *> SplineGroup::najdiCestu(SpojenieSlot *slot)
                         slot = sloty.at(0);
                     else if(sloty.at(1)->komponent() != spline)
                         slot = sloty.at(1);
+                    cesta.push_back(slot);
                 }
             }
             else
             {
                 cesta.push_back(slot);
-                nastavSmer(slot);
                 break;
             }
         }
@@ -79,7 +108,7 @@ std::vector<SpojenieSlot *> SplineGroup::najdiCestu(SpojenieSlot *slot)
     return cesta;
 }
 
-size_t SplineGroup::poradieSlotuVSpojeni(SpojenieSlot *slot)
+int SplineGroup::poradieSlotuVSpojeni(SpojenieSlot *slot)
 {
     auto s = slot->spojenie();
     size_t pos = 0;
@@ -95,7 +124,7 @@ size_t SplineGroup::poradieSlotuVSpojeni(SpojenieSlot *slot)
     return -1;
 }
 
-TridiagonalnaMatica SplineGroup::zostavMaticu(std::vector<QPointF> body)
+TridiagonalnaMatica SplineGroup::zostavMaticu(std::vector<QPointF> body, std::vector<SpojenieSlot*> sloty, bool kopirujSmer)
 {
     size_t n = body.size() - 1;
 
@@ -110,11 +139,19 @@ TridiagonalnaMatica SplineGroup::zostavMaticu(std::vector<QPointF> body)
     for (size_t i = 1; i < n; i++)
         matica.d(i) = 3.*(body[i + 1] - body[i - 1]);
 
-        matica.b(0) = QPointF(2,2);
-        matica.d(0) = 3 * (body[1] - body[0]);
+    matica.b(0) = QPointF(2,2);
 
-        matica.b(n) = QPointF(2,2);
+    if(!kopirujSmer)
+        matica.d(0) = 3 * (body[1] - body[0]);
+    else
+        matica.d(0) = 3 * (sloty.at(0)->Smer());
+
+    matica.b(n) = QPointF(2,2);
+
+    if(!kopirujSmer)
         matica.d(n) = 3. * (body[n] - body[n - 1]);
+    else
+        matica.d(n) = - 3. * (sloty.back()->Smer());
 
 
     return matica;
@@ -163,55 +200,77 @@ void SplineGroup::nastavSmer(SpojenieSlot *slot)
     }
 }
 
-void SplineGroup::vypocitajSpline(std::vector<SpojenieSlot *> cesta)
+void SplineGroup::vypocitajSpline(std::vector<SpojenieSlot *> cesta, bool nastavSmer)
 {
     std::vector<QPointF> body;
 
     for(auto slot : cesta)
         body.push_back(slot->bod());
 
-    if(body.at(0) == body.back())
-        vykresliSpline(body, cesta, zostavUzavrenuMaticu(body).Vyries(), true);
+    if(cesta.at(0) == cesta.back())
+        vykresliSpline(body, cesta, zostavUzavrenuMaticu(body).Vyries(), true, nastavSmer);
     else
-        vykresliSpline(body, cesta, zostavMaticu(body).Vyries(), false);
+        vykresliSpline(body, cesta, zostavMaticu(body, cesta, !nastavSmer).Vyries(), false, nastavSmer);
 }
 
-void SplineGroup::vykresliSpline(std::vector<QPointF> body, std::vector<SpojenieSlot *> cesta, Pole riesenie, bool uzavrena)
+void SplineGroup::vykresliSpline(std::vector<QPointF> body, std::vector<SpojenieSlot *> cesta, Pole riesenie, bool uzavrena, bool nastavSmer)
 {
     if (riesenie != 0)
+    {
+        //prechadzame cez vsetky dvojice bodov a vykreslujeme medzi nimi polynomi
+        for (size_t j = 0; j + !uzavrena < body.size(); j++)
         {
-            //prechadzame cez vsetky dvojice bodov a vykreslujeme medzi nimi polynomi
-            for (size_t j = 0; j + !uzavrena < body.size(); j++)
-            {
-                size_t i = j % body.size();
-                QVector<QPointF> krivka;
-                krivka.append(body[i]);
-                //koeficienty pre polynomi (pre Xovu aj Yovu os)
-                auto k = koeficienty(body, riesenie, i);
+            size_t i = j % body.size();
+            QVector<QPointF> krivka;
+            krivka.append(body[i]);
+            //koeficienty pre polynomi (pre Xovu aj Yovu os)
+            auto k = koeficienty(body, riesenie, i);
 
-                //zistime vzdialenost medzi bodmi
-                qreal dl = qSqrt(qPow(body[(i + 1) % body.size()].x() - body[i].x(), 2) +
-                        qPow(body[(i + 1) % body.size()].y() - body[i].y(), 2));
-                //v pripade, ze su body  vo vzdialenosti menej ako 1, pozadujeme aspon vzdialenost 3
-                //casto byvaju pri takychto bodoch "uska" a tie su potom "polamane"
-                dl = qMax(3., dl);
-                //upravime dlzku kroku
-                //qreal kr = krok / dl;
-                qreal kr = 0.01;
-                //polynom je zadany parametrom t na [0,1]
-                qreal t = 0;
-                do
-                {
-                    krivka.append(QPointF(std::get<0>(k).x() + std::get<1>(k).x() * t + std::get<2>(k).x() * t * t + std::get<3>(k).x() * t * t * t,
-                             std::get<0>(k).y() + std::get<1>(k).y() * t + std::get<2>(k).y() * t * t + std::get<3>(k).y() * t * t * t));
-                    t += kr;
-                }
-                while (t <= 1);
-                krivka.append((QPointF)body[(i + 1) % body.size()]);
-                if(auto spline = dynamic_cast<Spline*>(cesta.at(i)->komponent()))
-                    spline->setKrivka(krivka);
+            if(nastavSmer)
+            {
+                cesta.at(i)->setSmer([k](){
+                    return -std::get<1>(k);
+                });
+                if(auto slot2 = druhyKomponentVSpojeni(cesta.at(i)))
+                    slot2->setSmer([k](){
+                        return std::get<1>(k);
+                    });
+
+                cesta.at((i + 1) % body.size())->setSmer([k](){
+                    return -QPointF(std::get<1>(k).x() + 2 * std::get<2>(k).x()  + 3 * std::get<3>(k).x(),
+                                   std::get<1>(k).y() + 2 * std::get<2>(k).y()  + 3 * std::get<3>(k).y());
+                });
+                if(auto slot2 = druhyKomponentVSpojeni(cesta.at((i + 1) % body.size())))
+                    slot2->setSmer([k](){
+                        return QPointF(std::get<1>(k).x() + 2 * std::get<2>(k).x()  + 3 * std::get<3>(k).x(),
+                                       std::get<1>(k).y() + 2 * std::get<2>(k).y()  + 3 * std::get<3>(k).y());
+                    });
             }
+
+            //zistime vzdialenost medzi bodmi
+            qreal dl = qSqrt(qPow(body[(i + 1) % body.size()].x() - body[i].x(), 2) +
+                    qPow(body[(i + 1) % body.size()].y() - body[i].y(), 2));
+            //v pripade, ze su body  vo vzdialenosti menej ako 1, pozadujeme aspon vzdialenost 3
+            //casto byvaju pri takychto bodoch "uska" a tie su potom "polamane"
+            dl = qMax(3., dl);
+            //upravime dlzku kroku
+            //qreal kr = krok / dl;
+            qreal kr = 0.01;
+            //polynom je zadany parametrom t na [0,1]
+            qreal t = 0;
+            do
+            {
+                krivka.append(QPointF(std::get<0>(k).x() + std::get<1>(k).x() * t + std::get<2>(k).x() * t * t + std::get<3>(k).x() * t * t * t,
+                                      std::get<0>(k).y() + std::get<1>(k).y() * t + std::get<2>(k).y() * t * t + std::get<3>(k).y() * t * t * t));
+                t += kr;
+            }
+            while (t <= 1);
+            krivka.append((QPointF)body[(i + 1) % body.size()]);
+
+            if(auto spline = dynamic_cast<Spline*>(cesta.at(i)->komponent()))
+                spline->setKrivka(krivka);
         }
+    }
 }
 
 Koeficienty SplineGroup::koeficienty(std::vector<QPointF> body, Pole& riesenie, size_t i) const
@@ -240,5 +299,52 @@ SpojenieSlot *SplineGroup::druhySlot(SpojenieSlot *slot)
     }
 
     return slot;
+}
+
+SpojenieSlot *SplineGroup::druhyKomponentVSpojeni(SpojenieSlot *slot)
+{
+    if(auto spojenie = dynamic_cast<Spojenie*>(slot->spojenie()))
+    {
+        auto sloty = spojenie->_spojenieZoznamVlastnost->hodnota();
+        if(sloty.size() > 1)
+        {
+            if(slot == sloty.at(0))
+                return sloty.at(1);
+            else if(slot == sloty.at(1))
+                return sloty.at(0);
+        }
+    }
+
+    return nullptr;
+}
+
+std::vector<Spline *> SplineGroup::najdiSamostatne()
+{
+    std::vector<Spline*> samostatne;
+
+    //najdi spliny susediace s komponentom, ktory nie je spline
+    //alebo ich poradie v spojeni je vacsie ak 2
+    for(auto&& k : _komponenty){
+        if(auto spline = dynamic_cast<Spline*>(k.get()))
+        {
+            auto slot1 = druhyKomponentVSpojeni(spline->SpojenieSloty().at(0).get());
+            auto slot2 = druhyKomponentVSpojeni(spline->SpojenieSloty().at(1).get());
+
+            if((!(spline->SpojenieSloty().at(0)->JeVolny() && spline->SpojenieSloty().at(1)->JeVolny()))
+                &&
+                (
+                    (poradieSlotuVSpojeni(spline->SpojenieSloty().at(0).get()) > 1)
+                    || (slot1 && !dynamic_cast<Spline*>(slot1->komponent()))
+                    || (poradieSlotuVSpojeni(spline->SpojenieSloty().at(1).get()) > 1)
+                    || (slot2 && !dynamic_cast<Spline*>(slot2->komponent()))
+                 ))
+            {
+                samostatne.push_back(spline);
+                spline->setPouzite(true);
+            }
+        }
+    }
+
+    return samostatne;
 }
 

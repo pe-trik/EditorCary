@@ -12,9 +12,9 @@ void SpojenieSlot::NastavSpojenie(Komponent *spojenie) {
     }
 }
 
-SpojenieSlot::SpojenieSlot(Komponent *komponent, Komponent *manipulator,
+SpojenieSlot::SpojenieSlot(Komponent *komponent, Komponent *manipulator, Dokumenty::QrealVlastnost *nasobok,
                            std::function<QPointF()> smer)
-    : _komponent(komponent), _manipulator(manipulator), _smer(smer) {}
+    : _komponent(komponent), _manipulator(manipulator), _smer(smer), _nasobok(nasobok) {}
 
 void SpojenieSlot::ZrusSpojenie() {
     _spojenie = nullptr;

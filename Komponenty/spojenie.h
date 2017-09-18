@@ -25,7 +25,7 @@ public:
   void OdstranKomponent(SpojenieSlot *slot);
 
   bool JePrazdne() const {
-      return _spojenieZoznamVlastnost->hodnota().size() == 1;
+      return _spojenieZoznamVlastnost->hodnota().size() <= 1;
   }
 
 private:

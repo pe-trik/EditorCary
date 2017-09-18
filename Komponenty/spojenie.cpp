@@ -76,11 +76,20 @@ void Spojenie::OdstranKomponent(SpojenieSlot *slot) {
                    &Dokumenty::QrealVlastnost::hodnotaZmenena, slot->manipulator(),
                    nullptr);
     }
+    if(sloty.size() == 2)
+        manipulator->setBod(manipulator->getBod() + 3 * Manipulator::Polomer());
+    else
+        manipulator->setBod(manipulator->getBod() + 2 * Manipulator::Polomer());
 
-    manipulator->setBod(manipulator->getBod() + 2 * Manipulator::Polomer());
     slot->ZrusSpojenie();
     sloty.erase(m);
-    _spojenieZoznamVlastnost->setHodnota(sloty);
+    if(sloty.size() == 1)
+    {
+        _spojenieZoznamVlastnost->setHodnota(sloty);
+        OdstranKomponent(sloty.at(0));
+        _spojenieZoznamVlastnost->setHodnota({});
+    }
+
 }
 
 void Komponenty::Spojenie::obnovHodnoty() {

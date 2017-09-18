@@ -12,7 +12,7 @@ PracovnaPlocha::PracovnaPlocha(QWidget *parent) : QWidget(parent) {
   connect(&_timerVykresli, SIGNAL(timeout()), this,
           SLOT(timerVykresliTimeout()));
   _timerVykresli.setSingleShot(true);
-  _timerVykresli.setInterval(1000 / 60); //60fps
+  _timerVykresli.setInterval(1000 / 30); //60fps
 }
 
 // vykresli pracovnu plochu; tranformacia pre PracovnuPlochu

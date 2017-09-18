@@ -141,6 +141,8 @@ void Dokument::VycistiSpojenia()
         if(auto spojenie = dynamic_cast<Komponenty::Spojenie*>(s.get()))
         {
             if(spojenie->JePrazdne()) {
+                if(spojenie->SpojenieSloty().size() == 1)
+                    spojenie->SpojenieSloty().at(0)->ZrusSpojenie();
                 if(_vybranyKomponent == spojenie)
                     _vybranyKomponent = nullptr;
                 return true;
