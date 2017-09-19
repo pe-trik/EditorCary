@@ -79,17 +79,17 @@ void Dokument::VytvorSpojenia(QPointF bod) {
         auto spojenieIterator =
                 std::find_if(_spojenia.begin(), _spojenia.end(),
                              [bod](auto &&s) { return s->Obsahuje(bod); });
-        std::shared_ptr<Komponenty::Komponent> spojenie;
+        Komponenty::Komponent* spojenie = nullptr;
         if (spojenieIterator != _spojenia.end())
-            spojenie = *spojenieIterator;
+            spojenie = (*spojenieIterator).get();
         else
         {
-            spojenie = std::make_shared<Komponenty::Spojenie>();
-            _spojenia.push_back(spojenie);
+            _spojenia.push_back(std::make_unique<Komponenty::Spojenie>());
+            spojenie = _spojenia.back().get();
         }
 
         for (auto &&slot : sloty) {
-            slot->NastavSpojenie(spojenie.get());
+            slot->NastavSpojenie(spojenie);
         }
     }
 }

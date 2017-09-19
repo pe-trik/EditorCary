@@ -7,7 +7,7 @@
 
 using namespace Komponenty;
 
-SplineGroup::SplineGroup(std::vector<Komponenty::KomponentPtr> &komponenty, std::vector<std::shared_ptr<Komponenty::Komponent> > &spojenia)
+SplineGroup::SplineGroup(std::vector<Komponenty::KomponentPtr> &komponenty, std::vector<std::unique_ptr<Komponent> > &spojenia)
     : _komponenty(komponenty), _spojenia(spojenia)
 {
     //resetuj vypocitane spliny

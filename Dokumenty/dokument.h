@@ -52,7 +52,7 @@ private:
   QrealVlastnostPtr _sirka;
   QrealVlastnostPtr _vyska;
   std::vector<Komponenty::KomponentPtr> _komponenty;
-  std::vector<std::shared_ptr<Komponenty::Komponent>> _spojenia;
+  std::vector<std::unique_ptr<Komponenty::Komponent>> _spojenia;
   Komponenty::Komponent* _vybranyKomponent = nullptr;
 };
 }

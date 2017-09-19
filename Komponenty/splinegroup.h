@@ -15,7 +15,7 @@ class SplineGroup
 {
 public:
     SplineGroup(std::vector<Komponenty::KomponentPtr>& komponenty,
-                std::vector<std::shared_ptr<Komponenty::Komponent>>& spojenia);
+                std::vector<std::unique_ptr<Komponenty::Komponent>>& spojenia);
 private:
     std::vector<SpojenieSlot *> najdiCestu(Komponenty::Spline* spline);
     std::vector<SpojenieSlot *> najdiCestu(Komponenty::SpojenieSlot* slot);
@@ -30,7 +30,7 @@ private:
     Komponenty::SpojenieSlot* druhyKomponentVSpojeni(Komponenty::SpojenieSlot* slot);
     std::vector<Spline*> najdiSamostatne();
     std::vector<Komponenty::KomponentPtr>& _komponenty;
-    std::vector<std::shared_ptr<Komponenty::Komponent>>& _spojenia;
+    std::vector<std::unique_ptr<Komponenty::Komponent>>& _spojenia;
 };
 
 }
