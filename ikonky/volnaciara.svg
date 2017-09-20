@@ -1,0 +1,15 @@
+<svg width="256" height="256" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="258" height="258" id="canvas_background" fill="#fff"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <path fill="none" fill-opacity="1" stroke="#222222" stroke-opacity="1" stroke-width="2" stroke-dasharray="none" stroke-linejoin="round" stroke-linecap="butt" stroke-dashoffset="" fill-rule="nonzero" opacity="1" marker-start="" marker-mid="" marker-end="" id="svg_17" d="m212.53671,49.28649c-49.26287,-45.71541 -282.08184,-12.01452 -103.43698,32.16561c178.64486,44.18013 -34.04393,77.95633 43.29745,106.28584c77.34138,28.32951 -53.37929,95.14562 -106.12268,-5.9236" style="color: rgb(0, 0, 0);" class=""/>
+  <line fill="none" stroke="#000" stroke-width="1.5" x1="-456.5" y1="-10" x2="-458.5" y2="-11" id="svg_2" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <rect fill="#fff" stroke="#000" stroke-width="1.5" x="208.130391" y="47.449586" width="26" height="26" id="svg_3"/>
+  <rect fill="#fff" stroke="#000" stroke-width="1.5" x="34.861611" y="166.486433" width="26" height="26" id="svg_5"/>
+ </g>
+</svg>

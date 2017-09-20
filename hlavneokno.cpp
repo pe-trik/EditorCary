@@ -3,6 +3,7 @@
 
 #include "Nastroje/ciaranastroj.h"
 #include "Nastroje/splinenastroj.h"
+#include "Nastroje/volnaciaranastroj.h".h"
 #include <QSettings>
 #include <algorithm>
 
@@ -60,6 +61,7 @@ void HlavneOkno::nacitajNastroje() {
   _nastroje.push_back(std::make_unique<Nastroje::KurzorPresenter>());
   _nastroje.push_back(std::make_unique<Nastroje::CiaraPresenter>());
   _nastroje.push_back(std::make_unique<Nastroje::SplinePresenter>());
+  _nastroje.push_back(std::make_unique<Nastroje::VolnaCiaraPresenter>());
 
   for (auto &&nastroj : _nastroje) {
     auto btn = new QToolButton();

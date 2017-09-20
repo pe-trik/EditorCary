@@ -16,6 +16,7 @@ class SplineGroup
 public:
     SplineGroup(std::vector<Komponenty::KomponentPtr>& komponenty,
                 std::vector<std::unique_ptr<Komponenty::Komponent>>& spojenia);
+    static Koeficienty SplineGroup::koeficienty(std::vector<QPointF>& body, Pole& riesenie, size_t i);
 private:
     std::vector<SpojenieSlot *> najdiCestu(Komponenty::Spline* spline);
     std::vector<SpojenieSlot *> najdiCestu(Komponenty::SpojenieSlot* slot);
@@ -25,7 +26,6 @@ private:
     void nastavSmer(Komponenty::SpojenieSlot *slot);
     void vypocitajSpline(std::vector<SpojenieSlot *> cesta, bool nastavSmer);
     void vykresliSpline(std::vector<QPointF> Body, std::vector<SpojenieSlot *> cesta, Pole riesenie, bool uzavrena, bool nastavSmer);
-    Koeficienty koeficienty(std::vector<QPointF> Body, Pole &riesenie, size_t i) const;
     Komponenty::SpojenieSlot* druhySlot(Komponenty::SpojenieSlot* slot);
     Komponenty::SpojenieSlot* druhyKomponentVSpojeni(Komponenty::SpojenieSlot* slot);
     std::vector<Spline*> najdiSamostatne();

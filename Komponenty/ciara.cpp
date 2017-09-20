@@ -27,7 +27,9 @@ bool Komponenty::Ciara::Obsahuje(QPointF bod) const
 	qreal dist = qAbs((y2 - y1) * x0 - (x2 - x1) * y0 + x2 * y1 - y2 * x1) /
 		sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
 
-	return dist <= 10;
+    return dist <= 10
+            && ((x1 <= x0 && x0 <= x2) || (x1 >= x0 && x0 >= x2))
+            && ((y1 <= y0 && y0 <= y2) || (y1 >= y0 && y0 >= y2));
 }
 
 

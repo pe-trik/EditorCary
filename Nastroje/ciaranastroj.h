@@ -8,7 +8,7 @@ class CiaraNastroj : public DvojbodovyNastroj {
 public:
   CiaraNastroj(Dokumenty::Dokument *dokument);
   void vytvorNovyKomponent(QPointF bod);
-  virtual NastrojPresenterPtr NastrojPresenter() const;
+  NastrojPresenterPtr NastrojPresenter() const;
 protected:
   Komponenty::Dvojbodovy* otestujTyp(Komponenty::Komponent *komponent);
 };

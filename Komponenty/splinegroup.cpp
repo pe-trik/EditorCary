@@ -252,16 +252,17 @@ void SplineGroup::vykresliSpline(std::vector<QPointF> body, std::vector<Spojenie
                     qPow(body[(i + 1) % body.size()].y() - body[i].y(), 2));
             //v pripade, ze su body  vo vzdialenosti menej ako 1, pozadujeme aspon vzdialenost 3
             //casto byvaju pri takychto bodoch "uska" a tie su potom "polamane"
-            dl = qMax(3., dl);
+            dl = qMax(300., dl);
             //upravime dlzku kroku
-            //qreal kr = krok / dl;
-            qreal kr = 0.01;
+            qreal kr = 20 / dl;
+            //qreal kr = 0.01;
             //polynom je zadany parametrom t na [0,1]
             qreal t = 0;
             do
             {
-                krivka.append(QPointF(std::get<0>(k).x() + std::get<1>(k).x() * t + std::get<2>(k).x() * t * t + std::get<3>(k).x() * t * t * t,
-                                      std::get<0>(k).y() + std::get<1>(k).y() * t + std::get<2>(k).y() * t * t + std::get<3>(k).y() * t * t * t));
+                QPointF b = QPointF(std::get<0>(k).x() + std::get<1>(k).x() * t + std::get<2>(k).x() * t * t + std::get<3>(k).x() * t * t * t,
+                                    std::get<0>(k).y() + std::get<1>(k).y() * t + std::get<2>(k).y() * t * t + std::get<3>(k).y() * t * t * t);
+                krivka.append(b);
                 t += kr;
             }
             while (t <= 1);
@@ -273,7 +274,7 @@ void SplineGroup::vykresliSpline(std::vector<QPointF> body, std::vector<Spojenie
     }
 }
 
-Koeficienty SplineGroup::koeficienty(std::vector<QPointF> body, Pole& riesenie, size_t i) const
+Koeficienty SplineGroup::koeficienty(std::vector<QPointF>& body, Pole& riesenie, size_t i)
 {
     QPointF a, b, c, d;
 

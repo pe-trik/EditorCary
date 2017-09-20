@@ -38,7 +38,7 @@ void Dokument::Vykresli(QPainter &painter) {
             m->Vykresli(painter);
     }
 
-    if(_vybranyKomponent)
+    /*if(_vybranyKomponent)
     {
         qreal x1 = _sirka->hodnota();
         qreal x2 = 0;
@@ -58,7 +58,7 @@ void Dokument::Vykresli(QPainter &painter) {
         painter.setPen(QPen(QBrush(Qt::red),1));
         painter.drawRect(QRectF(QPointF(x1,y1) - Komponenty::Manipulator::Polomer(),
                                 QPointF(x2,y2) + Komponenty::Manipulator::Polomer()));
-    }
+    }*/
 }
 
 void Dokument::VytvorSpojenia(QPointF bod) {

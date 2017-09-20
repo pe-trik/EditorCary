@@ -59,7 +59,11 @@ SOURCES += \
     Dokumenty/spojeniezoznamvlastnost.cpp \
     spojeniezoznamvlastnostmanager.cpp \
     Komponenty/splinegroup.cpp \
-    Komponenty/tridiagonalnamatica.cpp
+    Komponenty/tridiagonalnamatica.cpp \
+    Komponenty/volnaciara.cpp \
+    Nastroje/volnaciaranastroj.cpp \
+    Dokumenty/boolvlastnost.cpp \
+    boolvlastnostmanager.cpp
 
 HEADERS += \
         hlavneokno.h \
@@ -89,7 +93,11 @@ HEADERS += \
     Dokumenty/spojeniezoznamvlastnost.h \
     spojeniezoznamvlastnostmanager.h \
     Komponenty/splinegroup.h \
-    Komponenty/tridiagonalnamatica.h
+    Komponenty/tridiagonalnamatica.h \
+    Komponenty/volnaciara.h \
+    Nastroje/volnaciaranastroj.h \
+    Dokumenty/boolvlastnost.h \
+    boolvlastnostmanager.h
 
 FORMS += \
         hlavneokno.ui
@@ -102,4 +110,5 @@ DISTFILES += \
     ikonky/KruhovyVysek.svg \
     ikonky/kursor.svg \
     ikonky/odbocka.svg \
-    ikonky/spline.svg
+    ikonky/spline.svg \
+    ikonky/volnaciara.svg
