@@ -11,6 +11,7 @@ public:
     StringVlastnost(QString nazov, QString hodnota);
     VlastnostManagerPtr NastrojVlastnosti();
     QString hodnota() const;
+    QDomElement Uloz(QDomDocument &doc);
 
   public slots:
     void setHodnota(QString hodnota);

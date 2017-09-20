@@ -38,9 +38,13 @@ public:
 
   std::vector<Dokumenty::Vlastnost *> Vlastnosti() const;
 
+  virtual QDomElement Uloz(QDomDocument &doc) const = 0;
+  virtual QString Typ() const = 0;
+
   QString nazov() const;
 
 protected:
+  QDomElement ulozVlastnosti(QDomDocument &doc) const;
   std::vector<KomponentPtr> _manipulatory;
   std::vector<SpojenieSlotPtr> _spojenieSloty;
   std::vector<Dokumenty::Vlastnost*> _vlastnosti;

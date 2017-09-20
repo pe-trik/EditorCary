@@ -15,6 +15,7 @@ public:
   std::vector<Komponenty::SpojenieSlot *> hodnota() const;
 
   Komponenty::Komponent *spojenie();
+  QDomElement Uloz(QDomDocument &doc);
 
 public slots:
   void setHodnota(std::vector<Komponenty::SpojenieSlot *> hodnota);

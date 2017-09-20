@@ -28,6 +28,11 @@ public:
       return _spojenieZoznamVlastnost->hodnota().size() <= 1;
   }
 
+  QString Typ() const{
+      return "Spojenie";
+  }
+  QDomElement Uloz(QDomDocument &doc) const;
+
 private:
   void obnovHodnoty();
   Komponent *_manipulator;

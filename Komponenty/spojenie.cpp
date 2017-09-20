@@ -92,6 +92,11 @@ void Spojenie::OdstranKomponent(SpojenieSlot *slot) {
 
 }
 
+QDomElement Spojenie::Uloz(QDomDocument &doc) const
+{
+ return ulozVlastnosti(doc);
+}
+
 void Komponenty::Spojenie::obnovHodnoty() {
     auto novaPozicia = QPointF(_x->hodnota(), _y->hodnota());
     for (auto &&slot : _spojenieZoznamVlastnost->hodnota()) {

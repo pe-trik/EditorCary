@@ -28,3 +28,11 @@ void BoolVlastnost::setHodnota(bool hodnota)
         emit VlastnostZmenena();
     }
 }
+
+QDomElement BoolVlastnost::Uloz(QDomDocument &doc)
+{
+    auto v = doc.createElement("vlastnost");
+    v.setAttribute("nazov", _nazov);
+    v.setAttribute("hodnota", _hodnota);
+    return v;
+}

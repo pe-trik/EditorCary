@@ -3,6 +3,8 @@
 
 #include "Komponenty/komponent.h"
 #include "qrealvlastnost.h"
+#include "boolvlastnost.h"
+#include <QDomDocument>
 #include <QObject>
 #include <QPainter>
 #include <vector>
@@ -25,6 +27,7 @@ public:
   Dokument();
   qreal sirka() const;
   qreal vyska() const;
+  QDomDocument Uloz();
 
   void setSirka(qreal sirka);
 
@@ -51,6 +54,7 @@ public:
 private:
   QrealVlastnostPtr _sirka;
   QrealVlastnostPtr _vyska;
+  BoolVlastnostPtr _nahlad;
   std::vector<Komponenty::KomponentPtr> _komponenty;
   std::vector<std::unique_ptr<Komponenty::Komponent>> _spojenia;
   Komponenty::Komponent* _vybranyKomponent = nullptr;

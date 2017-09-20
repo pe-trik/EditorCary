@@ -2,6 +2,7 @@
 #define VLASTNOST_H
 
 #include "vlastnostmanager.h"
+#include <QDomDocument>
 #include <QObject>
 #include <memory>
 
@@ -12,10 +13,11 @@ public:
   explicit Vlastnost(QString nazov, QObject *parent = nullptr);
   virtual VlastnostManagerPtr NastrojVlastnosti() = 0;
   QString Nazov() const { return _nazov; }
+  virtual QDomElement Uloz(QDomDocument &doc) = 0;
 signals:
     void VlastnostZmenena();
 public slots:
-private:
+protected:
   QString _nazov = "";
 };
 

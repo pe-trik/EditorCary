@@ -108,6 +108,25 @@ void VolnaCiara::prepocitaj()
     prepocitajSpline();
 }
 
+QString VolnaCiara::Typ() const{
+    return Nastroje::VolnaCiaraPresenter().Nazov();
+}
+
+QDomElement VolnaCiara::Uloz(QDomDocument &doc) const
+{
+    auto e = ulozVlastnosti(doc);
+    auto body = doc.createElement("body");
+    for(auto& b : _povodneBody)
+    {
+        auto bod = doc.createElement("bod");
+        bod.setAttribute("x", b.x());
+        bod.setAttribute("y", b.y());
+        body.appendChild(bod);
+    }
+    e.appendChild(body);
+    return e;
+}
+
 void VolnaCiara::vyhlad()
 {
     if(_povodneBody.size() > 0)

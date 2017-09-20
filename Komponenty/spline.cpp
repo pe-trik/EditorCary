@@ -81,3 +81,12 @@ void Spline::setKrivka(const QVector<QPointF> &krivka)
 {
     _krivka = krivka;
 }
+
+QString Spline::Typ() const{
+    return Nastroje::SplinePresenter().Nazov();
+}
+
+QDomElement Spline::Uloz(QDomDocument &doc) const
+{
+    return ulozVlastnosti(doc);
+}

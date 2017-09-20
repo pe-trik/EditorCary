@@ -13,6 +13,7 @@ protected:
   Komponenty::Dvojbodovy* otestujTyp(Komponenty::Komponent *komponent);
 };
 class CiaraPresenter : public NastrojPresenter {
+public:
   QString Nazov() const { return "Čiara"; }
   QString Ikonka() const { return ":/ikonky/ciara.svg"; }
   NastrojPtr Nastroj(Dokumenty::Dokument *dokument) const {

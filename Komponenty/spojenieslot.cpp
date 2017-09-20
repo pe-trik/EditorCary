@@ -24,6 +24,14 @@ bool SpojenieSlot::Obsahuje(QPointF bod) const {
     return _manipulator->Obsahuje(bod);
 }
 
+QDomElement SpojenieSlot::Uloz(QDomDocument &doc)
+{
+    auto v = doc.createElement("spojenieSlot");
+    v.setAttribute("komponent", _komponent->nazov());
+    v.setAttribute("manipulator", _manipulator->nazov());
+    return v;
+}
+
 Komponent *SpojenieSlot::manipulator()
 {
     return _manipulator;

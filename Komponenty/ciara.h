@@ -12,6 +12,8 @@ public:
   void Vykresli(QPainter &painter) const;
   Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument);
   bool Obsahuje(QPointF) const;
+  QString Typ() const;
+  QDomElement Uloz(QDomDocument &doc) const;
 };
 }
 

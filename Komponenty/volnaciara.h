@@ -17,6 +17,8 @@ public:
     QVector<QPointF>& body();
     void setBody(const QVector<QPointF> &body);
     void prepocitaj();
+    QString Typ() const;
+    QDomElement Uloz(QDomDocument &doc) const;
 
 private slots:
     void vyhladzovanie(qreal);

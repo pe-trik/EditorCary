@@ -11,6 +11,8 @@ public:
   VlastnostManagerPtr NastrojVlastnosti();
   qreal hodnota() const;
 
+  QDomElement Uloz(QDomDocument &doc);
+
   qreal min() const;
   void setMin(qreal min);
 

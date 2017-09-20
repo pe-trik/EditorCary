@@ -22,6 +22,8 @@ public:
 
   bool Obsahuje(QPointF bod) const;
 
+  QDomElement Uloz(QDomDocument &doc);
+
   QPointF Smer() const { return _nasobok->hodnota() * _smer(); }
 
   Komponent *manipulator();

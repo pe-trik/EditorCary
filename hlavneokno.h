@@ -26,6 +26,12 @@ protected:
   void nastavNastrojToolBar(Nastroje::Nastroj*);
 
 
+  void on_actionExport_do_PDF_triggered();
+
+  void on_actionExport_do_SVG_triggered();
+
+  void on_actionUlo_i_ako_triggered();
+
 private:
 	void nastavNastroj(Nastroje::NastrojPtr nastroj);
   void nacitajNastroje();

@@ -18,6 +18,8 @@ public:
   QVector<QPointF> krivka() const;
   void resetKrivka();
   void setKrivka(const QVector<QPointF> &krivka);
+  QString Typ() const;
+  QDomElement Uloz(QDomDocument &doc) const;
 
 private:
   bool _pouzite = false;

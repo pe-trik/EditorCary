@@ -11,6 +11,7 @@ public:
     BoolVlastnost(QString nazov, bool hodnota);
     VlastnostManagerPtr NastrojVlastnosti();
     bool hodnota() const;
+    QDomElement Uloz(QDomDocument &doc);
 
   public slots:
     void setHodnota(bool hodnota);

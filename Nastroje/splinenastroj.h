@@ -13,6 +13,7 @@ protected:
   Komponenty::Dvojbodovy* otestujTyp(Komponenty::Komponent *komponent);
 };
 class SplinePresenter : public NastrojPresenter {
+public:
   QString Nazov() const { return "Spline"; }
   QString Ikonka() const { return ":/ikonky/spline.svg"; }
   NastrojPtr Nastroj(Dokumenty::Dokument *dokument) const {

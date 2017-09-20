@@ -11,6 +11,8 @@ void Dokument::velkostDokumentuZmenena(qreal) { emit prekreslit(); }
 Dokument::Dokument() {
     _sirka = std::make_unique<QrealVlastnost>("Šírka", 1189);
     _vyska = std::make_unique<QrealVlastnost>("Výška", 841);
+    _nahlad = std::make_unique<BoolVlastnost>("Náhľad", false);
+
     connect(_sirka.get(), SIGNAL(hodnotaZmenena(qreal)), this,
             SLOT(velkostDokumentuZmenena(qreal)));
     connect(_vyska.get(), SIGNAL(hodnotaZmenena(qreal)), this,
@@ -21,12 +23,36 @@ qreal Dokument::sirka() const { return _sirka->hodnota(); }
 
 qreal Dokument::vyska() const { return _vyska->hodnota(); }
 
+QDomDocument Dokument::Uloz()
+{
+    QDomDocument doc("draha");
+    auto root = doc.createElement("draha");
+
+    auto vlastnosti = doc.createElement("vlastnosti");
+    for(auto& v : Vlastnosti())
+        vlastnosti.appendChild(v->Uloz(doc));
+    root.appendChild(vlastnosti);
+
+    auto komponenty = doc.createElement("komponenty");
+    for(auto& k : _komponenty)
+        komponenty.appendChild(k->Uloz(doc));
+    root.appendChild(komponenty);
+
+    auto spojenia = doc.createElement("spojenia");
+    for(auto& s : _spojenia)
+        spojenia.appendChild(s->Uloz(doc));
+    root.appendChild(spojenia);
+
+    doc.appendChild(root);
+    return doc;
+}
+
 void Dokument::setSirka(qreal sirka) { _sirka->setHodnota(sirka); }
 
 void Dokument::setVyska(qreal vyska) { _vyska->setHodnota(vyska); }
 
 std::vector<Vlastnost *> Dokument::Vlastnosti() const {
-    return {_sirka.get(), _vyska.get()};
+    return {_sirka.get(), _vyska.get(), _nahlad.get()};
 }
 
 void Dokument::Vykresli(QPainter &painter) {
@@ -34,8 +60,11 @@ void Dokument::Vykresli(QPainter &painter) {
 
     for (auto &k : _komponenty) {
         k->Vykresli(painter);
-        for (auto &m : k->Manipulatory())
-            m->Vykresli(painter);
+        if(!_nahlad->hodnota())
+        {
+            for (auto &m : k->Manipulatory())
+                m->Vykresli(painter);
+        }
     }
 
     /*if(_vybranyKomponent)

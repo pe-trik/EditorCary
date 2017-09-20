@@ -21,6 +21,9 @@ public:
 
   void NastavNastroj(Nastroje::NastrojPtr nastroj);
 
+  Dokumenty::Dokument *dokument() const;
+  void setDokument(Dokumenty::Dokument *dokument);
+
 signals:
   void NastrojZmeneny(Nastroje::Nastroj* nastroj);
   void VlastnostiZmenene(const std::vector<Dokumenty::Vlastnost*>& vlastnosti);

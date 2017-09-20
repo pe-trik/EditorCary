@@ -26,6 +26,7 @@ protected:
     QPointF _polohaMysi;
 };
 class VolnaCiaraPresenter : public NastrojPresenter {
+public:
   QString Nazov() const { return "Voľná čiara"; }
   QString Ikonka() const { return ":/ikonky/volnaciara.svg"; }
   NastrojPtr Nastroj(Dokumenty::Dokument *dokument) const {

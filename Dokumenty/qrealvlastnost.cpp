@@ -13,6 +13,14 @@ VlastnostManagerPtr QrealVlastnost::NastrojVlastnosti() {
 
 qreal QrealVlastnost::hodnota() const { return _hodnota; }
 
+QDomElement QrealVlastnost::Uloz(QDomDocument &doc)
+{
+    auto v = doc.createElement("vlastnost");
+    v.setAttribute("nazov", _nazov);
+    v.setAttribute("hodnota", _hodnota);
+    return v;
+}
+
 void QrealVlastnost::setHodnota(qreal hodnota) {
   if (_hodnota != hodnota) {
     _hodnota = hodnota;

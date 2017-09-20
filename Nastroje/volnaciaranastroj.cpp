@@ -29,7 +29,7 @@ void Nastroje::VolnaCiaraNastroj::MysStlacena(QPointF bod)
         if (manipulator != komponent->Manipulatory().end())
             _manipulator = dynamic_cast<Komponenty::Manipulator*>((*manipulator).get());
         else
-            _manipulator = dynamic_cast<Komponenty::Manipulator*>(komponent);;
+            _manipulator = dynamic_cast<Komponenty::Manipulator*>(komponent);
 
         _komponent = dynamic_cast<Komponenty::VolnaCiara*>(komponent);
     }
@@ -52,6 +52,11 @@ void Nastroje::VolnaCiaraNastroj::MysPohyb(QPointF bod)
             auto& body = _komponent->body();
             for(auto& b : body)
                 b += bod - _polohaMysi;
+            for(auto& m : _komponent->Manipulatory())
+            {
+                if(auto manipulator = dynamic_cast<Komponenty::Manipulator*>(m.get()))
+                    manipulator->setBod(manipulator->getBod() + bod - _polohaMysi);
+            }
             _komponent->prepocitaj();
         }
     }

@@ -19,6 +19,14 @@ QString StringVlastnost::hodnota() const
     return _hodnota;
 }
 
+QDomElement StringVlastnost::Uloz(QDomDocument &doc)
+{
+    auto v = doc.createElement("vlastnost");
+    v.setAttribute("nazov", _nazov);
+    v.setAttribute("hodnota", _hodnota);
+    return v;
+}
+
 void StringVlastnost::setHodnota(QString hodnota)
 {
     if(hodnota != _hodnota){

@@ -32,4 +32,13 @@ bool Komponenty::Ciara::Obsahuje(QPointF bod) const
             && ((y1 <= y0 && y0 <= y2) || (y1 >= y0 && y0 >= y2));
 }
 
+QString Ciara::Typ() const{
+    return Nastroje::CiaraPresenter().Nazov();
+}
+
+QDomElement Ciara::Uloz(QDomDocument &doc) const
+{
+    return ulozVlastnosti(doc);
+}
+
 

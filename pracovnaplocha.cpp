@@ -147,3 +147,13 @@ void PracovnaPlocha::paintEvent(QPaintEvent *event) {
   if (_mysStlacena)
     painter.fillRect(QRectF(PolohaMysi(), QSizeF(10, 10)), Qt::red);
 }
+
+Dokumenty::Dokument *PracovnaPlocha::dokument() const
+{
+    return _dokument;
+}
+
+void PracovnaPlocha::setDokument(Dokumenty::Dokument *dokument)
+{
+    _dokument = dokument;
+}

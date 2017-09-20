@@ -25,3 +25,12 @@ void SpojenieZoznamVlastnost::setHodnota(
 }
 
 Komponenty::Komponent *SpojenieZoznamVlastnost::spojenie() { return _spojenie; }
+
+QDomElement SpojenieZoznamVlastnost::Uloz(QDomDocument &doc)
+{
+    auto v = doc.createElement("vlastnost");
+    v.setAttribute("nazov", _nazov);
+    for(auto& slot : _hodnota)
+        v.appendChild(slot->Uloz(doc));
+    return v;
+}

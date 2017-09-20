@@ -36,3 +36,12 @@ Komponenty::Komponent *Manipulator::Vlastnik() const
 {
     return _vlastnik;
 }
+
+QString Manipulator::Typ() const{
+    return "Manipulátor";
+}
+
+QDomElement Manipulator::Uloz(QDomDocument &doc) const
+{
+    return ulozVlastnosti(doc);
+}
