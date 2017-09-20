@@ -36,7 +36,9 @@ VolnaCiara::VolnaCiara()
                 std::make_unique<SpojenieSlot>(this, manipulator.get(), _nasobokZaciatok.get(), [this]() {
         if(_body.size() >= 2)
         {
-            return _body.front() - *(_body.begin() + 1);
+            auto smer = (_body.front() - *(_body.begin() + 1));
+            qreal v = smer.x()*smer.x()+smer.y()*smer.y();
+            return 900 * smer / v;
         }
         else
             return QPointF(
@@ -51,7 +53,9 @@ VolnaCiara::VolnaCiara()
                 std::make_unique<SpojenieSlot>(this, manipulator.get(), _nasobokKoniec.get(), [this]() {
         if(_body.size() >= 2)
         {
-            return _body.back() - *(_body.end() - 2);
+            auto smer = _body.back() - *(_body.end() - 2);
+            qreal v = smer.x()*smer.x()+smer.y()*smer.y();
+            return 900 * smer / v;
         }
         else
             return QPointF(
@@ -80,7 +84,6 @@ void VolnaCiara::vyhladzovanie(qreal)
 void VolnaCiara::manipulatorZmeneny(QPointF bod)
 {
     if(!_ignorujZmenuManipulatora){
-        _povodneBody = _body;
         _povodneBody.insert(_povodneBody.begin(), bod);
         prepocitaj();
     }
@@ -89,7 +92,6 @@ void VolnaCiara::manipulatorZmeneny(QPointF bod)
 void VolnaCiara::manipulator2Zmeneny(QPointF bod)
 {
     if(!_ignorujZmenuManipulatora){
-        _povodneBody = _body;
         _povodneBody.push_back(bod);
         prepocitaj();
     }
@@ -121,7 +123,11 @@ void VolnaCiara::vyhlad()
                 _body.push_back(b);
         }
 
-        _body.push_back(_povodneBody.back());
+        if(_body.size() > 2)
+        {
+            _body.removeLast();
+            _body.push_back(_povodneBody.back());
+        }
     }
 }
 
@@ -152,7 +158,6 @@ void VolnaCiara::prepocitajSpline()
         _body.clear();
         for (size_t i = 0; i + 1 < stdBody.size(); i++)
         {
-            _body.push_back((QPointF)stdBody[i]);
             auto k = SplineGroup::koeficienty(stdBody, riesenie, i);
             qreal kr = 7. / qMax(_vyhladzovanie->hodnota(), 2.);
 
@@ -165,7 +170,6 @@ void VolnaCiara::prepocitajSpline()
                 t += kr;
             }
             while (t <= 1);
-            _body.push_back((QPointF)stdBody[i + 1]);
         }
     }
 }

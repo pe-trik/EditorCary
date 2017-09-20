@@ -254,7 +254,7 @@ void SplineGroup::vykresliSpline(std::vector<QPointF> body, std::vector<Spojenie
             //casto byvaju pri takychto bodoch "uska" a tie su potom "polamane"
             dl = qMax(300., dl);
             //upravime dlzku kroku
-            qreal kr = 20 / dl;
+            qreal kr = 10 / dl;
             //qreal kr = 0.01;
             //polynom je zadany parametrom t na [0,1]
             qreal t = 0;
