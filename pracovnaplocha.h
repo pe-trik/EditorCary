@@ -38,6 +38,7 @@ protected:
   void mouseReleaseEvent(QMouseEvent *);
   void wheelEvent(QWheelEvent *event);
   void mouseDoubleClickEvent(QMouseEvent * event);
+  void keyPressEvent(QKeyEvent * event);
 
 private:
   void paintEvent(QPaintEvent *event);
@@ -52,6 +53,8 @@ private:
   Dokumenty::Dokument *_dokument = nullptr;
   Nastroje::NastrojPtr _nastroj;
   QTimer _timerVykresli;
+  QVector<QDomDocument> _zmeny;
+  size_t _zmenaPozicia = 0;
 };
 
 #endif // PRACOVNAPLOCHA_H

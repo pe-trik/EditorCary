@@ -163,4 +163,5 @@ void HlavneOkno::on_actionOtvori_existuj_cu_dr_hu_triggered()
     }
 
     ui->pracovnaPlocha->dokument()->Obnov(doc);
+    ui->pracovnaPlocha->PrekresliAPrepocitajPlochu();
 }

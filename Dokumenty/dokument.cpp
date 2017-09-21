@@ -54,6 +54,7 @@ QDomDocument Dokument::Uloz()
 
 void Dokument::Obnov(const QDomDocument &doc)
 {
+    _vybranyKomponent = nullptr;
     QDomNode blok = doc.childNodes().item(0).childNodes().at(0);
     while(!blok.isNull())
     {
@@ -69,6 +70,7 @@ void Dokument::Obnov(const QDomDocument &doc)
         }
         blok = blok.nextSibling();
     }
+    Prepocitaj();
 }
 
 void Dokument::setSirka(qreal sirka) { _sirka->setHodnota(sirka); }
