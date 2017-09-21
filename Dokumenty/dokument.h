@@ -64,6 +64,8 @@ public:
 
   std::vector<Komponenty::Komponent*> Komponenty();
 
+  void ZmazVybranyKomponent();
+
 private:
   void obnovKomponenty(QDomNodeList komponenty);
   void obnovSpojenia(QDomNodeList spojenia);

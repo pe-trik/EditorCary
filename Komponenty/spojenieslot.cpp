@@ -17,7 +17,10 @@ SpojenieSlot::SpojenieSlot(Komponent *komponent, Komponent *manipulator, Dokumen
     : _komponent(komponent), _manipulator(manipulator), _smer(smer), _nasobok(nasobok) {}
 
 void SpojenieSlot::ZrusSpojenie() {
+    auto sp = _spojenie;
     _spojenie = nullptr;
+    if (auto s = dynamic_cast<Spojenie *>(sp))
+        s->OdstranKomponent(this);
 }
 
 bool SpojenieSlot::Obsahuje(QPointF bod) const {

@@ -8,7 +8,7 @@ namespace Komponenty {
 class Spline : public Dvojbodovy {
 public:
   Spline();
-  void Vykresli(QPainter &painter) const;
+  void Vykresli(QPainter &painter, QColor c = Qt::black) const;
   Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument);
   bool Obsahuje(QPointF) const;
 
@@ -21,7 +21,7 @@ public:
   QString Typ() const;
   QDomElement Uloz(QDomDocument &doc) const;
 
-private:
+protected:
   bool _pouzite = false;
   QVector<QPointF> _krivka;
 };

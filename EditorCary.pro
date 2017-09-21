@@ -63,7 +63,9 @@ SOURCES += \
     Komponenty/volnaciara.cpp \
     Nastroje/volnaciaranastroj.cpp \
     Dokumenty/boolvlastnost.cpp \
-    boolvlastnostmanager.cpp
+    boolvlastnostmanager.cpp \
+    Komponenty/prerusenie.cpp \
+    Nastroje/prerusenienastroj.cpp
 
 HEADERS += \
         hlavneokno.h \
@@ -97,7 +99,9 @@ HEADERS += \
     Komponenty/volnaciara.h \
     Nastroje/volnaciaranastroj.h \
     Dokumenty/boolvlastnost.h \
-    boolvlastnostmanager.h
+    boolvlastnostmanager.h \
+    Komponenty/prerusenie.h \
+    Nastroje/prerusenienastroj.h
 
 FORMS += \
         hlavneokno.ui
@@ -111,4 +115,5 @@ DISTFILES += \
     ikonky/kursor.svg \
     ikonky/odbocka.svg \
     ikonky/spline.svg \
-    ikonky/volnaciara.svg
+    ikonky/volnaciara.svg \
+    ikonky/prerusenie.svg

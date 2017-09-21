@@ -214,11 +214,11 @@ void VolnaCiara::prepocitajSpline()
     }
 }
 
-void VolnaCiara::Vykresli(QPainter &painter) const
+void VolnaCiara::Vykresli(QPainter &painter, QColor c) const
 {
     if(_body.size() > 0)
     {
-        painter.setPen(QPen(Qt::black, 10,Qt::SolidLine));
+        painter.setPen(QPen(c, 10,Qt::SolidLine));
         painter.drawPolyline(_body);
     }
 }

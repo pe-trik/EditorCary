@@ -9,10 +9,10 @@ Manipulator::Manipulator(Dokumenty::QrealVlastnost *x,
                          Komponenty::Komponent *vlastnik)
     : _x(x), _y(y), _vlastnik(vlastnik) {}
 
-void Manipulator::Vykresli(QPainter &painter) const {
+void Manipulator::Vykresli(QPainter &painter, QColor c) const {
   auto center = QPointF(_x->hodnota(), _y->hodnota());
 
-  painter.fillRect(QRectF(center - Polomer(), center + Polomer()), Qt::black);
+  painter.fillRect(QRectF(center - Polomer(), center + Polomer()), c);
 }
 
 Nastroje::NastrojPtr Manipulator::Nastroj(Dokumenty::Dokument *dokument) {

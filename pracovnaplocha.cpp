@@ -43,6 +43,9 @@ void PracovnaPlocha::VykresliPlochu(QPainter &painter,
 void PracovnaPlocha::NastavDokument(Dokument *dokument) {
     _dokument = dokument;
     connect(dokument, SIGNAL(prekreslit()), this, SLOT(PrekresliAPrepocitajPlochu()));
+    _zmeny.clear();
+    _zmenaPozicia = 0;
+    _zmeny.push_back(_dokument->Uloz());
 }
 
 QPointF PracovnaPlocha::PolohaMysi() {
@@ -116,7 +119,7 @@ void PracovnaPlocha::mouseReleaseEvent(QMouseEvent *) {
     else
         emit VlastnostiZmenene({});
 
-    if(_mysStlacena && _nastroj)
+    if(_dvojklik && _nastroj)
     {
         PrekresliAPrepocitajPlochu();
         auto b = _zmeny.begin() + _zmenaPozicia + 1;
@@ -142,6 +145,7 @@ void PracovnaPlocha::wheelEvent(QWheelEvent *event) {
 }
 
 void PracovnaPlocha::mouseDoubleClickEvent(QMouseEvent *) {
+    _dvojklik = true;
     if (_nastroj)
         _nastroj->MysDvojklik(PolohaMysi());
     _dokument->VytvorSpojenia(PolohaMysi());
@@ -162,7 +166,7 @@ void PracovnaPlocha::keyPressEvent(QKeyEvent *event)
                 repaint();
             }
         }
-        else if(event->key() == Qt::Key_Y){
+        if(event->key() == Qt::Key_Y){
             if(_zmenaPozicia + 1 < _zmeny.size())
             {
                 ++_zmenaPozicia;
@@ -170,6 +174,15 @@ void PracovnaPlocha::keyPressEvent(QKeyEvent *event)
                 repaint();
             }
         }
+    }
+    if(event->key() == Qt::Key_Delete){
+        _dokument->ZmazVybranyKomponent();
+        PrekresliAPrepocitajPlochu();
+        auto b = _zmeny.begin() + _zmenaPozicia + 1;
+        if(b < _zmeny.end())
+            _zmeny.erase(b, _zmeny.end());
+        _zmeny.push_back(_dokument->Uloz());
+        _zmenaPozicia++;
     }
 }
 

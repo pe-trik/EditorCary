@@ -11,7 +11,7 @@ class VolnaCiara : public Komponent
     Q_OBJECT
 public:
     VolnaCiara();
-    void Vykresli(QPainter &painter) const ;
+    void Vykresli(QPainter &painter, QColor c = Qt::black) const ;
     Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument);
     bool Obsahuje(QPointF bod) const;
     QVector<QPointF>& body();

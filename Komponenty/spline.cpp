@@ -7,8 +7,8 @@ using namespace Dokumenty;
 
 Spline::Spline() : Dvojbodovy() {}
 
-void Spline::Vykresli(QPainter &painter) const {
-    painter.setPen(QPen(Qt::black, 10));
+void Spline::Vykresli(QPainter &painter, QColor c) const {
+    painter.setPen(QPen(c, 10));
     if(_krivka.size() > 2)
         painter.drawPolyline(_krivka);
     else

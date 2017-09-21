@@ -6,8 +6,11 @@
 
 #include <Nastroje/ciaranastroj.h>
 #include <Nastroje/kurzor.h>
+#include <Nastroje/prerusenienastroj.h>
 #include <Nastroje/splinenastroj.h>
 #include <Nastroje/volnaciaranastroj.h>
+
+#include <Komponenty/prerusenie.h>
 
 using namespace Dokumenty;
 
@@ -84,36 +87,29 @@ std::vector<Vlastnost *> Dokument::Vlastnosti() const {
 void Dokument::Vykresli(QPainter &painter) {
     painter.fillRect(0, 0, _sirka->hodnota(), _vyska->hodnota(), Qt::white);
 
-    for (auto &k : _komponenty) {
-        k->Vykresli(painter);
-        if(!_nahlad->hodnota())
+    for (auto &k : _komponenty)
+    {
+        if(_nahlad->hodnota() && dynamic_cast<Komponenty::Prerusenie*>(k.get())){
+            if(auto p = dynamic_cast<Komponenty::Prerusenie*>(k.get()))
+                p->Vykresli(painter, Qt::transparent);
+        }
+        else
         {
-            for (auto &m : k->Manipulatory())
-                m->Vykresli(painter);
+            k->Vykresli(painter);
+            if(!_nahlad->hodnota())
+            {
+                for (auto &m : k->Manipulatory())
+                    m->Vykresli(painter);
+            }
         }
     }
 
-    /*if(_vybranyKomponent)
+    if(_vybranyKomponent)
     {
-        qreal x1 = _sirka->hodnota();
-        qreal x2 = 0;
-        qreal y1 = _vyska->hodnota();
-        qreal y2 = 0;
-        for(auto&& m: _vybranyKomponent->Manipulatory())
-        {
-            if(auto man = dynamic_cast<Komponenty::Manipulator*>(m.get()))
-            {
-                auto b = man->getBod();
-                x1 = qMin(x1, b.x());
-                x2 = qMax(x2, b.x());
-                y1 = qMin(y1, b.y());
-                y2 = qMax(y2, b.y());
-            }
-        }
-        painter.setPen(QPen(QBrush(Qt::red),1));
-        painter.drawRect(QRectF(QPointF(x1,y1) - Komponenty::Manipulator::Polomer(),
-                                QPointF(x2,y2) + Komponenty::Manipulator::Polomer()));
-    }*/
+        _vybranyKomponent->Vykresli(painter, Qt::green);
+        for (auto &m : _vybranyKomponent->Manipulatory())
+            m->Vykresli(painter, Qt::green);
+    }
 }
 
 void Dokument::VytvorSpojenia(QPointF bod) {
@@ -191,8 +187,8 @@ Komponenty::Komponent *Dokument::vybranyKomponent() const
 
 void Dokument::VycistiSpojenia()
 {
-    std::remove_if(_spojenia.begin(), _spojenia.end(),
-                   [this](auto& s) {
+    auto s = std::find_if(_spojenia.begin(), _spojenia.end(),
+                          [this](auto& s) {
         if(auto spojenie = dynamic_cast<Komponenty::Spojenie*>(s.get()))
         {
             if(spojenie->JePrazdne()) {
@@ -205,6 +201,8 @@ void Dokument::VycistiSpojenia()
         }
         return false;
     });
+    if(s != _spojenia.end())
+        _spojenia.erase(s);
 }
 
 void Dokument::Prepocitaj()
@@ -220,6 +218,7 @@ std::vector<Nastroje::NastrojPresenterPtr> Dokument::DostupneNastroje()
     nastroje.push_back(std::make_unique<Nastroje::CiaraPresenter>());
     nastroje.push_back(std::make_unique<Nastroje::SplinePresenter>());
     nastroje.push_back(std::make_unique<Nastroje::VolnaCiaraPresenter>());
+    nastroje.push_back(std::make_unique<Nastroje::PreruseniePresenter>());
     return nastroje;
 }
 
@@ -229,6 +228,24 @@ std::vector<Komponenty::Komponent *> Dokument::Komponenty()
     for(auto& e : _komponenty)
         v.push_back(e.get());
     return v;
+}
+
+void Dokument::ZmazVybranyKomponent()
+{
+    if(_vybranyKomponent){
+        if(auto m = dynamic_cast<Komponenty::Manipulator*>(_vybranyKomponent))
+            _vybranyKomponent = m->Vlastnik();
+        for(auto& s : _vybranyKomponent->SpojenieSloty())
+            s->ZrusSpojenie();
+        VycistiSpojenia();
+        auto k = std::find_if(_komponenty.begin(), _komponenty.end(),
+                              [this](auto& k){
+            return k.get() == _vybranyKomponent;
+        });
+        if(k != _komponenty.end())
+            _komponenty.erase(k);
+        Prepocitaj();
+    }
 }
 
 void Dokument::obnovKomponenty(QDomNodeList komponenty)

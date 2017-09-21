@@ -48,7 +48,7 @@ private:
   QTransform _transformacia; 
   QTransform _inverznaTransformacia;
   qreal _sirka, _vyska;
-  bool _mysStlacena = false;
+  bool _mysStlacena = false, _dvojklik = false;
   QPointF _polohaMysi;
   Dokumenty::Dokument *_dokument = nullptr;
   Nastroje::NastrojPtr _nastroj;

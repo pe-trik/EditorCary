@@ -12,7 +12,7 @@ class Spojenie : public Komponent {
     friend class SplineGroup;
 public:
   Spojenie();
-  void Vykresli(QPainter &painter) const { _manipulator->Vykresli(painter); }
+  void Vykresli(QPainter &painter, QColor c = Qt::black) const { _manipulator->Vykresli(painter, c); }
 
   Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument);
 

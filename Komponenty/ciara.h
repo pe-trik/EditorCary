@@ -9,7 +9,7 @@ namespace Komponenty {
 class Ciara : public Dvojbodovy {
 public:
   Ciara();
-  void Vykresli(QPainter &painter) const;
+  void Vykresli(QPainter &painter, QColor c = Qt::black) const;
   Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument);
   bool Obsahuje(QPointF) const;
   QString Typ() const;
