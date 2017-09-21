@@ -19,6 +19,7 @@ public:
   NastrojPtr Nastroj(Dokumenty::Dokument *dokument) const {
     return std::make_unique<SplineNastroj>(dokument);
   }
+  Komponenty::KomponentPtr Komponent() const;
 };
 }
 

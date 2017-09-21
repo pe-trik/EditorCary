@@ -32,6 +32,8 @@ protected:
 
   void on_actionUlo_i_ako_triggered();
 
+  void on_actionOtvori_existuj_cu_dr_hu_triggered();
+
 private:
 	void nastavNastroj(Nastroje::NastrojPtr nastroj);
   void nacitajNastroje();

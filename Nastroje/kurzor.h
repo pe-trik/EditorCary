@@ -30,6 +30,7 @@ class KurzorPresenter : public NastrojPresenter {
   NastrojPtr Nastroj(Dokumenty::Dokument *dokument) const {
     return std::make_unique<Kurzor>(dokument);
   }
+  Komponenty::KomponentPtr Komponent() const;
 };
 }
 

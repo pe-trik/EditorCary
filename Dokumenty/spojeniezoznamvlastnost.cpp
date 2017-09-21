@@ -21,7 +21,12 @@ std::vector<Komponenty::SpojenieSlot *> SpojenieZoznamVlastnost::hodnota() const
 
 void SpojenieZoznamVlastnost::setHodnota(
     std::vector<Komponenty::SpojenieSlot *> hodnota) {
-  _hodnota = hodnota;
+    _hodnota = hodnota;
+}
+
+void SpojenieZoznamVlastnost::obnov(QDomElement &)
+{
+
 }
 
 Komponenty::Komponent *SpojenieZoznamVlastnost::spojenie() { return _spojenie; }
@@ -33,4 +38,21 @@ QDomElement SpojenieZoznamVlastnost::Uloz(QDomDocument &doc)
     for(auto& slot : _hodnota)
         v.appendChild(slot->Uloz(doc));
     return v;
+}
+
+void SpojenieZoznamVlastnost::Obnov(QDomNodeList l, Dokument *dokument)
+{
+    auto slot = l.at(0).toElement();
+    while(!slot.isNull()){
+        for(auto e : dokument->Komponenty())
+        {
+            if(e->nazov() == slot.attribute("komponent")){
+                for(auto& s : e->SpojenieSloty()){
+                    if(s->manipulator()->nazov() == slot.attribute("manipulator"))
+                        s->NastavSpojenie(_spojenie);
+                }
+            }
+        }
+        slot = slot.nextSiblingElement();
+    }
 }

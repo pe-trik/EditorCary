@@ -45,7 +45,12 @@ void Kurzor::MysPohyb(QPointF bod) {
     _polohaMysi = bod;
 }
 
-inline void Nastroje::Kurzor::MysUvolnena(QPointF) {
+void Nastroje::Kurzor::MysUvolnena(QPointF) {
 	_mysStlacena = false;
 	_vybranyKomponent = nullptr;
+}
+
+Komponenty::KomponentPtr KurzorPresenter::Komponent() const
+{
+    return 0;
 }

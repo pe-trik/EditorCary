@@ -16,12 +16,17 @@ public:
 
   Komponenty::Komponent *spojenie();
   QDomElement Uloz(QDomDocument &doc);
+  void Obnov(QDomNodeList l, Dokumenty::Dokument* dokument);
 
 public slots:
   void setHodnota(std::vector<Komponenty::SpojenieSlot *> hodnota);
 
 signals:
   void hodnotaZmenena(std::vector<Komponenty::SpojenieSlot *> &novaHodnota);
+
+
+protected:
+    void obnov(QDomElement &);
 
 private:
   std::vector<Komponenty::SpojenieSlot *> _hodnota;

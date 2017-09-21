@@ -14,6 +14,8 @@ protected:
   Dokumenty::QrealVlastnostPtr _y1;
   Dokumenty::QrealVlastnostPtr _x2;
   Dokumenty::QrealVlastnostPtr _y2;
+  Dokumenty::QrealVlastnostPtr _sirka;
+  Dokumenty::QrealVlastnostPtr _vyska;
   Dokumenty::QrealVlastnostPtr _nasobokZaciatok;
   Dokumenty::QrealVlastnostPtr _nasobokKoniec;
 };

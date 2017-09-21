@@ -15,6 +15,14 @@ class Komponent;
 using KomponentPtr = std::unique_ptr<Komponent>;
 }
 
+namespace Nastroje {
+class NastrojPresenter;
+
+using NastrojPresenterPtr = std::unique_ptr<NastrojPresenter>;
+
+class Nastroj;
+}
+
 namespace Dokumenty {
 class Dokument : public QObject {
   Q_OBJECT
@@ -28,6 +36,7 @@ public:
   qreal sirka() const;
   qreal vyska() const;
   QDomDocument Uloz();
+  void Obnov(const QDomDocument &doc);
 
   void setSirka(qreal sirka);
 
@@ -51,13 +60,20 @@ public:
 
   void Prepocitaj();
 
+  static std::vector<Nastroje::NastrojPresenterPtr> DostupneNastroje();
+
+  std::vector<Komponenty::Komponent*> Komponenty();
+
 private:
+  void obnovKomponenty(QDomNodeList komponenty);
+  void obnovSpojenia(QDomNodeList spojenia);
   QrealVlastnostPtr _sirka;
   QrealVlastnostPtr _vyska;
   BoolVlastnostPtr _nahlad;
   std::vector<Komponenty::KomponentPtr> _komponenty;
   std::vector<std::unique_ptr<Komponenty::Komponent>> _spojenia;
   Komponenty::Komponent* _vybranyKomponent = nullptr;
+  bool _prepocitavanie = true;
 };
 }
 

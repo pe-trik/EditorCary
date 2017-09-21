@@ -83,3 +83,8 @@ void Nastroje::VolnaCiaraNastroj::MysDvojklik(QPointF bod)
             dynamic_cast<Komponenty::Manipulator *>(_komponent->Manipulatory().at(1).get());
     _mysStlacena = true;
 }
+
+Komponenty::KomponentPtr VolnaCiaraPresenter::Komponent() const
+{
+    return std::make_unique<Komponenty::VolnaCiara>();
+}

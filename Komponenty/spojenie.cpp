@@ -5,6 +5,7 @@ using namespace Komponenty;
 #include <QObject>
 #include <algorithm>
 #include "manipulator.h"
+#include <Nastroje/kurzor.h>
 
 Spojenie::Spojenie() {
     _x = std::make_unique<Dokumenty::QrealVlastnost>("X", 0);
@@ -25,8 +26,15 @@ Spojenie::Spojenie() {
                      [this](qreal) { this->obnovHodnoty(); });
 }
 
+Nastroje::NastrojPtr Spojenie::Nastroj(Dokumenty::Dokument *dokument) {
+    if(_spojenieZoznamVlastnost->hodnota().size() > 0)
+        return _spojenieZoznamVlastnost->hodnota().at(0)->komponent()->Nastroj(dokument);
+    else
+        return std::make_unique<Nastroje::Kurzor>(dokument);
+}
+
 void Spojenie::PridajKomponent(SpojenieSlot *slot) {
-        auto manipulatorSpojenia = dynamic_cast<Manipulator*>(_manipulator);
+    auto manipulatorSpojenia = dynamic_cast<Manipulator*>(_manipulator);
         auto sloty = _spojenieZoznamVlastnost->hodnota();
         auto it = std::find_if(sloty.begin(), sloty.end(),
                                [slot](auto s) {
@@ -94,7 +102,18 @@ void Spojenie::OdstranKomponent(SpojenieSlot *slot) {
 
 QDomElement Spojenie::Uloz(QDomDocument &doc) const
 {
- return ulozVlastnosti(doc);
+    return ulozVlastnosti(doc);
+}
+
+void Spojenie::Obnov(QDomElement e, Dokumenty::Dokument *dokument)
+{
+    e = e.childNodes().at(0).toElement();
+    while(!e.isNull())
+    {
+        if(e.attribute("nazov") == "Komponenty")
+            _spojenieZoznamVlastnost->Obnov(e.childNodes(), dokument);
+        e = e.nextSiblingElement();
+    }
 }
 
 void Komponenty::Spojenie::obnovHodnoty() {

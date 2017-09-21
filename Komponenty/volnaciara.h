@@ -19,6 +19,7 @@ public:
     void prepocitaj();
     QString Typ() const;
     QDomElement Uloz(QDomDocument &doc) const;
+    void Obnov(QDomElement &e);
 
 private slots:
     void vyhladzovanie(qreal);

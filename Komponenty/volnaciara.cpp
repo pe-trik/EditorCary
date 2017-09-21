@@ -97,7 +97,7 @@ void VolnaCiara::manipulator2Zmeneny(QPointF bod)
     }
 }
 
-void VolnaCiara::vykresliAkoSpline(bool spline)
+void VolnaCiara::vykresliAkoSpline(bool)
 {
     prepocitaj();
 }
@@ -125,6 +125,27 @@ QDomElement VolnaCiara::Uloz(QDomDocument &doc) const
     }
     e.appendChild(body);
     return e;
+}
+
+void VolnaCiara::Obnov(QDomElement &e)
+{
+    obnovVlastnosti(e);
+    auto v = e.childNodes().at(0).toElement();
+    while(!v.isNull())
+    {
+        if(v.nodeName() == "body"){
+            _povodneBody.clear();
+            auto bod = v.childNodes().at(0).toElement();
+            while(!bod.isNull()){
+                _povodneBody.push_back(QPointF(bod.attribute("x").toDouble(),
+                                        bod.attribute("y").toDouble()));
+                bod = bod.nextSiblingElement();
+            }
+            prepocitaj();
+            return;
+        }
+        v = v.nextSibling().toElement();
+    }
 }
 
 void VolnaCiara::vyhlad()

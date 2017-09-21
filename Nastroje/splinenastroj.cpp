@@ -22,3 +22,8 @@ Komponenty::Dvojbodovy *SplineNastroj::otestujTyp(Komponenty::Komponent *kompone
 {
     return dynamic_cast<Komponenty::Spline*>(komponent);
 }
+
+Komponenty::KomponentPtr SplinePresenter::Komponent() const
+{
+    return std::make_unique<Komponenty::Spline>();
+}

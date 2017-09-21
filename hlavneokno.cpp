@@ -3,7 +3,7 @@
 
 #include "Nastroje/ciaranastroj.h"
 #include "Nastroje/splinenastroj.h"
-#include "Nastroje/volnaciaranastroj.h".h"
+#include "Nastroje/volnaciaranastroj.h"
 #include <QFileDialog>
 #include <QPrinter>
 #include <QSettings>
@@ -61,11 +61,7 @@ void HlavneOkno::nastavNastroj(Nastroje::NastrojPtr nastroj) {
 }
 
 void HlavneOkno::nacitajNastroje() {
-    _nastroje = std::vector<Nastroje::NastrojPresenterPtr>();
-    _nastroje.push_back(std::make_unique<Nastroje::KurzorPresenter>());
-    _nastroje.push_back(std::make_unique<Nastroje::CiaraPresenter>());
-    _nastroje.push_back(std::make_unique<Nastroje::SplinePresenter>());
-    _nastroje.push_back(std::make_unique<Nastroje::VolnaCiaraPresenter>());
+    _nastroje = ui->pracovnaPlocha->dokument()->DostupneNastroje();
 
     for (auto &&nastroj : _nastroje) {
         auto btn = new QToolButton();
@@ -140,7 +136,31 @@ void HlavneOkno::on_actionUlo_i_ako_triggered()
     }
 
     QTextStream stream( &outFile );
+    stream.setCodec("UTF-8");
     stream << ui->pracovnaPlocha->dokument()->Uloz().toString(1);
 
     outFile.close();
+}
+
+void HlavneOkno::on_actionOtvori_existuj_cu_dr_hu_triggered()
+{
+    QString fileName = QFileDialog::getOpenFileName((QWidget* )0, "Otvoriť", QString(), "*.xml");
+    if (QFileInfo(fileName).suffix().isEmpty()) { fileName.append(".xml"); }
+
+    QFile file(fileName);
+    if( !file.open( QIODevice::ReadOnly | QIODevice::Text ) )
+    {
+        qDebug( "Failed to open file for reading." );
+        return;
+    }
+
+    QDomDocument doc;
+
+    if (!doc.setContent(&file)) {
+        file.close();
+        qDebug( "Failed to open file for reading." );
+        return;
+    }
+
+    ui->pracovnaPlocha->dokument()->Obnov(doc);
 }

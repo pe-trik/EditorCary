@@ -32,6 +32,7 @@ public:
   NastrojPtr Nastroj(Dokumenty::Dokument *dokument) const {
     return std::make_unique<VolnaCiaraNastroj>(dokument);
   }
+  Komponenty::KomponentPtr Komponent() const;
 };
 }
 

@@ -35,3 +35,8 @@ void StringVlastnost::setHodnota(QString hodnota)
         emit VlastnostZmenena();
     }
 }
+
+void StringVlastnost::obnov(QDomElement &v)
+{
+    setHodnota(v.attribute("hodnota"));
+}

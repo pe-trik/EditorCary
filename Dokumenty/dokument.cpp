@@ -4,6 +4,11 @@
 #include "Komponenty/spojenie.h"
 #include "Komponenty/splinegroup.h"
 
+#include <Nastroje/ciaranastroj.h>
+#include <Nastroje/kurzor.h>
+#include <Nastroje/splinenastroj.h>
+#include <Nastroje/volnaciaranastroj.h>
+
 using namespace Dokumenty;
 
 void Dokument::velkostDokumentuZmenena(qreal) { emit prekreslit(); }
@@ -45,6 +50,25 @@ QDomDocument Dokument::Uloz()
 
     doc.appendChild(root);
     return doc;
+}
+
+void Dokument::Obnov(const QDomDocument &doc)
+{
+    QDomNode blok = doc.childNodes().item(0).childNodes().at(0);
+    while(!blok.isNull())
+    {
+        if(blok.nodeName() == "vlastnosti"){
+            for(auto v : Vlastnosti())
+                v->Obnov(blok.childNodes());
+        }
+        else if(blok.nodeName() == "komponenty"){
+            obnovKomponenty(blok.childNodes());
+        }
+        else if(blok.nodeName() == "spojenia"){
+            obnovSpojenia(blok.childNodes());
+        }
+        blok = blok.nextSibling();
+    }
 }
 
 void Dokument::setSirka(qreal sirka) { _sirka->setHodnota(sirka); }
@@ -176,12 +200,65 @@ void Dokument::VycistiSpojenia()
                     _vybranyKomponent = nullptr;
                 return true;
             }
-            return false;
         }
+        return false;
     });
 }
 
 void Dokument::Prepocitaj()
 {
-    Komponenty::SplineGroup g(_komponenty, _spojenia);
+    if(_prepocitavanie)
+        Komponenty::SplineGroup g(_komponenty, _spojenia);
+}
+
+std::vector<Nastroje::NastrojPresenterPtr> Dokument::DostupneNastroje()
+{
+    auto nastroje = std::vector<Nastroje::NastrojPresenterPtr>();
+    nastroje.push_back(std::make_unique<Nastroje::KurzorPresenter>());
+    nastroje.push_back(std::make_unique<Nastroje::CiaraPresenter>());
+    nastroje.push_back(std::make_unique<Nastroje::SplinePresenter>());
+    nastroje.push_back(std::make_unique<Nastroje::VolnaCiaraPresenter>());
+    return nastroje;
+}
+
+std::vector<Komponenty::Komponent *> Dokument::Komponenty()
+{
+    std::vector<Komponenty::Komponent *> v;
+    for(auto& e : _komponenty)
+        v.push_back(e.get());
+    return v;
+}
+
+void Dokument::obnovKomponenty(QDomNodeList komponenty)
+{
+    _prepocitavanie = false;
+    _komponenty.clear();
+    auto dostupneNastroje = DostupneNastroje();
+    QDomElement e = komponenty.at(0).toElement();
+    while(!e.isNull())
+    {
+        for(auto& n : dostupneNastroje){
+            if(n->Nazov() == e.attribute("typ")){
+                auto k = n->Komponent();
+                k->Obnov(e);
+                _komponenty.push_back(std::move(k));
+            }
+        }
+        e = e.nextSibling().toElement();
+    }
+    _prepocitavanie = true;
+    Prepocitaj();
+}
+
+void Dokument::obnovSpojenia(QDomNodeList spojenia)
+{
+    _spojenia.clear();
+    QDomElement e = spojenia.at(0).toElement();
+    while(!e.isNull())
+    {
+        auto spojenie = std::make_unique<Komponenty::Spojenie>();
+        spojenie->Obnov(e, this);
+        e = e.nextSibling().toElement();
+        _spojenia.push_back(std::move(spojenie));
+    }
 }

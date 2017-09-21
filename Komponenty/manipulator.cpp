@@ -43,5 +43,16 @@ QString Manipulator::Typ() const{
 
 QDomElement Manipulator::Uloz(QDomDocument &doc) const
 {
-    return ulozVlastnosti(doc);
+    auto e = doc.createElement("manipulator");
+    e.setAttribute("nazov", nazov());
+    e.setAttribute("x", _x->hodnota());
+    e.setAttribute("y", _y->hodnota());
+    return e;
+}
+
+void Manipulator::Obnov(QDomElement &e)
+{
+    _nazov->setHodnota(e.attribute("nazov"));
+    _x->setHodnota(e.attribute("x").toDouble());
+    _y->setHodnota(e.attribute("y").toDouble());
 }

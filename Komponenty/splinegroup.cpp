@@ -117,7 +117,7 @@ int SplineGroup::poradieSlotuVSpojeni(SpojenieSlot *slot)
         for(auto& sl : spojenie->_spojenieZoznamVlastnost->hodnota())
         {
             if(slot == sl)
-                return pos;
+                return static_cast<int>(pos);
             pos++;
         }
     }

@@ -42,8 +42,10 @@ public:
   virtual QString Typ() const = 0;
 
   QString nazov() const;
+  virtual void Obnov(QDomElement& e);
 
 protected:
+  void obnovVlastnosti(QDomElement& e);
   QDomElement ulozVlastnosti(QDomDocument &doc) const;
   std::vector<KomponentPtr> _manipulatory;
   std::vector<SpojenieSlotPtr> _spojenieSloty;

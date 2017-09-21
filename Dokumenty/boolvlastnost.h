@@ -19,6 +19,9 @@ public:
   signals:
     void hodnotaZmenena(bool novaHodnota);
 
+protected:
+    void obnov(QDomElement &v);
+
   private:
     bool _hodnota;
 };

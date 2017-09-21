@@ -27,6 +27,7 @@ public:
   Komponenty::Komponent *Vlastnik() const;
   QString Typ() const;
   QDomElement Uloz(QDomDocument &doc) const;
+  void Obnov(QDomElement &e);
 
 public slots:
   void setBod(QPointF bod);

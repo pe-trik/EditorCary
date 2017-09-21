@@ -14,10 +14,12 @@ public:
   virtual VlastnostManagerPtr NastrojVlastnosti() = 0;
   QString Nazov() const { return _nazov; }
   virtual QDomElement Uloz(QDomDocument &doc) = 0;
+  void Obnov(QDomNodeList vlastnosti);
 signals:
     void VlastnostZmenena();
 public slots:
 protected:
+  virtual void obnov(QDomElement& v) = 0;
   QString _nazov = "";
 };
 

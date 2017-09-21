@@ -25,9 +25,13 @@ public slots:
 signals:
   void hodnotaZmenena(qreal novaHodnota);
 
+
+protected:
+    void obnov(QDomElement &v);
+
 private:
   qreal _hodnota;
-  qreal _min = 0;
+  qreal _min = -10000;
   qreal _max = 10000;
 };
 using QrealVlastnostPtr = std::unique_ptr<QrealVlastnost>;

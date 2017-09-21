@@ -29,6 +29,11 @@ void QrealVlastnost::setHodnota(qreal hodnota) {
   }
 }
 
+void QrealVlastnost::obnov(QDomElement &v)
+{
+    setHodnota(v.attribute("hodnota").toDouble());
+}
+
 qreal QrealVlastnost::max() const { return _max; }
 
 void QrealVlastnost::setMax(qreal max) { _max = max; }

@@ -81,7 +81,7 @@ void PracovnaPlocha::mouseMoveEvent(QMouseEvent *event) {
   PrekresliAPrepocitajPlochu();
 }
 
-void PracovnaPlocha::mousePressEvent(QMouseEvent *event) {
+void PracovnaPlocha::mousePressEvent(QMouseEvent *) {
   _mysStlacena = true;
 
   auto b = PolohaMysi();
@@ -103,7 +103,7 @@ void PracovnaPlocha::mousePressEvent(QMouseEvent *event) {
   PrekresliAPrepocitajPlochu();
 }
 
-void PracovnaPlocha::mouseReleaseEvent(QMouseEvent *event) {
+void PracovnaPlocha::mouseReleaseEvent(QMouseEvent *) {
   _dokument->VytvorSpojenia(PolohaMysi());
 
   _mysStlacena = false;
@@ -131,7 +131,7 @@ void PracovnaPlocha::wheelEvent(QWheelEvent *event) {
   PrekresliAPrepocitajPlochu();
 }
 
-void PracovnaPlocha::mouseDoubleClickEvent(QMouseEvent *event) {
+void PracovnaPlocha::mouseDoubleClickEvent(QMouseEvent *) {
   if (_nastroj)
     _nastroj->MysDvojklik(PolohaMysi());
   _dokument->VytvorSpojenia(PolohaMysi());
@@ -141,7 +141,7 @@ void PracovnaPlocha::mouseDoubleClickEvent(QMouseEvent *event) {
   PrekresliAPrepocitajPlochu();
 }
 
-void PracovnaPlocha::paintEvent(QPaintEvent *event) {
+void PracovnaPlocha::paintEvent(QPaintEvent *) {
   QPainter painter(this);
   VykresliPlochu(painter, true);
   if (_mysStlacena)

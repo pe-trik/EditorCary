@@ -22,3 +22,8 @@ Komponenty::Dvojbodovy *CiaraNastroj::otestujTyp(Komponenty::Komponent *komponen
 {
     return dynamic_cast<Komponenty::Ciara*>(komponent);
 }
+
+Komponenty::KomponentPtr CiaraPresenter::Komponent() const
+{
+    return std::make_unique<Komponenty::Ciara>();
+}

@@ -29,6 +29,11 @@ void BoolVlastnost::setHodnota(bool hodnota)
     }
 }
 
+void BoolVlastnost::obnov(QDomElement &v)
+{
+    setHodnota(v.attribute("hodnota") == "1");
+}
+
 QDomElement BoolVlastnost::Uloz(QDomDocument &doc)
 {
     auto v = doc.createElement("vlastnost");

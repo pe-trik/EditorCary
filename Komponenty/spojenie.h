@@ -14,9 +14,7 @@ public:
   Spojenie();
   void Vykresli(QPainter &painter) const { _manipulator->Vykresli(painter); }
 
-  Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument) {
-    return _manipulator->Nastroj(dokument);
-  }
+  Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument);
 
   bool Obsahuje(QPointF bod) const { return _manipulator->Obsahuje(bod); }
 
@@ -32,6 +30,7 @@ public:
       return "Spojenie";
   }
   QDomElement Uloz(QDomDocument &doc) const;
+  void Obnov(QDomElement e, Dokumenty::Dokument *dokument);
 
 private:
   void obnovHodnoty();

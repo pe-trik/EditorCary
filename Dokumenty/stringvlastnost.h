@@ -19,6 +19,9 @@ public:
   signals:
     void hodnotaZmenena(QString novaHodnota);
 
+protected:
+    void obnov(QDomElement &v);
+
   private:
     QString _hodnota;
 };
