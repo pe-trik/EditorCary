@@ -1,5 +1,6 @@
 #include "kontrolypanel.h"
 #include "Kontroly/kontrolaokrajov.h"
+#include "Kontroly/kontrolazakrivenia.h"
 #include <QVBoxLayout>
 #include <QCheckBox>
 
@@ -15,6 +16,7 @@ void KontrolyPanel::NastavDokument(Dokumenty::Dokument *dokument)
     _dokument = dokument;
     _kontroly.clear();
     _kontroly.push_back(std::make_unique<Kontroly::KontrolaOkrajov>(dokument));
+    _kontroly.push_back(std::make_unique<Kontroly::KontrolaZakrivenia>(dokument));
 
     auto layout = new QVBoxLayout(this);
     setLayout(layout);

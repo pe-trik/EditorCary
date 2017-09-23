@@ -71,12 +71,17 @@ public:
       return _okraj->hodnota();
   }
 
+  qreal MinimalnyPolomer() const{
+      return _minimalnyPolomerZatacky->hodnota();
+  }
+
 private:
   void obnovKomponenty(QDomNodeList komponenty);
   void obnovSpojenia(QDomNodeList spojenia);
   QrealVlastnostPtr _sirka;
   QrealVlastnostPtr _vyska;
   QrealVlastnostPtr _okraj;
+  QrealVlastnostPtr _minimalnyPolomerZatacky;
   BoolVlastnostPtr _nahlad;
   BoolVlastnostPtr _siet;
   std::vector<Komponenty::KomponentPtr> _komponenty;

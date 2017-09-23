@@ -20,6 +20,7 @@ Dokument::Dokument() {
     _sirka = std::make_unique<QrealVlastnost>("Šírka", 1189);
     _vyska = std::make_unique<QrealVlastnost>("Výška", 841);
     _okraj = std::make_unique<QrealVlastnost>("Okraj", 50);
+    _minimalnyPolomerZatacky = std::make_unique<QrealVlastnost>("Minimálny polomer zatáčky", 50);
     _nahlad = std::make_unique<BoolVlastnost>("Náhľad", false);
     _siet = std::make_unique<BoolVlastnost>("Sieť", true);
 
@@ -83,7 +84,7 @@ void Dokument::setSirka(qreal sirka) { _sirka->setHodnota(sirka); }
 void Dokument::setVyska(qreal vyska) { _vyska->setHodnota(vyska); }
 
 std::vector<Vlastnost *> Dokument::Vlastnosti() const {
-    return {_sirka.get(), _vyska.get(), _okraj.get(), _nahlad.get(), _siet.get()};
+    return {_sirka.get(), _vyska.get(), _okraj.get(), _nahlad.get(), _siet.get(), _minimalnyPolomerZatacky.get()};
 }
 
 void Dokument::Vykresli(QPainter &painter) {
@@ -96,25 +97,21 @@ void Dokument::Vykresli(QPainter &painter) {
                          _sirka->hodnota() - 2 * _okraj->hodnota(),
                          _vyska->hodnota() - 2 * _okraj->hodnota(), Qt::white);
 
-        for(size_t i = 25; i < _sirka->hodnota(); i += 25)
+        for(size_t i = 50; i < _sirka->hodnota(); i += 50)
         {
             if(i % 100 == 0)
-                painter.setPen(QPen(QBrush(Qt::black), 1.5));
-            else if(i % 50 == 0)
-                painter.setPen(QPen(QBrush(Qt::black), 1));
+                painter.setPen(QPen(QBrush(Qt::gray), 1.5));
             else
-                painter.setPen(QPen(QBrush(Qt::black), 0.5));
+                painter.setPen(QPen(QBrush(Qt::lightGray), 1));
             painter.drawLine(i,0,i,_vyska->hodnota());
         }
 
-        for(size_t i = 25; i < _vyska->hodnota(); i += 25)
+        for(size_t i = 50; i < _vyska->hodnota(); i += 50)
         {
             if(i % 100 == 0)
-                painter.setPen(QPen(QBrush(Qt::black), 1.5));
-            else if(i % 50 == 0)
-                painter.setPen(QPen(QBrush(Qt::black), 1));
+                painter.setPen(QPen(QBrush(Qt::gray), 1.5));
             else
-                painter.setPen(QPen(QBrush(Qt::black), 0.5));
+                painter.setPen(QPen(QBrush(Qt::lightGray), 1));
             painter.drawLine(0,i,_sirka->hodnota(),i);
         }
         painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
@@ -139,9 +136,9 @@ void Dokument::Vykresli(QPainter &painter) {
 
     if(_vybranyKomponent)
     {
-        _vybranyKomponent->Vykresli(painter, Qt::green);
+        _vybranyKomponent->Vykresli(painter, Qt::gray);
         for (auto &m : _vybranyKomponent->Manipulatory())
-            m->Vykresli(painter, Qt::green);
+            m->Vykresli(painter, Qt::gray);
     }
 }
 

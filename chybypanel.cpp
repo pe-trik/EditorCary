@@ -31,17 +31,21 @@ void ChybyPanel::NastavChyby(std::vector<Kontroly::Chyba> chyby)
     size_t i = 0;
     for(Kontroly::Chyba& ch : chyby){
         auto kontrola = new QTableWidgetItem(ch.Kontrola()->Nazov());
+        kontrola->setFlags(kontrola->flags() ^ Qt::ItemIsEditable);
 
         auto komponent = new QTableWidgetItem();
+        komponent->setFlags(komponent->flags() ^ Qt::ItemIsEditable);
         if(ch.Komponent())
             komponent->setText(ch.Komponent()->nazov());
 
         auto msg = new QTableWidgetItem(ch.Sprava());
+        msg->setFlags(msg->flags() ^ Qt::ItemIsEditable);
 
         _widget->setItem(i, 0, kontrola);
         _widget->setItem(i, 1, komponent);
         _widget->setItem(i++, 2, msg);
     }
 
+    _widget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     _widget->horizontalHeader()->setStretchLastSection(true);
 }

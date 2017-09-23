@@ -70,7 +70,8 @@ SOURCES += \
     Kontroly/chyba.cpp \
     Kontroly/kontrolaokrajov.cpp \
     kontrolypanel.cpp \
-    chybypanel.cpp
+    chybypanel.cpp \
+    Kontroly/kontrolazakrivenia.cpp
 
 HEADERS += \
         hlavneokno.h \
@@ -111,7 +112,8 @@ HEADERS += \
     Kontroly/chyba.h \
     Kontroly/kontrolaokrajov.h \
     kontrolypanel.h \
-    chybypanel.h
+    chybypanel.h \
+    Kontroly/kontrolazakrivenia.h
 
 FORMS += \
         hlavneokno.ui
