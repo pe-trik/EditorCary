@@ -58,6 +58,8 @@ void KontrolyPanel::NastavDokument(Dokumenty::Dokument *dokument)
         layout->addWidget(ch);
     }
 
+    layout->addStretch(1);
+
     emit KontrolyZmenene();
 }
 

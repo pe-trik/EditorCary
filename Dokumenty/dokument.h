@@ -83,6 +83,9 @@ public:
 
   std::vector<Komponenty::Komponent *> spojenia() const;
 
+  QString cestaSubor() const;
+  void setCestaSubor(const QString &cestaSubor);
+
 private:
   void obnovKomponenty(QDomNodeList komponenty);
   void obnovSpojenia(QDomNodeList spojenia);
@@ -92,12 +95,15 @@ private:
   QrealVlastnostPtr _minimalnyPolomerZatacky;
   QrealVlastnostPtr _minimalnaDlzkaTrate;
   QrealVlastnostPtr _maximalnaDlzkaTrate;
+  QrealVlastnostPtr _minimalnaVzdialenostKomponent;
+  BoolVlastnostPtr _zobrazMinimalnuVzdialenost;
   BoolVlastnostPtr _nahlad;
   BoolVlastnostPtr _siet;
   std::vector<Komponenty::KomponentPtr> _komponenty;
   std::vector<std::unique_ptr<Komponenty::Komponent>> _spojenia;
   Komponenty::Komponent* _vybranyKomponent = nullptr;
   bool _prepocitavanie = true;
+  QString _cestaSubor = "";
 };
 }
 

@@ -152,18 +152,7 @@ void HlavneOkno::on_actionUlo_i_ako_triggered()
     QString fileName = QFileDialog::getSaveFileName((QWidget* )0, "Uložiť ako", QString(), "*.xml");
     if (QFileInfo(fileName).suffix().isEmpty()) { fileName.append(".xml"); }
 
-    QFile outFile(fileName);
-    if( !outFile.open( QIODevice::WriteOnly | QIODevice::Text ) )
-    {
-        qDebug( "Failed to open file for writing." );
-        return;
-    }
-
-    QTextStream stream( &outFile );
-    stream.setCodec("UTF-8");
-    stream << ui->pracovnaPlocha->dokument()->Uloz().toString(1);
-
-    outFile.close();
+    ulozit(fileName);
 }
 
 void HlavneOkno::on_actionOtvori_existuj_cu_dr_hu_triggered()
@@ -186,6 +175,38 @@ void HlavneOkno::on_actionOtvori_existuj_cu_dr_hu_triggered()
         return;
     }
 
+    ui->pracovnaPlocha->dokument()->setCestaSubor(fileName);
+
     ui->pracovnaPlocha->dokument()->Obnov(doc);
     ui->pracovnaPlocha->PrekresliAPrepocitajPlochu();
+}
+
+void HlavneOkno::on_actionNov_dr_ha_triggered()
+{
+    NovyDokument();
+}
+
+void HlavneOkno::on_actionUlo_i_triggered()
+{
+    if(ui->pracovnaPlocha->dokument()->cestaSubor() == "")
+        on_actionUlo_i_ako_triggered();
+    else
+        ulozit(ui->pracovnaPlocha->dokument()->cestaSubor());
+}
+
+void HlavneOkno::ulozit(QString path)
+{
+    QFile outFile(path);
+    if( !outFile.open( QIODevice::WriteOnly | QIODevice::Text ) )
+    {
+        qDebug( "Failed to open file for writing." );
+        return;
+    }
+
+    ui->pracovnaPlocha->dokument()->setCestaSubor(path);
+    QTextStream stream( &outFile );
+    stream.setCodec("UTF-8");
+    stream << ui->pracovnaPlocha->dokument()->Uloz().toString(1);
+
+    outFile.close();
 }

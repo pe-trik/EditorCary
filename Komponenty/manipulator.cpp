@@ -7,12 +7,15 @@ using namespace Komponenty;
 Manipulator::Manipulator(Dokumenty::QrealVlastnost *x,
                          Dokumenty::QrealVlastnost *y,
                          Komponenty::Komponent *vlastnik)
-    : _x(x), _y(y), _vlastnik(vlastnik) {}
+    : _x(x), _y(y), _vlastnik(vlastnik) {
+    _nazov->setHodnota("manipulator" + QString::number(id - 1));
+}
 
-void Manipulator::Vykresli(QPainter &painter, QColor c) const {
-  auto center = QPointF(_x->hodnota(), _y->hodnota());
+void Manipulator::Vykresli(QPainter &painter, QColor c, qreal) const
+{
+    auto center = QPointF(_x->hodnota(), _y->hodnota());
 
-  painter.fillRect(QRectF(center - Polomer(), center + Polomer()), c);
+    painter.fillRect(QRectF(center - Polomer(), center + Polomer()), c);
 }
 
 Nastroje::NastrojPtr Manipulator::Nastroj(Dokumenty::Dokument *dokument) {

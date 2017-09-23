@@ -5,10 +5,14 @@
 using namespace Komponenty;
 using namespace Dokumenty;
 
-Ciara::Ciara() : Dvojbodovy() {}
+Ciara::Ciara() : Dvojbodovy() {
+    _nazov->setHodnota("ciara" + QString::number(id - 1));
+}
 
-void Ciara::Vykresli(QPainter &painter, QColor c) const {
-    painter.setPen(QPen(c, _sirkaCiary->hodnota()));
+void Ciara::Vykresli(QPainter &painter, QColor c, qreal sirka) const {
+    if(sirka == 0)
+        sirka = _sirkaCiary->hodnota();
+    painter.setPen(QPen(c, sirka));
 	painter.drawLine(
 		QLineF(_x1->hodnota(), _y1->hodnota(), _x2->hodnota(), _y2->hodnota()));
 }

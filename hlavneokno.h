@@ -34,7 +34,12 @@ protected:
 
   void on_actionOtvori_existuj_cu_dr_hu_triggered();
 
+  void on_actionNov_dr_ha_triggered();
+
+  void on_actionUlo_i_triggered();
+
 private:
+  void ulozit(QString path);
 	void nastavNastroj(Nastroje::NastrojPtr nastroj);
   void nacitajNastroje();
   Ui::HlavneOkno *ui;

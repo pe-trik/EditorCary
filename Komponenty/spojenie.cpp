@@ -11,7 +11,7 @@ Spojenie::Spojenie() {
     _x = std::make_unique<Dokumenty::QrealVlastnost>("X", 0);
     _y = std::make_unique<Dokumenty::QrealVlastnost>("Y", 0);
 
-    _nazov->setHodnota("Spojenie" + QString::number(id - 1));
+    _nazov->setHodnota("spojenie" + QString::number(id - 1));
     _spojenieZoznamVlastnost =
             std::make_unique<Dokumenty::SpojenieZoznamVlastnost>("Komponenty", this);
     _vlastnosti = {_nazov.get(), _x.get(), _y.get(),

@@ -27,7 +27,7 @@ using SpojenieSlotPtr = std::unique_ptr<SpojenieSlot>;
 class Komponent : public QObject {
 public:
   Komponent();
-  virtual void Vykresli(QPainter &painter, QColor c = Qt::black) const = 0;
+  virtual void Vykresli(QPainter &painter, QColor c = Qt::black, qreal sirka = 0) const = 0;
   virtual Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument) = 0;
   const std::vector<KomponentPtr> &Manipulatory() const {
     return _manipulatory;

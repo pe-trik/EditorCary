@@ -5,10 +5,14 @@
 using namespace Komponenty;
 using namespace Dokumenty;
 
-Spline::Spline() : Dvojbodovy() {}
+Spline::Spline() : Dvojbodovy() {
+    _nazov->setHodnota("spline" + QString::number(id - 1));
+}
 
-void Spline::Vykresli(QPainter &painter, QColor c) const {
-    painter.setPen(QPen(c, _sirkaCiary->hodnota()));
+void Spline::Vykresli(QPainter &painter, QColor c, qreal sirka) const {
+    if(sirka == 0)
+        sirka = _sirkaCiary->hodnota();
+    painter.setPen(QPen(c, sirka));
     if(_krivka.size() > 2)
         painter.drawPolyline(_krivka);
     else

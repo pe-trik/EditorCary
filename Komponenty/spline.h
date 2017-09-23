@@ -8,7 +8,7 @@ namespace Komponenty {
 class Spline : public Dvojbodovy {
 public:
   Spline();
-  void Vykresli(QPainter &painter, QColor c = Qt::black) const;
+  void Vykresli(QPainter &painter, QColor c = Qt::black, qreal sirka = 0) const;
   Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument);
   bool Obsahuje(QPointF) const;
 

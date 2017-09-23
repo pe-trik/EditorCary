@@ -23,6 +23,8 @@ Dokument::Dokument() {
     _minimalnyPolomerZatacky = std::make_unique<QrealVlastnost>("Minimálny polomer zatáčky", 50);
     _minimalnaDlzkaTrate = std::make_unique<QrealVlastnost>("Minimálna dĺžka trate", 1000);
     _maximalnaDlzkaTrate = std::make_unique<QrealVlastnost>("Maximálna dĺžka trate", 5000);
+    _minimalnaVzdialenostKomponent = std::make_unique<QrealVlastnost>("Minimálna vzdialenosť komponent", 50);
+    _zobrazMinimalnuVzdialenost = std::make_unique<BoolVlastnost>("Zobraz minimálnu vzdialenosť komponent", true);
     _nahlad = std::make_unique<BoolVlastnost>("Náhľad", false);
     _siet = std::make_unique<BoolVlastnost>("Sieť", true);
 
@@ -86,7 +88,10 @@ void Dokument::setSirka(qreal sirka) { _sirka->setHodnota(sirka); }
 void Dokument::setVyska(qreal vyska) { _vyska->setHodnota(vyska); }
 
 std::vector<Vlastnost *> Dokument::Vlastnosti() const {
-    return {_sirka.get(), _vyska.get(), _okraj.get(), _nahlad.get(), _siet.get(), _minimalnyPolomerZatacky.get(), _minimalnaDlzkaTrate.get(), _maximalnaDlzkaTrate.get()};
+    return {_sirka.get(), _vyska.get(), _okraj.get(), _nahlad.get(), _siet.get(),
+                _minimalnyPolomerZatacky.get(), _minimalnaDlzkaTrate.get(), _maximalnaDlzkaTrate.get(),
+                _minimalnaVzdialenostKomponent.get(), _zobrazMinimalnuVzdialenost.get()
+    };
 }
 
 void Dokument::Vykresli(QPainter &painter) {
@@ -119,6 +124,12 @@ void Dokument::Vykresli(QPainter &painter) {
         painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
     }
 
+    if(!_nahlad->hodnota() && _zobrazMinimalnuVzdialenost->hodnota())
+    {
+        for (auto &k : _komponenty)
+            k->Vykresli(painter, QColor(255,153,153,255), _minimalnaVzdialenostKomponent->hodnota());
+    }
+
     for (auto &k : _komponenty)
     {
         if(_nahlad->hodnota() && dynamic_cast<Komponenty::Prerusenie*>(k.get())){
@@ -138,9 +149,9 @@ void Dokument::Vykresli(QPainter &painter) {
 
     if(_vybranyKomponent && !_nahlad->hodnota())
     {
-        _vybranyKomponent->Vykresli(painter, Qt::cyan);
+        _vybranyKomponent->Vykresli(painter, QColor(102, 0, 204, 255));
         for (auto &m : _vybranyKomponent->Manipulatory())
-            m->Vykresli(painter, Qt::cyan);
+            m->Vykresli(painter, QColor(102, 0, 204, 255));
     }
 }
 
@@ -321,6 +332,16 @@ void Dokument::obnovSpojenia(QDomNodeList spojenia)
         e = e.nextSibling().toElement();
         _spojenia.push_back(std::move(spojenie));
     }
+}
+
+QString Dokument::cestaSubor() const
+{
+    return _cestaSubor;
+}
+
+void Dokument::setCestaSubor(const QString &cestaSubor)
+{
+    _cestaSubor = cestaSubor;
 }
 
 std::vector<Komponenty::Komponent*> Dokument::spojenia() const

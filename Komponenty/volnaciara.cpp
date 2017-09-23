@@ -10,6 +10,7 @@ using namespace Dokumenty;
 
 VolnaCiara::VolnaCiara()
 {
+    _nazov->setHodnota("volnaCiara" + QString::number(id - 1));
     _x1 = std::make_unique<QrealVlastnost>("X1", 10);
     _y1 = std::make_unique<QrealVlastnost>("Y1", 10);
     _x2 = std::make_unique<QrealVlastnost>("X2", 200);
@@ -219,11 +220,12 @@ void VolnaCiara::prepocitajSpline()
     }
 }
 
-void VolnaCiara::Vykresli(QPainter &painter, QColor c) const
-{
+void VolnaCiara::Vykresli(QPainter &painter, QColor c, qreal sirka) const
+{    if(sirka == 0)
+        sirka = _sirkaCiary->hodnota();
     if(_body.size() > 0)
     {
-        painter.setPen(QPen(c, _sirkaCiary->hodnota(),Qt::SolidLine));
+        painter.setPen(QPen(c, sirka,Qt::SolidLine));
         painter.drawPolyline(_body);
     }
 }
