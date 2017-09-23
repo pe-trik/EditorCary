@@ -77,6 +77,12 @@ public:
       return _minimalnyPolomerZatacky->hodnota();
   }
 
+  qreal minimalnaDlzkaTrate() const;
+
+  qreal maximalnaDlzkaTrate() const;
+
+  std::vector<Komponenty::Komponent *> spojenia() const;
+
 private:
   void obnovKomponenty(QDomNodeList komponenty);
   void obnovSpojenia(QDomNodeList spojenia);
@@ -84,6 +90,8 @@ private:
   QrealVlastnostPtr _vyska;
   QrealVlastnostPtr _okraj;
   QrealVlastnostPtr _minimalnyPolomerZatacky;
+  QrealVlastnostPtr _minimalnaDlzkaTrate;
+  QrealVlastnostPtr _maximalnaDlzkaTrate;
   BoolVlastnostPtr _nahlad;
   BoolVlastnostPtr _siet;
   std::vector<Komponenty::KomponentPtr> _komponenty;

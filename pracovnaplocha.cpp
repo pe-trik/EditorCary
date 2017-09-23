@@ -89,12 +89,6 @@ void PracovnaPlocha::NastavVybranyKomponent(Komponenty::Komponent *k)
 }
 
 void PracovnaPlocha::mouseMoveEvent(QMouseEvent *event) {
-    if(_mysStlacena && _nastroj && !_nastroj->VybranyKomponent())
-    {
-        _nastroj.reset();
-        NastrojZmeneny(nullptr);
-    }
-
     if (_mysStlacena && (!_nastroj || !_nastroj->VybranyKomponent())) {
         auto delta = (event->localPos() - _polohaMysi) / _zoom;
         _transformacia.translate(delta.x() / static_cast<qreal>(width()) * _sirka,

@@ -21,6 +21,8 @@ Dokument::Dokument() {
     _vyska = std::make_unique<QrealVlastnost>("Výška", 841);
     _okraj = std::make_unique<QrealVlastnost>("Okraj", 50);
     _minimalnyPolomerZatacky = std::make_unique<QrealVlastnost>("Minimálny polomer zatáčky", 50);
+    _minimalnaDlzkaTrate = std::make_unique<QrealVlastnost>("Minimálna dĺžka trate", 1000);
+    _maximalnaDlzkaTrate = std::make_unique<QrealVlastnost>("Maximálna dĺžka trate", 5000);
     _nahlad = std::make_unique<BoolVlastnost>("Náhľad", false);
     _siet = std::make_unique<BoolVlastnost>("Sieť", true);
 
@@ -84,7 +86,7 @@ void Dokument::setSirka(qreal sirka) { _sirka->setHodnota(sirka); }
 void Dokument::setVyska(qreal vyska) { _vyska->setHodnota(vyska); }
 
 std::vector<Vlastnost *> Dokument::Vlastnosti() const {
-    return {_sirka.get(), _vyska.get(), _okraj.get(), _nahlad.get(), _siet.get(), _minimalnyPolomerZatacky.get()};
+    return {_sirka.get(), _vyska.get(), _okraj.get(), _nahlad.get(), _siet.get(), _minimalnyPolomerZatacky.get(), _minimalnaDlzkaTrate.get(), _maximalnaDlzkaTrate.get()};
 }
 
 void Dokument::Vykresli(QPainter &painter) {
@@ -319,4 +321,22 @@ void Dokument::obnovSpojenia(QDomNodeList spojenia)
         e = e.nextSibling().toElement();
         _spojenia.push_back(std::move(spojenie));
     }
+}
+
+std::vector<Komponenty::Komponent*> Dokument::spojenia() const
+{
+    std::vector<Komponenty::Komponent*> spojenia;
+    for(auto&s : _spojenia)
+        spojenia.push_back(s.get());
+    return spojenia;
+}
+
+qreal Dokument::maximalnaDlzkaTrate() const
+{
+    return _maximalnaDlzkaTrate->hodnota();
+}
+
+qreal Dokument::minimalnaDlzkaTrate() const
+{
+    return _minimalnaDlzkaTrate->hodnota();
 }

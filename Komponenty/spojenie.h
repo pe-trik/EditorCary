@@ -26,6 +26,10 @@ public:
       return _spojenieZoznamVlastnost->hodnota().size() <= 1;
   }
 
+  std::vector<Komponenty::SpojenieSlot *> SlotySpojenia() const{
+      return _spojenieZoznamVlastnost->hodnota();
+  }
+
   QString Typ() const{
       return "Spojenie";
   }

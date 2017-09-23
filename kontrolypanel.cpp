@@ -3,6 +3,8 @@
 #include "Kontroly/kontrolazakrivenia.h"
 #include <QVBoxLayout>
 #include <QCheckBox>
+#include <Kontroly/kontroladlzky.h>
+#include <Kontroly/kontrolaspojeni.h>
 
 KontrolyPanel::KontrolyPanel(QWidget *parent) : QWidget(parent)
 {
@@ -17,6 +19,8 @@ void KontrolyPanel::NastavDokument(Dokumenty::Dokument *dokument)
     _kontroly.clear();
     _kontroly.push_back(std::make_unique<Kontroly::KontrolaOkrajov>(dokument));
     _kontroly.push_back(std::make_unique<Kontroly::KontrolaZakrivenia>(dokument));
+    _kontroly.push_back(std::make_unique<Kontroly::KontrolaDlzky>(dokument));
+    _kontroly.push_back(std::make_unique<Kontroly::KontrolaSpojeni>(dokument));
 
     auto layout = new QVBoxLayout(this);
     setLayout(layout);
