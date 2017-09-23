@@ -56,3 +56,8 @@ void Manipulator::Obnov(QDomElement &e)
     _x->setHodnota(e.attribute("x").toDouble());
     _y->setHodnota(e.attribute("y").toDouble());
 }
+
+QVector<QPointF> Manipulator::BodyKomponentu() const
+{
+    return {getBod()};
+}

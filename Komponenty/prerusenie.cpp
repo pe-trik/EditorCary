@@ -14,12 +14,17 @@ Prerusenie::Prerusenie()
 
 void Prerusenie::Vykresli(QPainter &painter, QColor c) const
 {
-    painter.setPen(QPen(c, 10, Qt::DashLine));
+    painter.setPen(QPen(c, _sirkaCiary->hodnota(), Qt::DashLine));
     if(_krivka.size() > 2)
         painter.drawPolyline(_krivka);
     else
         painter.drawLine(
                     QLineF(_x1->hodnota(), _y1->hodnota(), _x2->hodnota(), _y2->hodnota()));
+}
+
+QVector<QPointF> Prerusenie::BodyKomponentu() const
+{
+    return _krivka;
 }
 
 void Prerusenie::prepocitajDlzku()

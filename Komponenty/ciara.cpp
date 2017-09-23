@@ -8,7 +8,7 @@ using namespace Dokumenty;
 Ciara::Ciara() : Dvojbodovy() {}
 
 void Ciara::Vykresli(QPainter &painter, QColor c) const {
-    painter.setPen(QPen(c, 10));
+    painter.setPen(QPen(c, _sirkaCiary->hodnota()));
 	painter.drawLine(
 		QLineF(_x1->hodnota(), _y1->hodnota(), _x2->hodnota(), _y2->hodnota()));
 }

@@ -42,10 +42,15 @@ void PracovnaPlocha::VykresliPlochu(QPainter &painter,
 
 void PracovnaPlocha::NastavDokument(Dokument *dokument) {
     _dokument = dokument;
+    connect(dokument, &Dokument::DokumentPrepocitany,
+            [this, dokument](){
+        emit DokumentZmeneny(dokument);
+    });
     connect(dokument, SIGNAL(prekreslit()), this, SLOT(PrekresliAPrepocitajPlochu()));
     _zmeny.clear();
     _zmenaPozicia = 0;
     _zmeny.push_back(_dokument->Uloz());
+    emit DokumentZmeneny(dokument);
 }
 
 QPointF PracovnaPlocha::PolohaMysi() {
@@ -82,8 +87,10 @@ void PracovnaPlocha::mouseMoveEvent(QMouseEvent *event) {
 
     _polohaMysi = event->localPos();
 
-    if(_mysStlacena && _nastroj)
+    if(_mysStlacena)
         PrekresliAPrepocitajPlochu();
+
+    emit PolohaMysiZmenena(PolohaMysi());
 }
 
 void PracovnaPlocha::mousePressEvent(QMouseEvent *) {
@@ -201,4 +208,5 @@ Dokumenty::Dokument *PracovnaPlocha::dokument() const
 void PracovnaPlocha::setDokument(Dokumenty::Dokument *dokument)
 {
     _dokument = dokument;
+    emit DokumentZmeneny(dokument);
 }

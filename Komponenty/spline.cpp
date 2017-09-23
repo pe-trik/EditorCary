@@ -8,7 +8,7 @@ using namespace Dokumenty;
 Spline::Spline() : Dvojbodovy() {}
 
 void Spline::Vykresli(QPainter &painter, QColor c) const {
-    painter.setPen(QPen(c, 10));
+    painter.setPen(QPen(c, _sirkaCiary->hodnota()));
     if(_krivka.size() > 2)
         painter.drawPolyline(_krivka);
     else
@@ -89,4 +89,9 @@ QString Spline::Typ() const{
 QDomElement Spline::Uloz(QDomDocument &doc) const
 {
     return ulozVlastnosti(doc);
+}
+
+QVector<QPointF> Spline::BodyKomponentu() const
+{
+    return _krivka;
 }

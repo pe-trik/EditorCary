@@ -4,6 +4,7 @@
 #include "Nastroje/nastroj.h"
 #include "spojenieslot.h"
 #include "Dokumenty/stringvlastnost.h"
+#include "Dokumenty/qrealvlastnost.h"
 #include <QPainter>
 #include <memory>
 #include <vector>
@@ -43,6 +44,7 @@ public:
 
   QString nazov() const;
   virtual void Obnov(QDomElement& e);
+  virtual QVector<QPointF> BodyKomponentu() const;
 
 protected:
   void obnovVlastnosti(QDomElement& e);
@@ -51,6 +53,7 @@ protected:
   std::vector<SpojenieSlotPtr> _spojenieSloty;
   std::vector<Dokumenty::Vlastnost*> _vlastnosti;
   Dokumenty::StringVlastnostPtr _nazov;
+  Dokumenty::QrealVlastnostPtr _sirkaCiary;
   static int id;
 };
 }

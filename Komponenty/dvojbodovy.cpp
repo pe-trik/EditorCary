@@ -20,7 +20,7 @@ Dvojbodovy::Dvojbodovy() {
   _nasobokKoniec->setMax(100);
   _nasobokKoniec->setMin(-100);
 
-  _vlastnosti = { _nazov.get(), _x1.get(), _y1.get(), _x2.get(), _y2.get(), _sirka.get(), _vyska.get(), _nasobokZaciatok.get(), _nasobokKoniec.get()};
+  _vlastnosti = { _nazov.get(), _sirkaCiary.get(), _x1.get(), _y1.get(), _x2.get(), _y2.get(), _sirka.get(), _vyska.get(), _nasobokZaciatok.get(), _nasobokKoniec.get()};
 
   auto manipulator = std::make_unique<Manipulator>(_x1.get(), _y1.get(), this);
   _spojenieSloty.push_back(

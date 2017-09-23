@@ -25,8 +25,10 @@ public:
   void setDokument(Dokumenty::Dokument *dokument);
 
 signals:
+  void PolohaMysiZmenena(QPointF);
   void NastrojZmeneny(Nastroje::Nastroj* nastroj);
   void VlastnostiZmenene(const std::vector<Dokumenty::Vlastnost*>& vlastnosti);
+  void DokumentZmeneny(Dokumenty::Dokument*);
 
 public slots:
   void PrekresliAPrepocitajPlochu();

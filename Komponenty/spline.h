@@ -21,6 +21,8 @@ public:
   QString Typ() const;
   QDomElement Uloz(QDomDocument &doc) const;
 
+  QVector<QPointF> BodyKomponentu() const;
+
 protected:
   bool _pouzite = false;
   QVector<QPointF> _krivka;

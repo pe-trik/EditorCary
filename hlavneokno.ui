@@ -102,6 +102,24 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="dockWidget">
+   <property name="windowTitle">
+    <string>Kontroly</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="KontrolyPanel" name="kontroly"/>
+  </widget>
+  <widget class="QDockWidget" name="dockWidget_2">
+   <property name="windowTitle">
+    <string>Chyby</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="ChybyPanel" name="chyby"/>
+  </widget>
   <action name="actionNov_dr_ha">
    <property name="text">
     <string>Nová dráha</string>
@@ -150,6 +168,18 @@
    <class>PanelVlastnosti</class>
    <extends>QWidget</extends>
    <header location="global">panelvlastnosti.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>KontrolyPanel</class>
+   <extends>QWidget</extends>
+   <header>kontrolypanel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ChybyPanel</class>
+   <extends>QWidget</extends>
+   <header>chybypanel.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

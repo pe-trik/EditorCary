@@ -28,6 +28,7 @@ public:
   QString Typ() const;
   QDomElement Uloz(QDomDocument &doc) const;
   void Obnov(QDomElement &e);
+  QVector<QPointF> BodyKomponentu() const;
 
 public slots:
   void setBod(QPointF bod);

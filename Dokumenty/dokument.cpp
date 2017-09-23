@@ -19,7 +19,9 @@ void Dokument::velkostDokumentuZmenena(qreal) { emit prekreslit(); }
 Dokument::Dokument() {
     _sirka = std::make_unique<QrealVlastnost>("Šírka", 1189);
     _vyska = std::make_unique<QrealVlastnost>("Výška", 841);
+    _okraj = std::make_unique<QrealVlastnost>("Okraj", 50);
     _nahlad = std::make_unique<BoolVlastnost>("Náhľad", false);
+    _siet = std::make_unique<BoolVlastnost>("Sieť", true);
 
     connect(_sirka.get(), SIGNAL(hodnotaZmenena(qreal)), this,
             SLOT(velkostDokumentuZmenena(qreal)));
@@ -81,11 +83,42 @@ void Dokument::setSirka(qreal sirka) { _sirka->setHodnota(sirka); }
 void Dokument::setVyska(qreal vyska) { _vyska->setHodnota(vyska); }
 
 std::vector<Vlastnost *> Dokument::Vlastnosti() const {
-    return {_sirka.get(), _vyska.get(), _nahlad.get()};
+    return {_sirka.get(), _vyska.get(), _okraj.get(), _nahlad.get(), _siet.get()};
 }
 
 void Dokument::Vykresli(QPainter &painter) {
     painter.fillRect(0, 0, _sirka->hodnota(), _vyska->hodnota(), Qt::white);
+
+    if(!_nahlad->hodnota() && _siet->hodnota()){
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.fillRect(0, 0, _sirka->hodnota(), _vyska->hodnota(), Qt::lightGray);
+        painter.fillRect(_okraj->hodnota(), _okraj->hodnota(),
+                         _sirka->hodnota() - 2 * _okraj->hodnota(),
+                         _vyska->hodnota() - 2 * _okraj->hodnota(), Qt::white);
+
+        for(size_t i = 25; i < _sirka->hodnota(); i += 25)
+        {
+            if(i % 100 == 0)
+                painter.setPen(QPen(QBrush(Qt::black), 1.5));
+            else if(i % 50 == 0)
+                painter.setPen(QPen(QBrush(Qt::black), 1));
+            else
+                painter.setPen(QPen(QBrush(Qt::black), 0.5));
+            painter.drawLine(i,0,i,_vyska->hodnota());
+        }
+
+        for(size_t i = 25; i < _vyska->hodnota(); i += 25)
+        {
+            if(i % 100 == 0)
+                painter.setPen(QPen(QBrush(Qt::black), 1.5));
+            else if(i % 50 == 0)
+                painter.setPen(QPen(QBrush(Qt::black), 1));
+            else
+                painter.setPen(QPen(QBrush(Qt::black), 0.5));
+            painter.drawLine(0,i,_sirka->hodnota(),i);
+        }
+        painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
+    }
 
     for (auto &k : _komponenty)
     {
@@ -208,7 +241,10 @@ void Dokument::VycistiSpojenia()
 void Dokument::Prepocitaj()
 {
     if(_prepocitavanie)
+    {
         Komponenty::SplineGroup g(_komponenty, _spojenia);
+        emit DokumentPrepocitany();
+    }
 }
 
 std::vector<Nastroje::NastrojPresenterPtr> Dokument::DostupneNastroje()
@@ -244,6 +280,7 @@ void Dokument::ZmazVybranyKomponent()
         });
         if(k != _komponenty.end())
             _komponenty.erase(k);
+        _vybranyKomponent = nullptr;
         Prepocitaj();
     }
 }

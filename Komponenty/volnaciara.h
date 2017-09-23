@@ -21,6 +21,7 @@ public:
     QDomElement Uloz(QDomDocument &doc) const;
     void Obnov(QDomElement &e);
 
+    QVector<QPointF> BodyKomponentu() const;
 private slots:
     void vyhladzovanie(qreal);
     void manipulatorZmeneny(QPointF);

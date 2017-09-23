@@ -30,6 +30,7 @@ private slots:
   void velkostDokumentuZmenena(qreal);
 signals:
   void prekreslit();
+  void DokumentPrepocitany();
 
 public:
   Dokument();
@@ -66,12 +67,18 @@ public:
 
   void ZmazVybranyKomponent();
 
+  qreal Okraj() const{
+      return _okraj->hodnota();
+  }
+
 private:
   void obnovKomponenty(QDomNodeList komponenty);
   void obnovSpojenia(QDomNodeList spojenia);
   QrealVlastnostPtr _sirka;
   QrealVlastnostPtr _vyska;
+  QrealVlastnostPtr _okraj;
   BoolVlastnostPtr _nahlad;
+  BoolVlastnostPtr _siet;
   std::vector<Komponenty::KomponentPtr> _komponenty;
   std::vector<std::unique_ptr<Komponenty::Komponent>> _spojenia;
   Komponenty::Komponent* _vybranyKomponent = nullptr;

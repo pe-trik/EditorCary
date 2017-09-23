@@ -11,6 +11,8 @@ class Prerusenie : public Spline
 public:
     Prerusenie();
     void Vykresli(QPainter &painter, QColor c = Qt::black) const;
+
+    QVector<QPointF> BodyKomponentu() const;
 private slots:
     void prepocitajDlzku();
 private:

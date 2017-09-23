@@ -22,6 +22,12 @@ HlavneOkno::HlavneOkno(QWidget *parent)
 
     NovyDokument();
 
+    connect(ui->pracovnaPlocha, &PracovnaPlocha::PolohaMysiZmenena,
+            [this](auto b){
+        ui->statusBar->showMessage("X: " + QString::number(b.x())
+                                   + " Y: " + QString::number(b.y()));
+    });
+
     connect(ui->pracovnaPlocha, SIGNAL(NastrojZmeneny(Nastroje::Nastroj *)), this,
             SLOT(nastavNastrojToolBar(Nastroje::Nastroj *)));
 
@@ -30,6 +36,11 @@ HlavneOkno::HlavneOkno(QWidget *parent)
 
     connect(ui->vlastnostiObjektu, SIGNAL(VlastnostZmenena()), ui->pracovnaPlocha, SLOT(PrekresliAPrepocitajPlochu()));
     connect(ui->vlastnostiDokumentu, SIGNAL(VlastnostZmenena()), ui->pracovnaPlocha, SLOT(PrekresliAPrepocitajPlochu()));
+
+    connect(ui->kontroly, &KontrolyPanel::KontrolyZmenene,
+            [this](){
+        ui->chyby->NastavChyby(ui->kontroly->VykonajKontroly());
+    });
 }
 
 HlavneOkno::~HlavneOkno() { delete ui; }
@@ -38,6 +49,14 @@ void HlavneOkno::NovyDokument() {
     _dokument = std::make_unique<Dokumenty::Dokument>();
     ui->pracovnaPlocha->NastavDokument(_dokument.get());
     ui->vlastnostiDokumentu->NastavVlastnosti(_dokument->Vlastnosti());
+
+    ui->kontroly->NastavDokument(_dokument.get());
+
+    connect(ui->pracovnaPlocha, &PracovnaPlocha::DokumentZmeneny,
+            [this](auto d){
+        ui->kontroly->NastavDokument(d);
+        ui->chyby->NastavChyby(ui->kontroly->VykonajKontroly());
+    });
 }
 
 void HlavneOkno::closeEvent(QCloseEvent *event) {

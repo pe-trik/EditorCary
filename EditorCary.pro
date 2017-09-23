@@ -65,7 +65,12 @@ SOURCES += \
     Dokumenty/boolvlastnost.cpp \
     boolvlastnostmanager.cpp \
     Komponenty/prerusenie.cpp \
-    Nastroje/prerusenienastroj.cpp
+    Nastroje/prerusenienastroj.cpp \
+    Kontroly/kontrola.cpp \
+    Kontroly/chyba.cpp \
+    Kontroly/kontrolaokrajov.cpp \
+    kontrolypanel.cpp \
+    chybypanel.cpp
 
 HEADERS += \
         hlavneokno.h \
@@ -101,7 +106,12 @@ HEADERS += \
     Dokumenty/boolvlastnost.h \
     boolvlastnostmanager.h \
     Komponenty/prerusenie.h \
-    Nastroje/prerusenienastroj.h
+    Nastroje/prerusenienastroj.h \
+    Kontroly/kontrola.h \
+    Kontroly/chyba.h \
+    Kontroly/kontrolaokrajov.h \
+    kontrolypanel.h \
+    chybypanel.h
 
 FORMS += \
         hlavneokno.ui
