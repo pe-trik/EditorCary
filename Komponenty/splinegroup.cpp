@@ -50,20 +50,30 @@ SplineGroup::SplineGroup(std::vector<Komponenty::KomponentPtr> &komponenty, std:
 std::vector<SpojenieSlot *> SplineGroup::najdiCestu(Spline *spline)
 {
     auto slot = spline->SpojenieSloty().at(0).get();
-    auto cesta = najdiCestu(slot);
-    auto slot2 = druhyKomponentVSpojeni(slot);
+    auto slot2 = druhyKomponentVSpojeni(spline->SpojenieSloty().at(0).get());
     if(slot2 && dynamic_cast<Spline*>(slot2->komponent()))
     {
         auto cesta2 = najdiCestu(slot2);
+        auto cesta2n = cesta2;
         if(cesta2.size() > 1)
         {
-            cesta.erase(cesta.begin());
-            std::reverse(cesta2.begin(), cesta2.end());
-            cesta.insert(cesta.begin(), cesta2.begin(), cesta2.end());
+            size_t i = 0;
+            do{
+                for(auto s : cesta2n)
+                {
+                    if(auto sp = dynamic_cast<Spline*>(s->komponent()))
+                        sp->setPouzite(false);
+                }
+                auto c = cesta2n;
+                cesta2n = najdiCestu(cesta2.back());
+                cesta2 = c;
+            }
+            while(cesta2.size() > 1 && cesta2n != cesta2 && i++ < 1000);
+            return cesta2;
         }
     }
 
-    return cesta;
+    return najdiCestu(slot);
 }
 
 std::vector<SpojenieSlot *> SplineGroup::najdiCestu(SpojenieSlot *slot)

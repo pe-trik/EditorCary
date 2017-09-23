@@ -13,7 +13,7 @@ class Manipulator : public Komponent {
 	Q_OBJECT
 public:
   Manipulator(Dokumenty::QrealVlastnost *x, Dokumenty::QrealVlastnost *y, Komponent *vlastnik);
-  void Vykresli(QPainter &painter, QColor c = Qt::black) const;
+  void Vykresli(QPainter &painter, QColor c = Qt::blue) const;
   Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument);
 
   QPointF getBod() const { return QPointF(_x->hodnota(), _y->hodnota()); }

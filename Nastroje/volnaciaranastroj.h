@@ -18,6 +18,13 @@ public:
     void MysUvolnena(QPointF);
     void MysDvojklik(QPointF);
 
+    Komponenty::Komponent* VybranyKomponent() const{
+        if(_komponent)
+            return _komponent;
+        else
+            return _manipulator;
+    }
+
 protected:
     Komponenty::VolnaCiara *_komponent = nullptr;
     Komponenty::Manipulator *_manipulator = nullptr;

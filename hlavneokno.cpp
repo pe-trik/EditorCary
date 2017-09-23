@@ -41,6 +41,11 @@ HlavneOkno::HlavneOkno(QWidget *parent)
             [this](){
         ui->chyby->NastavChyby(ui->kontroly->VykonajKontroly());
     });
+
+    connect(ui->chyby, &ChybyPanel::VybranyKomponent,
+            [this](auto k){
+        ui->pracovnaPlocha->NastavVybranyKomponent(k);
+    });
 }
 
 HlavneOkno::~HlavneOkno() { delete ui; }

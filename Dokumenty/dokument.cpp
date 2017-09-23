@@ -92,7 +92,7 @@ void Dokument::Vykresli(QPainter &painter) {
 
     if(!_nahlad->hodnota() && _siet->hodnota()){
         painter.setRenderHint(QPainter::Antialiasing);
-        painter.fillRect(0, 0, _sirka->hodnota(), _vyska->hodnota(), Qt::lightGray);
+        painter.fillRect(0, 0, _sirka->hodnota(), _vyska->hodnota(), QColor(255,0,0,150));
         painter.fillRect(_okraj->hodnota(), _okraj->hodnota(),
                          _sirka->hodnota() - 2 * _okraj->hodnota(),
                          _vyska->hodnota() - 2 * _okraj->hodnota(), Qt::white);
@@ -134,11 +134,11 @@ void Dokument::Vykresli(QPainter &painter) {
         }
     }
 
-    if(_vybranyKomponent)
+    if(_vybranyKomponent && !_nahlad->hodnota())
     {
-        _vybranyKomponent->Vykresli(painter, Qt::gray);
+        _vybranyKomponent->Vykresli(painter, Qt::cyan);
         for (auto &m : _vybranyKomponent->Manipulatory())
-            m->Vykresli(painter, Qt::gray);
+            m->Vykresli(painter, Qt::cyan);
     }
 }
 
@@ -213,6 +213,11 @@ void Dokument::PridajKomponent(Komponenty::KomponentPtr komponent)
 Komponenty::Komponent *Dokument::vybranyKomponent() const
 {
     return _vybranyKomponent;
+}
+
+void Dokument::NastavVybranyKomponent(Komponenty::Komponent *k)
+{
+        _vybranyKomponent = k;
 }
 
 void Dokument::VycistiSpojenia()

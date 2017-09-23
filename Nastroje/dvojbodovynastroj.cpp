@@ -13,9 +13,21 @@ void Nastroje::DvojbodovyNastroj::MysStlacena(QPointF bod)
 	_polohaMysi = bod;
 	_mysStlacena = true;
 
-	auto&& komponent = _dokument->Komponent(bod);
+    auto k = _dokument->Komponent(bod);
 
-	if (komponent) {
+    if(auto s = dynamic_cast<Komponenty::Spojenie*>(k))
+    {
+        if(k->Manipulatory().size() > 0)
+            k = s->Manipulatory().at(0).get();
+    }
+
+    if(auto m = dynamic_cast<Komponenty::Manipulator*>(k))
+    {
+        _manipulator = m;
+        k = m->Vlastnik();
+    }
+
+    if (auto komponent = otestujTyp(k)) {
 
 		auto&& manipulator = std::find_if(komponent->Manipulatory().begin(),
 			komponent->Manipulatory().end(),

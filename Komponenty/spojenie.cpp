@@ -35,40 +35,40 @@ Nastroje::NastrojPtr Spojenie::Nastroj(Dokumenty::Dokument *dokument) {
 
 void Spojenie::PridajKomponent(SpojenieSlot *slot) {
     auto manipulatorSpojenia = dynamic_cast<Manipulator*>(_manipulator);
-        auto sloty = _spojenieZoznamVlastnost->hodnota();
-        auto it = std::find_if(sloty.begin(), sloty.end(),
-                               [slot](auto s) {
-            return s == slot || slot->komponent() == s->komponent();
-        });
-        if (it != sloty.end())
-            return;
+    auto sloty = _spojenieZoznamVlastnost->hodnota();
+    auto it = std::find_if(sloty.begin(), sloty.end(),
+                           [slot](auto s) {
+        return s == slot || slot->komponent() == s->komponent();
+    });
+    if (it != sloty.end())
+        return;
 
-        sloty.push_back(slot);
+    sloty.push_back(slot);
 
-        auto manipulator = dynamic_cast<Manipulator*>(slot->manipulator());
+    auto manipulator = dynamic_cast<Manipulator*>(slot->manipulator());
 
-        if(sloty.size() > 1)
-            manipulator->setBod(manipulatorSpojenia->getBod());
-        else
+    if(sloty.size() > 1)
+        manipulator->setBod(manipulatorSpojenia->getBod());
+    else
+        manipulatorSpojenia->setBod(manipulator->getBod());
+
+    connect(manipulator->_x,
+            &Dokumenty::QrealVlastnost::hodnotaZmenena, slot->manipulator(),
+            [manipulatorSpojenia, manipulator](qreal) {
+        if (manipulator->getBod() !=
+                manipulatorSpojenia->getBod())
             manipulatorSpojenia->setBod(manipulator->getBod());
+    });
 
-        connect(manipulator->_x,
-                &Dokumenty::QrealVlastnost::hodnotaZmenena, slot->manipulator(),
-                [manipulatorSpojenia, manipulator](qreal) {
-            if (manipulator->getBod() !=
-                    manipulatorSpojenia->getBod())
-                manipulatorSpojenia->setBod(manipulator->getBod());
-        });
+    connect(manipulator->_y,
+            &Dokumenty::QrealVlastnost::hodnotaZmenena, slot->manipulator(),
+            [manipulatorSpojenia, manipulator](qreal) {
+        if (manipulator->getBod() !=
+                manipulatorSpojenia->getBod())
+            manipulatorSpojenia->setBod(manipulator->getBod());
+    });
 
-        connect(manipulator->_y,
-                &Dokumenty::QrealVlastnost::hodnotaZmenena, slot->manipulator(),
-                [manipulatorSpojenia, manipulator](qreal) {
-            if (manipulator->getBod() !=
-                    manipulatorSpojenia->getBod())
-                manipulatorSpojenia->setBod(manipulator->getBod());
-        });
-
-        _spojenieZoznamVlastnost->setHodnota(sloty);
+    _spojenieZoznamVlastnost->setHodnota(sloty);
 }
 
 void Spojenie::OdstranKomponent(SpojenieSlot *slot) {
@@ -83,21 +83,22 @@ void Spojenie::OdstranKomponent(SpojenieSlot *slot) {
         disconnect(manipulator->_y,
                    &Dokumenty::QrealVlastnost::hodnotaZmenena, slot->manipulator(),
                    nullptr);
-    }
-    if(sloty.size() == 2)
-        manipulator->setBod(manipulator->getBod() + 3 * Manipulator::Polomer());
-    else
-        manipulator->setBod(manipulator->getBod() + 2 * Manipulator::Polomer());
+        if(sloty.size() == 2)
+            manipulator->setBod(manipulator->getBod() + 3 * Manipulator::Polomer());
+        else
+            manipulator->setBod(manipulator->getBod() + 2 * Manipulator::Polomer());
 
-    slot->ZrusSpojenie();
-    sloty.erase(m);
-    if(sloty.size() == 1)
-    {
-        _spojenieZoznamVlastnost->setHodnota(sloty);
-        OdstranKomponent(sloty.at(0));
-        _spojenieZoznamVlastnost->setHodnota({});
+        slot->ZrusSpojenie();
+        sloty.erase(m);
+        if(sloty.size() == 1)
+        {
+            _spojenieZoznamVlastnost->setHodnota(sloty);
+            OdstranKomponent(sloty.at(0));
+            _spojenieZoznamVlastnost->setHodnota({});
+        }
+        else
+            _spojenieZoznamVlastnost->setHodnota(sloty);
     }
-
 }
 
 QDomElement Spojenie::Uloz(QDomDocument &doc) const
@@ -120,7 +121,7 @@ void Komponenty::Spojenie::obnovHodnoty() {
     auto novaPozicia = QPointF(_x->hodnota(), _y->hodnota());
     for (auto &&slot : _spojenieZoznamVlastnost->hodnota()) {
         auto manipulator = dynamic_cast<Manipulator*>(slot->manipulator());
-            if (manipulator->getBod() != novaPozicia)
-                manipulator->setBod(novaPozicia);
+        if (manipulator->getBod() != novaPozicia)
+            manipulator->setBod(novaPozicia);
     }
 }

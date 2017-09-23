@@ -38,7 +38,7 @@ VolnaCiara::VolnaCiara()
         {
             auto smer = (_body.front() - *(_body.begin() + 1));
             qreal v = smer.x()*smer.x()+smer.y()*smer.y();
-            return 900 * smer / v;
+            return 2500. * smer / v;
         }
         else
             return QPointF(
@@ -55,7 +55,7 @@ VolnaCiara::VolnaCiara()
         {
             auto smer = _body.back() - *(_body.end() - 2);
             qreal v = smer.x()*smer.x()+smer.y()*smer.y();
-            return 2500 * smer / v;
+            return 2500. * smer / v;
         }
         else
             return QPointF(

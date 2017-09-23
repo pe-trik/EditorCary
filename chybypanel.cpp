@@ -25,6 +25,7 @@ ChybyPanel::ChybyPanel(QWidget *parent) : QWidget(parent)
 
 void ChybyPanel::NastavChyby(std::vector<Kontroly::Chyba> chyby)
 {
+    _chyby = chyby;
     _widget->clearContents();
     _widget->setRowCount(chyby.size());
 

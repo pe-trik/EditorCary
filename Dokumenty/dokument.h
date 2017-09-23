@@ -57,6 +57,8 @@ public:
 
   Komponenty::Komponent *vybranyKomponent() const;
 
+  void NastavVybranyKomponent(Komponenty::Komponent* k);
+
   void VycistiSpojenia();
 
   void Prepocitaj();

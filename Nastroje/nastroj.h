@@ -27,6 +27,7 @@ class Nastroj : public QObject {
 public:
     explicit Nastroj(Dokumenty::Dokument *dokument, QObject *parent = nullptr);
     virtual NastrojPresenterPtr NastrojPresenter() const = 0;
+    virtual Komponenty::Komponent* VybranyKomponent() const = 0;
 signals:
 
 public slots:

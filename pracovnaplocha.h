@@ -33,6 +33,7 @@ signals:
 public slots:
   void PrekresliAPrepocitajPlochu();
   void timerVykresliTimeout();
+  void NastavVybranyKomponent(Komponenty::Komponent* k);
 
 protected:
   void mouseMoveEvent(QMouseEvent *event);

@@ -76,8 +76,26 @@ void PracovnaPlocha::timerVykresliTimeout() {
     _timerVykresli.stop();
 }
 
+void PracovnaPlocha::NastavVybranyKomponent(Komponenty::Komponent *k)
+{
+    _dokument->NastavVybranyKomponent(k);
+    if(k){
+        NastavNastroj(k->Nastroj(_dokument));
+            emit VlastnostiZmenene(k->Vlastnosti());
+    }
+    else
+        emit VlastnostiZmenene({});
+    repaint();
+}
+
 void PracovnaPlocha::mouseMoveEvent(QMouseEvent *event) {
-    if (_mysStlacena && !_nastroj) {
+    if(_mysStlacena && _nastroj && !_nastroj->VybranyKomponent())
+    {
+        _nastroj.reset();
+        NastrojZmeneny(nullptr);
+    }
+
+    if (_mysStlacena && (!_nastroj || !_nastroj->VybranyKomponent())) {
         auto delta = (event->localPos() - _polohaMysi) / _zoom;
         _transformacia.translate(delta.x() / static_cast<qreal>(width()) * _sirka,
                                  delta.y() / static_cast<qreal>(height()) * _vyska);
@@ -98,13 +116,18 @@ void PracovnaPlocha::mousePressEvent(QMouseEvent *) {
 
     auto b = PolohaMysi();
 
-    if (_nastroj == nullptr) {
-        if (auto k = _dokument->Komponent(b))
-            _nastroj = k->Nastroj(_dokument);
-    }
-
     if (_nastroj)
         _nastroj->MysStlacena(b);
+
+    if (_nastroj == nullptr || !_nastroj->VybranyKomponent()) {
+        if (auto k = _dokument->Komponent(b))
+        {
+            _nastroj = k->Nastroj(_dokument);
+            _nastroj->MysStlacena(b);
+        }
+    }
+
+
 
     NastrojZmeneny(_nastroj.get());
     if (_dokument->vybranyKomponent() != nullptr)
@@ -158,6 +181,11 @@ void PracovnaPlocha::mouseDoubleClickEvent(QMouseEvent *) {
     _dokument->VytvorSpojenia(PolohaMysi());
     if (_dokument->vybranyKomponent() != nullptr)
         emit VlastnostiZmenene(_dokument->vybranyKomponent()->Vlastnosti());
+    else
+    {
+        _nastroj.reset();
+        NastrojZmeneny(nullptr);
+    }
 
     PrekresliAPrepocitajPlochu();
 }

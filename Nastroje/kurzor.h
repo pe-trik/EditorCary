@@ -18,6 +18,10 @@ public slots:
   void MysUvolnena(QPointF);
   void MysDvojklik(QPointF) {}
 
+  Komponenty::Komponent* VybranyKomponent() const{
+      return _vybranyKomponent;
+  }
+
 private:
   bool _mysStlacena = false;
   Komponenty::Komponent *_vybranyKomponent = nullptr;
