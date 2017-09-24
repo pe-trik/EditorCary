@@ -13,6 +13,8 @@
 
 HlavneOkno::HlavneOkno(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::HlavneOkno) {
+
+    setWindowIcon(QIcon(":/ikonky/volnaciara.svg"));
     ui->setupUi(this);
     QSettings settings("MFF UK", "EditorCary");
     restoreGeometry(settings.value("geometry").toByteArray());

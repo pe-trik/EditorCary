@@ -129,7 +129,6 @@ DISTFILES += \
     ikonky/ciara.svg \
     ikonky/KruhovyVysek.svg \
     ikonky/kursor.svg \
-    ikonky/odbocka.svg \
     ikonky/spline.svg \
     ikonky/volnaciara.svg \
     ikonky/prerusenie.svg

@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>HlavneOkno</string>
+   <string>Editor čáry</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="ikonky.qrc">
+    <normaloff>:/ikonky/volnaciara.svg</normaloff>:/ikonky/volnaciara.svg</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -183,6 +187,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="ikonky.qrc"/>
+ </resources>
  <connections/>
 </ui>
