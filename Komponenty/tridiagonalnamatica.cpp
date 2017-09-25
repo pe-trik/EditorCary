@@ -32,15 +32,8 @@ TridiagonalnaMatica::TridiagonalnaMatica(size_t m, QPointF a, QPointF b, QPointF
 }
 
 //riesenie tridiagonalnej matice v O(n)
-Pole TridiagonalnaMatica::Vyries()
+void TridiagonalnaMatica::odstranSpodnuDiagonalu()
 {
-    //matica musi mat nenulovu velkost
-    if (_m == 0)
-        return 0;
-
-    auto riesenie = std::make_unique<QPointF[]>(_m);
-
-    //odstranenie spodnej diagonaly - po posledne 2 riadky bez konfliktov
     for (size_t i = 1; i < _m; i++)
     {
         QPointF koef = a(i) / b(i - 1);
@@ -50,8 +43,10 @@ Pole TridiagonalnaMatica::Vyries()
         d(i) -= koef * d(i - 1);
         rc(i) -= koef * rc(i - 1);
     }
+}
 
-    //vynormovanie
+void TridiagonalnaMatica::vynormujPoOdstraneniSpodnejDiagonaly()
+{
     for (size_t i = 0; i < _m; i++)
     {
         QPointF koef = b(i);
@@ -63,9 +58,10 @@ Pole TridiagonalnaMatica::Vyries()
         d(i) = d(i) / koef;
         b(i) = b(i) / koef;
     }
+}
 
-    //odstranenie praveho stlpca
-    //vytvori sa lavy
+void TridiagonalnaMatica::odstranPravyStlpec()
+{
     for (size_t i = 0; i < _m - 1; i++)
     {
         QPointF koef = rc(i);
@@ -73,73 +69,63 @@ Pole TridiagonalnaMatica::Vyries()
         d(i) -= d(_m - 1) * koef;
         rc(i) -= rc(_m - 1) * koef;
     }
+}
 
-    //odstranenie hornej diagonaly
-    for (int i = _m - 3; i >= 0; i--)
+void TridiagonalnaMatica::odstranHornuDiagonalu()
+{
+    for (int i = static_cast<int>(_m) - 3; i >= 0; i--)
     {
         QPointF koef = -c(i) * b(i + 1);
         c(i) += koef * b(i + 1);
         lc(i) += koef * lc(i + 1);
         d(i) += koef * d(i + 1);
     }
+}
 
-    //vynormovanie prveho riadku
-    d(0) = d(0) / lc(0);
-    lc(0) = lc(0) / lc(0);
-
-    //odstranenie laveho stlpca
+void TridiagonalnaMatica::odstranLavyStlpec()
+{
     for (size_t i = 1; i < _m; i++)
     {
         QPointF koef = lc(i);
         lc(i) -= lc(0) * koef;
         d(i) -= d(0) * koef;
     }
+}
+
+Pole TridiagonalnaMatica::Vyries()
+{
+    //matica musi mat nenulovu velkost
+    if (_m == 0)
+        return 0;
+
+    //odstranenie spodnej diagonaly - po posledne 2 riadky bez konfliktov
+    odstranSpodnuDiagonalu();
+
+    //vynormovanie
+    vynormujPoOdstraneniSpodnejDiagonaly();
+
+    //odstranenie praveho stlpca
+    //vytvori sa lavy
+    odstranPravyStlpec();
+
+    //odstranenie hornej diagonaly
+    odstranHornuDiagonalu();
+
+    //vynormovanie prveho riadku
+    d(0) = d(0) / lc(0);
+    lc(0) = lc(0) / lc(0);
+
+    //odstranenie laveho stlpca
+    odstranLavyStlpec();
+
+    //vytvor riesenie
+    auto riesenie = std::make_unique<QPointF[]>(_m);
 
     for (size_t i = 0; i < _m; i++)
         riesenie[i] = d(i);
 
     return riesenie;
 }
-
-#include <iostream>
-#include <QDebug>
-
-using namespace std;
-
-void TridiagonalnaMatica::print()
-{
-    for (int i = 0; i < _m; i++)
-    {
-        qDebug() << "" << lc(i).x();
-
-        int p = (i == 0 || i == (_m - 1)) ? 3 : 3;
-
-        for (int j = 1; j < i - 1; j++)
-            qDebug() << "\t0";
-
-        if (i > 1)
-            qDebug() << "\t" << a(i).x();
-
-        if (i > 0)
-            qDebug() << "\t" << b(i).x();
-
-        if (i < _m - 1)
-            qDebug() << "\t" << c(i).x();
-
-        for (int j = i + p; j < _m; j++)
-            qDebug() << "\t0";
-
-        if (i < _m - 2)
-            qDebug() << "\t" << rc(i).x();
-
-
-        qDebug() << "\t| " << d(i).x() << endl;
-    }
-
-    cout << "---------------------" << endl;
-    cout << endl;
-}
-
 
 QPointF &TridiagonalnaMatica::a(size_t i) { return _a[i]; }
 
@@ -155,7 +141,7 @@ QPointF &TridiagonalnaMatica::rc(size_t i)
         return  _rc[i];
     else if (i == _m - 2)
         return _c[i];
-    else if (i == _m - 1)
+    else
         return _b[i];
 }
 
@@ -165,16 +151,6 @@ QPointF &TridiagonalnaMatica::lc(size_t i)
         return _lc[i];
     if(i == 0)
         return _b[0];
-    else if(i == 1)
+    else
         return _a[1];
-}
-
-QPointF operator *(QPointF a, QPointF b)
-{
-    return QPointF(a.x() * b.x(), a.y() * b.y());
-}
-
-QPointF operator /(QPointF a, QPointF b)
-{
-    return QPointF(a.x() / b.x(), a.y() / b.y());
 }

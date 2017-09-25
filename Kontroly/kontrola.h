@@ -13,11 +13,13 @@ class Kontrola : public QObject
     Q_OBJECT
 public:
     Kontrola(Dokumenty::Dokument* dokument);
+
     bool Vysledok() const;
 
     QString Nazov() const;
 
     bool Povolena() const;
+
     void setPovolena(bool Povolena);
 
 
@@ -33,6 +35,7 @@ protected:
     QString _nazov;
     Dokumenty::Dokument* _dokument;
     bool _povolena = true;
+
 private:
     bool _vysledok = true;
 };

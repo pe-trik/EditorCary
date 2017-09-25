@@ -18,12 +18,7 @@ public:
     void MysUvolnena(QPointF);
     void MysDvojklik(QPointF);
 
-    Komponenty::Komponent* VybranyKomponent() const{
-        if(_komponent)
-            return _komponent;
-        else
-            return _manipulator;
-    }
+    Komponenty::Komponent *VybranyKomponent() const;
 
 protected:
     Komponenty::VolnaCiara *_komponent = nullptr;
@@ -34,12 +29,10 @@ protected:
 };
 class VolnaCiaraPresenter : public NastrojPresenter {
 public:
-  QString Nazov() const { return "Voľná čiara"; }
-  QString Ikonka() const { return ":/ikonky/volnaciara.svg"; }
-  NastrojPtr Nastroj(Dokumenty::Dokument *dokument) const {
-    return std::make_unique<VolnaCiaraNastroj>(dokument);
-  }
-  Komponenty::KomponentPtr Komponent() const;
+    QString Nazov() const { return "Voľná čiara"; }
+    QString Ikonka() const { return ":/ikonky/volnaciara.svg"; }
+    NastrojPtr Nastroj(Dokumenty::Dokument *dokument) const;
+    Komponenty::KomponentPtr Komponent() const;
 };
 }
 

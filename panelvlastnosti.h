@@ -10,8 +10,8 @@ class PanelVlastnosti : public QWidget {
   Q_OBJECT
 public:
   explicit PanelVlastnosti(QWidget *parent = nullptr);
-  void Reset();
 
+  void Reset(); //vymaze vsetky vlastnosti z panelu
 
 signals:
   void VlastnostZmenena();

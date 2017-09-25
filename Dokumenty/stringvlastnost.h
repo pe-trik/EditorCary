@@ -8,21 +8,24 @@ class StringVlastnost : public Vlastnost
 {
     Q_OBJECT
 public:
-    StringVlastnost(QString nazov, QString hodnota);
+    StringVlastnost(QString nazov, QString Hodnota);
+
     VlastnostManagerPtr NastrojVlastnosti();
-    QString hodnota() const;
-    QDomElement Uloz(QDomDocument &doc);
 
-  public slots:
-    void setHodnota(QString hodnota);
+    QString Hodnota() const;
 
-  signals:
+    QDomElement UlozVlastnost(QDomDocument &doc);
+
+public slots:
+    void setHodnota(QString Hodnota);
+
+signals:
     void hodnotaZmenena(QString novaHodnota);
 
 protected:
-    void obnov(QDomElement &v);
+    void obnovVlastnost(QDomElement &v);
 
-  private:
+private:
     QString _hodnota;
 };
 using StringVlastnostPtr = std::unique_ptr<StringVlastnost>;

@@ -24,13 +24,13 @@ std::vector<Chyba> KontrolaZakrivenia::VykonajKontrolu()
             auto body = k->BodyKomponentu();
             if(body.size() > 7)
             {
-                for(size_t i = 4; i < body.size() - 2; i++){
-                   if(polomer(body.at(i - 2), body.at(i - 1), body.at(i)) < mpolomer)
-                   {
-                       setVysledok(false);
-                       chyby.push_back(Chyba(this, "komponent má polomer zakrivenia menší ako " + QString::number(mpolomer) + " mm", k));
-                       break;
-                   }
+                for(int i = 4; i < body.size() - 2; i++){
+                    if(polomer(body.at(i - 2), body.at(i - 1), body.at(i)) < mpolomer)
+                    {
+                        setVysledok(false);
+                        chyby.push_back(Chyba(this, "komponent má polomer zakrivenia menší ako " + QString::number(mpolomer) + " mm", k.get()));
+                        break;
+                    }
                 }
             }
         }

@@ -11,16 +11,24 @@ KontrolyPanel::KontrolyPanel(QWidget *parent) : QWidget(parent)
 
 }
 
-void KontrolyPanel::NastavDokument(Dokumenty::Dokument *dokument)
+void KontrolyPanel::nastavKontroly(Dokumenty::Dokument *dokument)
 {
-    if(_dokument == dokument)
-        return;
-    _dokument = dokument;
-    _kontroly.clear();
     _kontroly.push_back(std::make_unique<Kontroly::KontrolaOkrajov>(dokument));
     _kontroly.push_back(std::make_unique<Kontroly::KontrolaZakrivenia>(dokument));
     _kontroly.push_back(std::make_unique<Kontroly::KontrolaDlzky>(dokument));
     _kontroly.push_back(std::make_unique<Kontroly::KontrolaSpojeni>(dokument));
+}
+
+void KontrolyPanel::NastavDokument(Dokumenty::Dokument *dokument)
+{
+    if(_dokument == dokument)
+        return;
+
+    _dokument = dokument;
+
+    _kontroly.clear();
+
+    nastavKontroly(dokument);
 
     auto layout = new QVBoxLayout(this);
     setLayout(layout);

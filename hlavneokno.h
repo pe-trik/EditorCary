@@ -26,22 +26,34 @@ protected:
   void nastavNastrojToolBar(Nastroje::Nastroj*);
 
 
-  void on_actionExport_do_PDF_triggered();
+  void exportDoPDF();
 
-  void on_actionExport_do_SVG_triggered();
+  void exportDoSVG();
 
-  void on_actionUlo_i_ako_triggered();
+  void ulozitAko();
 
-  void on_actionOtvori_existuj_cu_dr_hu_triggered();
+  void otvorit();
+
+  void novaDraha();
+
+  void ulozit();
 
   void on_actionNov_dr_ha_triggered();
 
+  void on_actionOtvori_existuj_cu_dr_hu_triggered();
+
   void on_actionUlo_i_triggered();
+
+  void on_actionUlo_i_ako_triggered();
+
+  void on_actionUkon_i_triggered();
 
 private:
   void ulozit(QString path);
-	void nastavNastroj(Nastroje::NastrojPtr nastroj);
+  void nastavNastroj(Nastroje::NastrojPtr nastroj);
   void nacitajNastroje();
+  void obnovRozlozenieOkna();
+  void prepojeniePanelov();
   Ui::HlavneOkno *ui;
   std::unique_ptr<Dokumenty::Dokument> _dokument;
   std::vector<Nastroje::NastrojPresenterPtr> _nastroje;

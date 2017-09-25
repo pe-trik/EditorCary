@@ -8,8 +8,11 @@ QT       += core gui svg xml
 
 CONFIG += c++17
 
+QMAKE_CFLAGS_DEBUG += /MP
+QMAKE_LFLAGS_DEBUG += /incremental
+
 QMAKE_CFLAGS_RELEASE    += -Ox
-QMAKE_LFLAGS_RELEASE += -reduce-relocations -ltcg
+QMAKE_LFLAGS_RELEASE += -ltcg
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += printsupport

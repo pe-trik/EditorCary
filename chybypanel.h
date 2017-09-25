@@ -14,8 +14,10 @@ public:
 
 signals:
     void VybranyKomponent(Komponenty::Komponent* komponent);
+
 public slots:
     void NastavChyby(std::vector<Kontroly::Chyba> chyby);
+
 private:
     QTableWidget* _widget;
     std::vector<Kontroly::Chyba> _chyby;

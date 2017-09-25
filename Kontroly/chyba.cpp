@@ -8,7 +8,7 @@ Chyba::Chyba(Kontroly::Kontrola *kontrola, QString msg, Komponenty::Komponent *k
 
 }
 
-Kontrola *Chyba::Kontrola() const
+Kontroly::Kontrola *Chyba::Kontrola() const
 {
     return _kontrola;
 }

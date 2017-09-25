@@ -15,7 +15,7 @@ VlastnostManagerPtr BoolVlastnost::NastrojVlastnosti()
     return std::make_unique<BoolVlastnostManager>(this);
 }
 
-bool BoolVlastnost::hodnota() const
+bool BoolVlastnost::Hodnota() const
 {
     return _hodnota;
 }
@@ -29,12 +29,12 @@ void BoolVlastnost::setHodnota(bool hodnota)
     }
 }
 
-void BoolVlastnost::obnov(QDomElement &v)
+void BoolVlastnost::obnovVlastnost(QDomElement &v)
 {
     setHodnota(v.attribute("hodnota") == "1");
 }
 
-QDomElement BoolVlastnost::Uloz(QDomDocument &doc)
+QDomElement BoolVlastnost::UlozVlastnost(QDomDocument &doc)
 {
     auto v = doc.createElement("vlastnost");
     v.setAttribute("nazov", _nazov);

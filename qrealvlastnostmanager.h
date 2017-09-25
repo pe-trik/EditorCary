@@ -9,7 +9,7 @@ class QrealVlastnostManager : public VlastnostManager {
 public:
   QrealVlastnostManager(QrealVlastnost *vlastnost);
   QWidget *Nastroj();
-  QString Nazov() const { return _vlastnost->Nazov(); }
+  QString Nazov() const;
 
 private:
   QrealVlastnost *_vlastnost;

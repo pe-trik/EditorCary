@@ -15,14 +15,14 @@ public:
 
   void VykresliPlochu(QPainter &painter, bool aplikujTranformaciu = false);
 
-  void NastavDokument(Dokumenty::Dokument *dokument);
+  void NastavDokument(Dokumenty::Dokument *Dokument);
 
   QPointF PolohaMysi();
 
   void NastavNastroj(Nastroje::NastrojPtr nastroj);
 
-  Dokumenty::Dokument *dokument() const;
-  void setDokument(Dokumenty::Dokument *dokument);
+  Dokumenty::Dokument *Dokument() const;
+  void setDokument(Dokumenty::Dokument *Dokument);
 
 signals:
   void PolohaMysiZmenena(QPointF);

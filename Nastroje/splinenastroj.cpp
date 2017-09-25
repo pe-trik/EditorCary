@@ -7,11 +7,15 @@ SplineNastroj::SplineNastroj(Dokumenty::Dokument *dokument)
     : DvojbodovyNastroj(dokument) {}
 
 void SplineNastroj::vytvorNovyKomponent(QPointF bod) {
-  auto ciara = std::make_unique<Komponenty::Spline>();
-  _komponent = ciara.get();
-  for (auto &&m : _komponent->Manipulatory())
-    dynamic_cast<Komponenty::Manipulator *>(m.get())->setBod(bod);
-  _dokument->PridajKomponent(std::move(ciara));
+
+    auto ciara = std::make_unique<Komponenty::Spline>();
+
+    _komponent = ciara.get();
+
+    for (auto &&m : _komponent->Manipulatory())
+        dynamic_cast<Komponenty::Manipulator *>(m.get())->setBod(bod);
+
+    _dokument->PridajKomponent(std::move(ciara));
 }
 
 NastrojPresenterPtr SplineNastroj::NastrojPresenter() const {
@@ -21,6 +25,10 @@ NastrojPresenterPtr SplineNastroj::NastrojPresenter() const {
 Komponenty::Dvojbodovy *SplineNastroj::otestujTyp(Komponenty::Komponent *komponent)
 {
     return dynamic_cast<Komponenty::Spline*>(komponent);
+}
+
+NastrojPtr SplinePresenter::Nastroj(Dokumenty::Dokument *dokument) const {
+    return std::make_unique<SplineNastroj>(dokument);
 }
 
 Komponenty::KomponentPtr SplinePresenter::Komponent() const

@@ -8,7 +8,7 @@ class SpojenieZoznamVlastnostManager : public VlastnostManager {
 public:
   SpojenieZoznamVlastnostManager(Dokumenty::SpojenieZoznamVlastnost *vlastnost);
   QWidget *Nastroj();
-  QString Nazov() const { return _vlastnost->Nazov(); }
+  QString Nazov() const;
 
 private:
   Dokumenty::SpojenieZoznamVlastnost *_vlastnost;

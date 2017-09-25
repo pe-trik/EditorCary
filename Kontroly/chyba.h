@@ -6,12 +6,15 @@
 #include "QString"
 
 namespace Kontroly {
+
 class Kontrola;
+
 class Chyba
 {
 public:
-    Chyba(Kontrola* Kontrola, QString Sprava = "", Komponenty::Komponent* Komponent = nullptr);
-    Kontrola *Kontrola() const;
+    Chyba(Kontroly::Kontrola* Kontrola, QString Sprava = "", Komponenty::Komponent* Komponent = nullptr);
+
+    Kontroly::Kontrola *Kontrola() const;
 
     Komponenty::Komponent *Komponent() const;
 

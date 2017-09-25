@@ -27,9 +27,9 @@ void ChybyPanel::NastavChyby(std::vector<Kontroly::Chyba> chyby)
 {
     _chyby = chyby;
     _widget->clearContents();
-    _widget->setRowCount(chyby.size());
+    _widget->setRowCount(static_cast<int>(chyby.size()));
 
-    size_t i = 0;
+    int i = 0;
     for(Kontroly::Chyba& ch : chyby){
         auto kontrola = new QTableWidgetItem(ch.Kontrola()->Nazov());
         kontrola->setFlags(kontrola->flags() ^ Qt::ItemIsEditable);
@@ -37,7 +37,7 @@ void ChybyPanel::NastavChyby(std::vector<Kontroly::Chyba> chyby)
         auto komponent = new QTableWidgetItem();
         komponent->setFlags(komponent->flags() ^ Qt::ItemIsEditable);
         if(ch.Komponent())
-            komponent->setText(ch.Komponent()->nazov());
+            komponent->setText(ch.Komponent()->NazovKomponentu());
 
         auto msg = new QTableWidgetItem(ch.Sprava());
         msg->setFlags(msg->flags() ^ Qt::ItemIsEditable);

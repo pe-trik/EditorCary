@@ -10,7 +10,7 @@ class StringVlastnostManager : public VlastnostManager
 public:
     StringVlastnostManager(StringVlastnost *vlastnost);
     QWidget *Nastroj();
-    QString Nazov() const { return _vlastnost->Nazov(); }
+    QString Nazov() const;
 
   private:
     StringVlastnost *_vlastnost;

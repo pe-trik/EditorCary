@@ -10,9 +10,9 @@ class BoolVlastnostManager : public VlastnostManager
 public:
     BoolVlastnostManager(BoolVlastnost *vlastnost);
     QWidget *Nastroj();
-    QString Nazov() const { return _vlastnost->Nazov(); }
+    QString Nazov() const;
 
-  private:
+private:
     BoolVlastnost *_vlastnost;
 };
 

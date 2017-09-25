@@ -8,19 +8,28 @@
 
 namespace Dokumenty {
 class Vlastnost : public QObject {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  explicit Vlastnost(QString nazov, QObject *parent = nullptr);
-  virtual VlastnostManagerPtr NastrojVlastnosti() = 0;
-  QString Nazov() const { return _nazov; }
-  virtual QDomElement Uloz(QDomDocument &doc) = 0;
-  void Obnov(QDomNodeList vlastnosti);
+    //nazov vlastnosti je povinna polozka
+    explicit Vlastnost(QString nazov, QObject *parent = nullptr);
+
+    virtual VlastnostManagerPtr NastrojVlastnosti() = 0;
+
+    QString Nazov() const;
+
+    virtual QDomElement UlozVlastnost(QDomDocument &doc) = 0;
+
+    void ObnovVlastnost(QDomNodeList vlastnosti);
+
 signals:
     void VlastnostZmenena();
+
 public slots:
+
 protected:
-  virtual void obnov(QDomElement& v) = 0;
-  QString _nazov = "";
+    //fcia volana ObnovVlastnost(), arg je element odpovedajuci vlastnosti s odpovedajucim nazvom vlastnosti
+    virtual void obnovVlastnost(QDomElement& v) = 0;
+    QString _nazov = "";
 };
 
 using VlastnostPtr = std::unique_ptr<Vlastnost>;

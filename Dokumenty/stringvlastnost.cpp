@@ -14,12 +14,12 @@ VlastnostManagerPtr StringVlastnost::NastrojVlastnosti()
     return std::make_unique<StringVlastnostManager>(this);
 }
 
-QString StringVlastnost::hodnota() const
+QString StringVlastnost::Hodnota() const
 {
     return _hodnota;
 }
 
-QDomElement StringVlastnost::Uloz(QDomDocument &doc)
+QDomElement StringVlastnost::UlozVlastnost(QDomDocument &doc)
 {
     auto v = doc.createElement("vlastnost");
     v.setAttribute("nazov", _nazov);
@@ -36,7 +36,7 @@ void StringVlastnost::setHodnota(QString hodnota)
     }
 }
 
-void StringVlastnost::obnov(QDomElement &v)
+void StringVlastnost::obnovVlastnost(QDomElement &v)
 {
     setHodnota(v.attribute("hodnota"));
 }

@@ -7,15 +7,11 @@ SpojenieZoznamVlastnost::SpojenieZoznamVlastnost(
         QString nazov, Komponenty::Komponent *spojenie)
     : Vlastnost(nazov), _spojenie(spojenie) {}
 
-SpojenieZoznamVlastnost::SpojenieZoznamVlastnost(QString nazov, Komponenty::Komponent *spojenie,
-                                                 std::vector<Komponenty::SpojenieSlot *> hodnota)
-    : Vlastnost(nazov), _spojenie(spojenie), _hodnota(hodnota) {}
-
 VlastnostManagerPtr SpojenieZoznamVlastnost::NastrojVlastnosti() {
     return std::make_unique<SpojenieZoznamVlastnostManager>(this);
 }
 
-std::vector<Komponenty::SpojenieSlot *> SpojenieZoznamVlastnost::hodnota() const {
+std::vector<Komponenty::SpojenieSlot *> SpojenieZoznamVlastnost::Hodnota() const {
     return _hodnota;
 }
 
@@ -29,14 +25,14 @@ void SpojenieZoznamVlastnost::setHodnota(
     }
 }
 
-void SpojenieZoznamVlastnost::obnov(QDomElement &)
+void SpojenieZoznamVlastnost::obnovVlastnost(QDomElement &)
 {
 
 }
 
-Komponenty::Komponent *SpojenieZoznamVlastnost::spojenie() { return _spojenie; }
+Komponenty::Komponent *SpojenieZoznamVlastnost::Spojenie() { return _spojenie; }
 
-QDomElement SpojenieZoznamVlastnost::Uloz(QDomDocument &doc)
+QDomElement SpojenieZoznamVlastnost::UlozVlastnost(QDomDocument &doc)
 {
     auto v = doc.createElement("vlastnost");
     v.setAttribute("nazov", _nazov);
@@ -45,15 +41,15 @@ QDomElement SpojenieZoznamVlastnost::Uloz(QDomDocument &doc)
     return v;
 }
 
-void SpojenieZoznamVlastnost::Obnov(QDomNodeList l, Dokument *dokument)
+void SpojenieZoznamVlastnost::ObnovVlastnost(QDomNodeList l, Dokument *dokument)
 {
     auto slot = l.at(0).toElement();
     while(!slot.isNull()){
-        for(auto e : dokument->Komponenty())
+        for(auto& e : dokument->Komponenty())
         {
-            if(e->nazov() == slot.attribute("komponent")){
+            if(e->NazovKomponentu() == slot.attribute("komponent")){
                 for(auto& s : e->SpojenieSloty()){
-                    if(s->manipulator()->nazov() == slot.attribute("manipulator"))
+                    if(s->Manipulator()->NazovKomponentu() == slot.attribute("manipulator"))
                         s->NastavSpojenie(_spojenie);
                 }
             }

@@ -11,37 +11,34 @@ class Komponent;
 class Spojenie : public Komponent {
     friend class SplineGroup;
 public:
-  Spojenie();
-  void Vykresli(QPainter &painter, QColor c = Qt::black, qreal = 0) const { _manipulator->Vykresli(painter, c); }
+    Spojenie();
 
-  Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument);
+    void Vykresli(QPainter &painter, QColor c = Qt::black, qreal = 0) const;
 
-  bool Obsahuje(QPointF bod) const { return _manipulator->Obsahuje(bod); }
+    Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument);
 
-  void PridajKomponent(SpojenieSlot *slot);
+    bool Obsahuje(QPointF bod) const;
 
-  void OdstranKomponent(SpojenieSlot *slot);
+    void PridajKomponent(SpojenieSlot *slot);
 
-  bool JePrazdne() const {
-      return _spojenieZoznamVlastnost->hodnota().size() <= 1;
-  }
+    void OdstranKomponent(SpojenieSlot *slot);
 
-  std::vector<Komponenty::SpojenieSlot *> SlotySpojenia() const{
-      return _spojenieZoznamVlastnost->hodnota();
-  }
+    bool JePrazdne() const;
 
-  QString Typ() const{
-      return "Spojenie";
-  }
-  QDomElement Uloz(QDomDocument &doc) const;
-  void Obnov(QDomElement e, Dokumenty::Dokument *dokument);
+    std::vector<Komponenty::SpojenieSlot *> SlotySpojenia() const;
+
+    QString NazovTypu() const;
+
+    QDomElement UlozKomponent(QDomDocument &doc) const;
+
+    void ObnovKomponent(QDomElement e, Dokumenty::Dokument *dokument);
 
 private:
-  void obnovHodnoty();
-  Komponent *_manipulator;
-  Dokumenty::QrealVlastnostPtr _x;
-  Dokumenty::QrealVlastnostPtr _y;
-  Dokumenty::SpojenieZoznamVlastnostPtr _spojenieZoznamVlastnost;
+    void nastavUmiestneniaPripojenychManipulatorov();
+    Komponent *_manipulator;
+    Dokumenty::QrealVlastnostPtr _x;
+    Dokumenty::QrealVlastnostPtr _y;
+    Dokumenty::SpojenieZoznamVlastnostPtr _spojenieZoznamVlastnost;
 };
 }
 

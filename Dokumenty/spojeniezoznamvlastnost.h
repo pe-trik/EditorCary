@@ -5,32 +5,35 @@
 #include "Komponenty/spojenieslot.h"
 
 namespace Dokumenty {
+//udrziava zoznam slotov spojenia
 class SpojenieZoznamVlastnost : public Vlastnost {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  SpojenieZoznamVlastnost(QString nazov, Komponenty::Komponent *spojenie);
-  SpojenieZoznamVlastnost(QString nazov, Komponenty::Komponent *spojenie,
-                          std::vector<Komponenty::SpojenieSlot *> hodnota);
-  VlastnostManagerPtr NastrojVlastnosti();
-  std::vector<Komponenty::SpojenieSlot *> hodnota() const;
+    SpojenieZoznamVlastnost(QString nazov, Komponenty::Komponent *Spojenie);
 
-  Komponenty::Komponent *spojenie();
-  QDomElement Uloz(QDomDocument &doc);
-  void Obnov(QDomNodeList l, Dokumenty::Dokument* dokument);
+    VlastnostManagerPtr NastrojVlastnosti();
+
+    std::vector<Komponenty::SpojenieSlot *> Hodnota() const;
+
+    Komponenty::Komponent *Spojenie();
+
+    QDomElement UlozVlastnost(QDomDocument &doc);
+
+    void ObnovVlastnost(QDomNodeList l, Dokumenty::Dokument* dokument);
 
 public slots:
-  void setHodnota(std::vector<Komponenty::SpojenieSlot *> hodnota);
+    void setHodnota(std::vector<Komponenty::SpojenieSlot *> Hodnota);
 
 signals:
-  void hodnotaZmenena(std::vector<Komponenty::SpojenieSlot *> &novaHodnota);
+    void hodnotaZmenena(std::vector<Komponenty::SpojenieSlot *> &novaHodnota);
 
 
 protected:
-    void obnov(QDomElement &);
+    void obnovVlastnost(QDomElement &);
 
 private:
-  std::vector<Komponenty::SpojenieSlot *> _hodnota;
-  Komponenty::Komponent *_spojenie;
+    std::vector<Komponenty::SpojenieSlot *> _hodnota;
+    Komponenty::Komponent *_spojenie;
 };
 using SpojenieZoznamVlastnostPtr = std::unique_ptr<SpojenieZoznamVlastnost>;
 }

@@ -8,21 +8,24 @@ class BoolVlastnost : public Vlastnost
 {
     Q_OBJECT
 public:
-    BoolVlastnost(QString nazov, bool hodnota);
+    BoolVlastnost(QString nazov, bool Hodnota);
+
     VlastnostManagerPtr NastrojVlastnosti();
-    bool hodnota() const;
-    QDomElement Uloz(QDomDocument &doc);
 
-  public slots:
-    void setHodnota(bool hodnota);
+    bool Hodnota() const;
 
-  signals:
+    QDomElement UlozVlastnost(QDomDocument &doc);
+
+public slots:
+    void setHodnota(bool Hodnota);
+
+signals:
     void hodnotaZmenena(bool novaHodnota);
 
 protected:
-    void obnov(QDomElement &v);
+    void obnovVlastnost(QDomElement &v);
 
-  private:
+private:
     bool _hodnota;
 };
 using BoolVlastnostPtr = std::unique_ptr<BoolVlastnost>;

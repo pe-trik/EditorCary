@@ -5,34 +5,34 @@
 
 namespace Dokumenty {
 class QrealVlastnost : public Vlastnost {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  QrealVlastnost(QString nazov, qreal hodnota);
-  VlastnostManagerPtr NastrojVlastnosti();
-  qreal hodnota() const;
+    QrealVlastnost(QString nazov, qreal Hodnota);
+    VlastnostManagerPtr NastrojVlastnosti();
+    qreal Hodnota() const;
 
-  QDomElement Uloz(QDomDocument &doc);
+    QDomElement UlozVlastnost(QDomDocument &doc);
 
-  qreal min() const;
-  void setMin(qreal min);
+    qreal Min() const;
+    void setMin(qreal Min);
 
-  qreal max() const;
-  void setMax(qreal max);
+    qreal Max() const;
+    void setMax(qreal Max);
 
 public slots:
-  void setHodnota(qreal hodnota);
+    void setHodnota(qreal Hodnota);
 
 signals:
-  void hodnotaZmenena(qreal novaHodnota);
+    void hodnotaZmenena(qreal novaHodnota);
 
 
 protected:
-    void obnov(QDomElement &v);
+    void obnovVlastnost(QDomElement &v);
 
 private:
-  qreal _hodnota;
-  qreal _min = -10000;
-  qreal _max = 10000;
+    qreal _hodnota;
+    qreal _min = -10000;
+    qreal _max = 10000;
 };
 using QrealVlastnostPtr = std::unique_ptr<QrealVlastnost>;
 }

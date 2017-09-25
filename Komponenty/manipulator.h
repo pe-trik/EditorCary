@@ -10,35 +10,39 @@
 namespace Komponenty {
 class Manipulator : public Komponent {
     friend class Spojenie;
-	Q_OBJECT
+    Q_OBJECT
 public:
-  Manipulator(Dokumenty::QrealVlastnost *x, Dokumenty::QrealVlastnost *y, Komponent *vlastnik);
-  void Vykresli(QPainter &painter, QColor c = Qt::black, qreal sirka = 0) const;
-  Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument);
+    Manipulator(Dokumenty::QrealVlastnost *x, Dokumenty::QrealVlastnost *y, Komponent *vlastnik);
 
-  QPointF getBod() const { return QPointF(_x->hodnota(), _y->hodnota()); }
+    void Vykresli(QPainter &painter, QColor c = Qt::black, qreal sirka = 0) const;
 
-  bool Obsahuje(QPointF bod) const;
+    Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument);
 
-  static const QPointF Polomer() {
-      return QPointF(10, 10);
-  }
+    QPointF Bod() const;
 
-  Komponenty::Komponent *Vlastnik() const;
-  QString Typ() const;
-  QDomElement Uloz(QDomDocument &doc) const;
-  void Obnov(QDomElement &e);
-  QVector<QPointF> BodyKomponentu() const;
+    bool Obsahuje(QPointF bod) const;
+
+    static const QPointF Polomer();
+
+    Komponenty::Komponent *Vlastnik() const;
+
+    QString NazovTypu() const;
+
+    QDomElement UlozKomponent(QDomDocument &doc) const;
+
+    void ObnovKomponent(QDomElement &e);
+
+    QVector<QPointF> BodyKomponentu() const;
 
 public slots:
-  void setBod(QPointF bod);
+    void setBod(QPointF bod);
 
 signals:
-  void BodZmeneny(QPointF bod);
+    void BodZmeneny(QPointF bod);
 
 private:
-  Dokumenty::QrealVlastnost *_x, *_y;
-  Komponenty::Komponent *_vlastnik;
+    Dokumenty::QrealVlastnost *_x, *_y;
+    Komponenty::Komponent *_vlastnik; //komponent, ktoremu manipulator patri
 };
 using ManipulatorPtr = std::unique_ptr<Manipulator>;
 }

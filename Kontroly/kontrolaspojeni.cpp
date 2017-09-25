@@ -18,13 +18,17 @@ std::vector<Chyba> KontrolaSpojeni::VykonajKontrolu()
     std::vector<Chyba> chyby;
 
     if(_povolena){
-        for(auto& s : _dokument->spojenia()){
-            if(auto spojenie = dynamic_cast<Komponenty::Spojenie*>(s)){
+
+        for(auto& s : _dokument->Spojenia()){
+            if(auto spojenie = dynamic_cast<Komponenty::Spojenie*>(s.get()))
+            {
                 int ps = 0;
+
                 for(auto k : spojenie->SlotySpojenia()){
-                    if(dynamic_cast<Komponenty::Spline*>(k->komponent()))
+                    if(dynamic_cast<Komponenty::Spline*>(k->Vlastnik()))
                         ++ps;
                 }
+
                 if(static_cast<int>(spojenie->SlotySpojenia().size()) - ps > 1)
                 {
                     chyby.push_back(Chyba(this, "spojenie obsahuje viaceré komponenty s neupraviteľným smerom", spojenie));
@@ -32,6 +36,7 @@ std::vector<Chyba> KontrolaSpojeni::VykonajKontrolu()
                 }
             }
         }
+
     }
 
     return chyby;

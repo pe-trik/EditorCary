@@ -22,39 +22,53 @@ class Dokument;
 namespace Komponenty {
 class Komponent;
 using KomponentPtr = std::unique_ptr<Komponent>;
+
 class SpojenieSlot;
 using SpojenieSlotPtr = std::unique_ptr<SpojenieSlot>;
+
 class Komponent : public QObject {
 public:
-  Komponent();
-  virtual void Vykresli(QPainter &painter, QColor c = Qt::black, qreal sirka = 0) const = 0;
-  virtual Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument) = 0;
-  const std::vector<KomponentPtr> &Manipulatory() const {
-    return _manipulatory;
-  }
-  const std::vector<SpojenieSlotPtr> &SpojenieSloty() const {
-    return _spojenieSloty;
-  }
-  virtual bool Obsahuje(QPointF bod) const = 0;
+    Komponent();
 
-  std::vector<Dokumenty::Vlastnost *> Vlastnosti() const;
+    virtual void Vykresli(QPainter &painter, QColor c = Qt::black, qreal sirka = 0) const = 0;
 
-  virtual QDomElement Uloz(QDomDocument &doc) const = 0;
-  virtual QString Typ() const = 0;
+    //vrati nastroj, ktory dokaze pracovat s danym komponentom
+    virtual Nastroje::NastrojPtr Nastroj(Dokumenty::Dokument *dokument) = 0;
 
-  QString nazov() const;
-  virtual void Obnov(QDomElement& e);
-  virtual QVector<QPointF> BodyKomponentu() const;
+    const std::vector<KomponentPtr> &Manipulatory() const;
+
+    const std::vector<SpojenieSlotPtr> &SpojenieSloty() const;
+
+    virtual bool Obsahuje(QPointF bod) const = 0;
+
+    std::vector<Dokumenty::Vlastnost *> Vlastnosti() const;
+
+    virtual QDomElement UlozKomponent(QDomDocument &doc) const = 0;
+
+    virtual QString NazovTypu() const = 0;
+
+    QString NazovKomponentu() const;
+
+    virtual void ObnovKomponent(QDomElement& e);
+
+    //zoznam bodov komponentu - default: body z manipulatorov
+    //vyuziva sa pri kontrole
+    virtual QVector<QPointF> BodyKomponentu() const;
 
 protected:
-  void obnovVlastnosti(QDomElement& e);
-  QDomElement ulozVlastnosti(QDomDocument &doc) const;
-  std::vector<KomponentPtr> _manipulatory;
-  std::vector<SpojenieSlotPtr> _spojenieSloty;
-  std::vector<Dokumenty::Vlastnost*> _vlastnosti;
-  Dokumenty::StringVlastnostPtr _nazov;
-  Dokumenty::QrealVlastnostPtr _sirkaCiary;
-  static int id;
+    //zakresli okruhle konce na kraje, kde su spojenia - plynuly prechod
+    void zakresliKonce(QPainter &painter, QColor c = Qt::black, qreal sirka = 0) const;
+    bool bodObsahujeManipulator(QPointF bod) const;
+    void obnovVlastnosti(QDomElement& e);
+    QDomElement ulozVlastnosti(QDomDocument &doc) const;
+
+    std::vector<KomponentPtr> _manipulatory;
+    std::vector<SpojenieSlotPtr> _spojenieSloty;
+    std::vector<Dokumenty::Vlastnost*> _vlastnosti;
+    Dokumenty::StringVlastnostPtr _nazov;
+    Dokumenty::QrealVlastnostPtr _sirkaCiary;
+
+    static int id; //urcuje sa z neho unikatny nazov komponentu
 };
 }
 

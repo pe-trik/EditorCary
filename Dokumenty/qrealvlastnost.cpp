@@ -8,12 +8,12 @@ QrealVlastnost::QrealVlastnost(QString nazov, qreal hodnota)
     : Vlastnost(nazov), _hodnota(hodnota) {}
 
 VlastnostManagerPtr QrealVlastnost::NastrojVlastnosti() {
-  return std::make_unique<QrealVlastnostManager>(this);
+    return std::make_unique<QrealVlastnostManager>(this);
 }
 
-qreal QrealVlastnost::hodnota() const { return _hodnota; }
+qreal QrealVlastnost::Hodnota() const { return _hodnota; }
 
-QDomElement QrealVlastnost::Uloz(QDomDocument &doc)
+QDomElement QrealVlastnost::UlozVlastnost(QDomDocument &doc)
 {
     auto v = doc.createElement("vlastnost");
     v.setAttribute("nazov", _nazov);
@@ -22,22 +22,22 @@ QDomElement QrealVlastnost::Uloz(QDomDocument &doc)
 }
 
 void QrealVlastnost::setHodnota(qreal hodnota) {
-  if (_hodnota != hodnota) {
-    _hodnota = hodnota;
-    emit hodnotaZmenena(hodnota);
-    emit VlastnostZmenena();
-  }
+    if (_hodnota != hodnota) {
+        _hodnota = hodnota;
+        emit hodnotaZmenena(hodnota);
+        emit VlastnostZmenena();
+    }
 }
 
-void QrealVlastnost::obnov(QDomElement &v)
+void QrealVlastnost::obnovVlastnost(QDomElement &v)
 {
     setHodnota(v.attribute("hodnota").toDouble());
 }
 
-qreal QrealVlastnost::max() const { return _max; }
+qreal QrealVlastnost::Max() const { return _max; }
 
 void QrealVlastnost::setMax(qreal max) { _max = max; }
 
-qreal QrealVlastnost::min() const { return _min; }
+qreal QrealVlastnost::Min() const { return _min; }
 
 void QrealVlastnost::setMin(qreal min) { _min = min; }

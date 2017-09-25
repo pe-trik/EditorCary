@@ -65,6 +65,9 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="vlastnostiDokumentuWidget">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
     <string>Vlastnosti dokumentu</string>
    </property>
@@ -92,6 +95,9 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="vlastnostiObjektuWidget">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
     <string>Vlastnosti objektu</string>
    </property>
@@ -107,6 +113,9 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockWidget">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
     <string>Kontroly</string>
    </property>
@@ -116,6 +125,9 @@
    <widget class="KontrolyPanel" name="kontroly"/>
   </widget>
   <widget class="QDockWidget" name="dockWidget_2">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
     <string>Chyby</string>
    </property>
@@ -128,35 +140,56 @@
    <property name="text">
     <string>Nová dráha</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
   </action>
   <action name="actionOtvori_existuj_cu_dr_hu">
    <property name="text">
     <string>Otvoriť existujúcu dráhu</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionUlo_i">
    <property name="text">
     <string>Uložiť</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
   <action name="actionUlo_i_ako">
    <property name="text">
     <string>Uložiť ako</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
   <action name="actionUkon_i">
    <property name="text">
     <string>Ukončiť</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
   <action name="actionExport_do_PDF">
    <property name="text">
     <string>Export do PDF</string>
    </property>
+   <property name="shortcut">
+    <string>Alt+P</string>
+   </property>
   </action>
   <action name="actionExport_do_SVG">
    <property name="text">
     <string>Export do SVG</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+S</string>
    </property>
   </action>
  </widget>

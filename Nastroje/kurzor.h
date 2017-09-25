@@ -8,33 +8,29 @@ namespace Nastroje {
 class KurzorPresenter;
 
 class Kurzor : public Nastroj {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  Kurzor(Dokumenty::Dokument *dokument);
-  NastrojPresenterPtr NastrojPresenter() const;
+    Kurzor(Dokumenty::Dokument *dokument);
+    NastrojPresenterPtr NastrojPresenter() const;
 public slots:
-  void MysStlacena(QPointF);
-  void MysPohyb(QPointF);
-  void MysUvolnena(QPointF);
-  void MysDvojklik(QPointF) {}
+    void MysStlacena(QPointF);
+    void MysPohyb(QPointF);
+    void MysUvolnena(QPointF);
+    void MysDvojklik(QPointF) {}
 
-  Komponenty::Komponent* VybranyKomponent() const{
-      return _vybranyKomponent;
-  }
+    Komponenty::Komponent *VybranyKomponent() const;
 
 private:
-  bool _mysStlacena = false;
-  Komponenty::Komponent *_vybranyKomponent = nullptr;
-  QPointF _polohaMysi;
+    bool _mysStlacena = false;
+    Komponenty::Komponent *_vybranyKomponent = nullptr;
+    QPointF _polohaMysi;
 };
 
 class KurzorPresenter : public NastrojPresenter {
-  QString Nazov() const { return "Kurzor"; }
-  QString Ikonka() const { return ":/ikonky/kursor.svg"; }
-  NastrojPtr Nastroj(Dokumenty::Dokument *dokument) const {
-    return std::make_unique<Kurzor>(dokument);
-  }
-  Komponenty::KomponentPtr Komponent() const;
+    QString Nazov() const { return "Kurzor"; }
+    QString Ikonka() const { return ":/ikonky/kursor.svg"; }
+    NastrojPtr Nastroj(Dokumenty::Dokument *dokument) const;
+    Komponenty::KomponentPtr Komponent() const;
 };
 }
 

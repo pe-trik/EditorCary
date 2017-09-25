@@ -7,7 +7,7 @@ void SpojenieSlot::NastavSpojenie(Komponent *spojenie) {
     if(JeVolny())
     {
         _spojenie = spojenie;
-        if (auto s = dynamic_cast<Spojenie *>(spojenie))
+        if (auto s = dynamic_cast<Komponenty::Spojenie *>(spojenie))
             s->PridajKomponent(this);
     }
 }
@@ -16,10 +16,12 @@ SpojenieSlot::SpojenieSlot(Komponent *komponent, Komponent *manipulator, Dokumen
                            std::function<QPointF()> smer)
     : _komponent(komponent), _manipulator(manipulator), _smer(smer), _nasobok(nasobok) {}
 
+bool SpojenieSlot::JeVolny() const { return _spojenie == nullptr; }
+
 void SpojenieSlot::ZrusSpojenie() {
-    auto sp = _spojenie;
+    auto sp = _spojenie; //kopirujeme - inak by sa vytvoril cyklus
     _spojenie = nullptr;
-    if (auto s = dynamic_cast<Spojenie *>(sp))
+    if (auto s = dynamic_cast<Komponenty::Spojenie *>(sp))
         s->OdstranKomponent(this);
 }
 
@@ -30,29 +32,31 @@ bool SpojenieSlot::Obsahuje(QPointF bod) const {
 QDomElement SpojenieSlot::Uloz(QDomDocument &doc)
 {
     auto v = doc.createElement("spojenieSlot");
-    v.setAttribute("komponent", _komponent->nazov());
-    v.setAttribute("manipulator", _manipulator->nazov());
+    v.setAttribute("komponent", _komponent->NazovKomponentu());
+    v.setAttribute("manipulator", _manipulator->NazovKomponentu());
     return v;
 }
 
-Komponent *SpojenieSlot::manipulator()
+QPointF SpojenieSlot::Smer() const { return _nasobok->Hodnota() * _smer(); }
+
+Komponent *SpojenieSlot::Manipulator()
 {
     return _manipulator;
 }
 
-Komponent *SpojenieSlot::komponent() const
+Komponent *SpojenieSlot::Vlastnik() const
 {
     return _komponent;
 }
 
-Komponent *SpojenieSlot::spojenie() const
+Komponent *SpojenieSlot::Spojenie() const
 {
     return _spojenie;
 }
 
-QPointF SpojenieSlot::bod() const
+QPointF SpojenieSlot::Bod() const
 {
-    return dynamic_cast<Manipulator*>(_manipulator)->getBod();
+    return dynamic_cast<Komponenty::Manipulator*>(_manipulator)->Bod();
 }
 
 void SpojenieSlot::setSmer(const std::function<QPointF ()> &smer)

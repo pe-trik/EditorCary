@@ -17,7 +17,7 @@ std::vector<Chyba> KontrolaOkrajov::VykonajKontrolu()
 
     qreal okraj = _dokument->Okraj();
     QRectF vnutro(QPointF(okraj, okraj),
-                  QPointF(_dokument->sirka() - okraj, _dokument->vyska() - okraj));
+                  QPointF(_dokument->Sirka() - okraj, _dokument->Vyska() - okraj));
 
     if(_povolena){
         for(auto& k : _dokument->Komponenty())
@@ -28,7 +28,7 @@ std::vector<Chyba> KontrolaOkrajov::VykonajKontrolu()
         }))
             {
                 setVysledok(false);
-                chyby.push_back(Chyba(this, "komponent prekračuje okraj", k));
+                chyby.push_back(Chyba(this, "komponent prekračuje okraj", k.get()));
             }
         }
     }

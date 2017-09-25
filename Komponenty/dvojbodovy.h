@@ -7,17 +7,21 @@
 namespace Komponenty {
 class Dvojbodovy : public Komponent {
 public:
-  Dvojbodovy();
+    Dvojbodovy();
 
 protected:
-  Dokumenty::QrealVlastnostPtr _x1;
-  Dokumenty::QrealVlastnostPtr _y1;
-  Dokumenty::QrealVlastnostPtr _x2;
-  Dokumenty::QrealVlastnostPtr _y2;
-  Dokumenty::QrealVlastnostPtr _sirka;
-  Dokumenty::QrealVlastnostPtr _vyska;
-  Dokumenty::QrealVlastnostPtr _nasobokZaciatok;
-  Dokumenty::QrealVlastnostPtr _nasobokKoniec;
+    Dokumenty::QrealVlastnostPtr _x1;
+    Dokumenty::QrealVlastnostPtr _y1;
+    Dokumenty::QrealVlastnostPtr _x2;
+    Dokumenty::QrealVlastnostPtr _y2;
+    Dokumenty::QrealVlastnostPtr _sirka;
+    Dokumenty::QrealVlastnostPtr _vyska;
+    Dokumenty::QrealVlastnostPtr _nasobokZaciatok;
+    Dokumenty::QrealVlastnostPtr _nasobokKoniec;
+
+private:
+    void inicializujVlastnosti();
+    void inicializujManipulatoryASloty();
 };
 }
 #endif // DVOJBODOVY_H

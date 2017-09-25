@@ -11,22 +11,19 @@ class DvojbodovyNastroj : public Nastroj
 public:
     DvojbodovyNastroj(Dokumenty::Dokument *dokument);
 
-
     void MysStlacena(QPointF);
     void MysPohyb(QPointF);
     void MysUvolnena(QPointF);
     void MysDvojklik(QPointF);
 
-    Komponenty::Komponent* VybranyKomponent() const{
-        if(_komponent)
-            return _komponent;
-        else
-            return _manipulator;
-    }
+    Komponenty::Komponent *VybranyKomponent() const;
 
 protected:
+    //zisti, ci je komponent typu Ciara alebo Spline; nullptr inak
     virtual Komponenty::Dvojbodovy* otestujTyp(Komponenty::Komponent* komponent) = 0;
+
     virtual void vytvorNovyKomponent(QPointF bod) = 0;
+
     Komponenty::Dvojbodovy *_komponent = nullptr;
     Komponenty::Manipulator *_manipulator = nullptr;
     bool _mysStlacena = false;

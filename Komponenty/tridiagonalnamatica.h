@@ -7,7 +7,7 @@
 
 namespace Komponenty {
 
-typedef std::unique_ptr<QPointF[]> Pole;
+using Pole = std::unique_ptr<QPointF[]>;
 
 class TridiagonalnaMatica
 {
@@ -20,13 +20,14 @@ public:
                         QPointF tr = QPointF(),
                         QPointF ll = QPointF());
     Pole Vyries();
-    void print();
+
     QPointF& a(size_t i);
     QPointF& b(size_t i);
     QPointF& c(size_t i);
     QPointF& d(size_t i);
     QPointF& rc(size_t i);
     QPointF& lc(size_t i);
+
 private:
     size_t _m;
     QPointF _tr;
@@ -40,6 +41,11 @@ private:
     _rc,
     _lc;//pravy a lavy stlpec
 
+    void odstranSpodnuDiagonalu();
+    void vynormujPoOdstraneniSpodnejDiagonaly();
+    void odstranPravyStlpec();
+    void odstranHornuDiagonalu();
+    void odstranLavyStlpec();
 };
 
 inline QPointF operator *(QPointF a, QPointF b)

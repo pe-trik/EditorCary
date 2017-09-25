@@ -25,85 +25,95 @@ class Nastroj;
 
 namespace Dokumenty {
 class Dokument : public QObject {
-  Q_OBJECT
+    Q_OBJECT
+
 private slots:
-  void velkostDokumentuZmenena(qreal);
+    void velkostDokumentuZmenena(qreal);
+
 signals:
-  void prekreslit();
-  void DokumentPrepocitany();
+    void Prekresli(); //poziada pracovnu plochu o prekreslenie
+    void DokumentPrepocitany(); //informuje pracovnu plochu o zmene dokumentu
 
 public:
-  Dokument();
-  qreal sirka() const;
-  qreal vyska() const;
-  QDomDocument Uloz();
-  void Obnov(const QDomDocument &doc);
+    Dokument();
 
-  void setSirka(qreal sirka);
+    qreal Sirka() const;
+    qreal Vyska() const;
 
-  void setVyska(qreal vyska);
+    QDomDocument UlozDokument() const;
 
-  std::vector<Vlastnost *> Vlastnosti() const;
+    void ObnovDokument(const QDomDocument &doc);
 
-  void Vykresli(QPainter &painter);
+    void setSirka(qreal Sirka);
 
-  void VytvorSpojenia(QPointF bod);
+    void setVyska(qreal Vyska);
 
-  Komponenty::Komponent* Komponent(QPointF bod);
+    std::vector<Vlastnost *> VlastnostiDokumentu() const;
 
-  const std::vector<Komponenty::KomponentPtr> &Komponenty() const { return _komponenty; }
+    void Vykresli(QPainter &painter);
 
-  void PridajKomponent(Komponenty::KomponentPtr komponent);
+    //vyhlada volne sloty v okoli daneho bodu a vytvori Spojenie
+    void VytvorSpojenia(QPointF bod);
 
-  Komponenty::Komponent *vybranyKomponent() const;
+    Komponenty::Komponent* NajdiKomponentPodBodom(QPointF bod);
 
-  void NastavVybranyKomponent(Komponenty::Komponent* k);
+    const std::vector<Komponenty::KomponentPtr> &Komponenty() const;
+    const std::vector<Komponenty::KomponentPtr> &Spojenia() const;
 
-  void VycistiSpojenia();
+    void PridajKomponent(Komponenty::KomponentPtr komponent);
 
-  void Prepocitaj();
+    Komponenty::Komponent *VybranyKomponent() const;
 
-  static std::vector<Nastroje::NastrojPresenterPtr> DostupneNastroje();
+    void NastavVybranyKomponent(Komponenty::Komponent* k);
 
-  std::vector<Komponenty::Komponent*> Komponenty();
+    //vymaze spojenia s poctom slotov mensim ako 2
+    void VycistiSpojenia();
 
-  void ZmazVybranyKomponent();
+    void PrepocitajDokument();
 
-  qreal Okraj() const{
-      return _okraj->hodnota();
-  }
+    static std::vector<Nastroje::NastrojPresenterPtr> DostupneNastroje();
 
-  qreal MinimalnyPolomer() const{
-      return _minimalnyPolomerZatacky->hodnota();
-  }
+    void ZmazVybranyKomponent();
 
-  qreal minimalnaDlzkaTrate() const;
+    qreal Okraj() const;
 
-  qreal maximalnaDlzkaTrate() const;
+    qreal MinimalnyPolomer() const;
 
-  std::vector<Komponenty::Komponent *> spojenia() const;
+    qreal MinimalnaDlzkaTrate() const;
 
-  QString cestaSubor() const;
-  void setCestaSubor(const QString &cestaSubor);
+    qreal MaximalnaDlzkaTrate() const;
+
+    //std::vector<Komponenty::Komponent *> Spojenia() const;
+
+    QString CestaSubor() const;
+    void setCestaSubor(const QString &CestaSubor);
 
 private:
-  void obnovKomponenty(QDomNodeList komponenty);
-  void obnovSpojenia(QDomNodeList spojenia);
-  QrealVlastnostPtr _sirka;
-  QrealVlastnostPtr _vyska;
-  QrealVlastnostPtr _okraj;
-  QrealVlastnostPtr _minimalnyPolomerZatacky;
-  QrealVlastnostPtr _minimalnaDlzkaTrate;
-  QrealVlastnostPtr _maximalnaDlzkaTrate;
-  QrealVlastnostPtr _minimalnaVzdialenostKomponent;
-  BoolVlastnostPtr _zobrazMinimalnuVzdialenost;
-  BoolVlastnostPtr _nahlad;
-  BoolVlastnostPtr _siet;
-  std::vector<Komponenty::KomponentPtr> _komponenty;
-  std::vector<std::unique_ptr<Komponenty::Komponent>> _spojenia;
-  Komponenty::Komponent* _vybranyKomponent = nullptr;
-  bool _prepocitavanie = true;
-  QString _cestaSubor = "";
+    void obnovKomponenty(QDomNodeList komponenty);
+    void obnovSpojenia(QDomNodeList Spojenia);
+    void vykresliMriezkuAOkraj(QPainter &painter);
+    void najdiBlokVlastnosti(QDomNode blok);
+    void najdiBlokKomponenty(QDomNode blok);
+    void najdiBlokSpojenia(QDomNode blok);
+    void inicializujVlastnostiDokumentu();
+
+    QrealVlastnostPtr _sirka;
+    QrealVlastnostPtr _vyska;
+    QrealVlastnostPtr _okraj;
+    QrealVlastnostPtr _minimalnyPolomerZatacky;
+    QrealVlastnostPtr _minimalnaDlzkaTrate;
+    QrealVlastnostPtr _maximalnaDlzkaTrate;
+    QrealVlastnostPtr _minimalnaVzdialenostKomponent;
+    BoolVlastnostPtr _zobrazMinimalnuVzdialenost;
+    BoolVlastnostPtr _nahlad;
+    BoolVlastnostPtr _siet;
+
+    std::vector<Komponenty::KomponentPtr> _komponenty;
+    std::vector<Komponenty::KomponentPtr> _spojenia;
+
+    Komponenty::Komponent* _vybranyKomponent = nullptr;
+    bool _prepocitavanie = true;
+    QString _cestaSubor = "";
 };
 }
 

@@ -8,9 +8,8 @@
 using namespace Komponenty;
 using namespace Dokumenty;
 
-VolnaCiara::VolnaCiara()
+void VolnaCiara::inicializujVlastnosti()
 {
-    _nazov->setHodnota("volnaCiara" + QString::number(id - 1));
     _x1 = std::make_unique<QrealVlastnost>("X1", 10);
     _y1 = std::make_unique<QrealVlastnost>("Y1", 10);
     _x2 = std::make_unique<QrealVlastnost>("X2", 200);
@@ -23,6 +22,7 @@ VolnaCiara::VolnaCiara()
     _nasobokKoniec->setMax(100);
     _nasobokKoniec->setMin(-100);
     _vykresliAkoSpline = std::make_unique<BoolVlastnost>("Vykresli ako spline", true);
+
     connect(_vykresliAkoSpline.get(), SIGNAL(hodnotaZmenena(bool)),
             this, SLOT(vykresliAkoSpline(bool)));
 
@@ -30,6 +30,13 @@ VolnaCiara::VolnaCiara()
 
     connect(_vyhladzovanie.get(), SIGNAL(hodnotaZmenena(qreal)),
             this, SLOT(vyhladzovanie(qreal)));
+}
+
+VolnaCiara::VolnaCiara()
+{
+    _nazov->setHodnota("volnaCiara" + QString::number(id - 1));
+
+    inicializujVlastnosti();
 
     auto manipulator = std::make_unique<Manipulator>(_x1.get(), _y1.get(), this);
     connect(manipulator.get(), SIGNAL(BodZmeneny(QPointF)), this, SLOT(manipulatorZmeneny(QPointF)));
@@ -37,14 +44,15 @@ VolnaCiara::VolnaCiara()
                 std::make_unique<SpojenieSlot>(this, manipulator.get(), _nasobokZaciatok.get(), [this]() {
         if(_body.size() >= 2)
         {
+            //vynormuj smer na velkost 50mm
             auto smer = (_body.front() - *(_body.begin() + 1));
             qreal v = smer.x()*smer.x()+smer.y()*smer.y();
             return 2500. * smer / v;
         }
         else
             return QPointF(
-                        (_x1->hodnota() - _x2->hodnota()),
-                        (_y1->hodnota() - _y2->hodnota()));
+                        (_x1->Hodnota() - _x2->Hodnota()),
+                        (_y1->Hodnota() - _y2->Hodnota()));
     }));
     _manipulatory.push_back(std::move(manipulator));
 
@@ -54,19 +62,20 @@ VolnaCiara::VolnaCiara()
                 std::make_unique<SpojenieSlot>(this, manipulator.get(), _nasobokKoniec.get(), [this]() {
         if(_body.size() >= 2)
         {
+            //vynormuj smer na velkost 50mm
             auto smer = _body.back() - *(_body.end() - 2);
             qreal v = smer.x()*smer.x()+smer.y()*smer.y();
             return 2500. * smer / v;
         }
         else
             return QPointF(
-                        (_x2->hodnota() - _x1->hodnota()),
-                        (_y2->hodnota() - _y1->hodnota()));
+                        (_x2->Hodnota() - _x1->Hodnota()),
+                        (_y2->Hodnota() - _y1->Hodnota()));
     }));
     _manipulatory.push_back(std::move(manipulator));
 }
 
-QVector<QPointF> &VolnaCiara::body()
+QVector<QPointF> &VolnaCiara::Body()
 {
     return _povodneBody;
 }
@@ -74,19 +83,19 @@ QVector<QPointF> &VolnaCiara::body()
 void VolnaCiara::setBody(const QVector<QPointF> &body)
 {
     _povodneBody = body;
-    prepocitaj();
+    Prepocitaj();
 }
 
 void VolnaCiara::vyhladzovanie(qreal)
 {
-    prepocitaj();
+    Prepocitaj();
 }
 
 void VolnaCiara::manipulatorZmeneny(QPointF bod)
 {
     if(!_ignorujZmenuManipulatora){
         _povodneBody.insert(_povodneBody.begin(), bod);
-        prepocitaj();
+        Prepocitaj();
     }
 }
 
@@ -94,26 +103,26 @@ void VolnaCiara::manipulator2Zmeneny(QPointF bod)
 {
     if(!_ignorujZmenuManipulatora){
         _povodneBody.push_back(bod);
-        prepocitaj();
+        Prepocitaj();
     }
 }
 
 void VolnaCiara::vykresliAkoSpline(bool)
 {
-    prepocitaj();
+    Prepocitaj();
 }
 
-void VolnaCiara::prepocitaj()
+void VolnaCiara::Prepocitaj()
 {
     vyhlad();
     prepocitajSpline();
 }
 
-QString VolnaCiara::Typ() const{
+QString VolnaCiara::NazovTypu() const{
     return Nastroje::VolnaCiaraPresenter().Nazov();
 }
 
-QDomElement VolnaCiara::Uloz(QDomDocument &doc) const
+QDomElement VolnaCiara::UlozKomponent(QDomDocument &doc) const
 {
     auto e = ulozVlastnosti(doc);
     auto body = doc.createElement("body");
@@ -128,7 +137,7 @@ QDomElement VolnaCiara::Uloz(QDomDocument &doc) const
     return e;
 }
 
-void VolnaCiara::Obnov(QDomElement &e)
+void VolnaCiara::ObnovKomponent(QDomElement &e)
 {
     obnovVlastnosti(e);
     auto v = e.childNodes().at(0).toElement();
@@ -139,10 +148,10 @@ void VolnaCiara::Obnov(QDomElement &e)
             auto bod = v.childNodes().at(0).toElement();
             while(!bod.isNull()){
                 _povodneBody.push_back(QPointF(bod.attribute("x").toDouble(),
-                                        bod.attribute("y").toDouble()));
+                                               bod.attribute("y").toDouble()));
                 bod = bod.nextSiblingElement();
             }
-            prepocitaj();
+            Prepocitaj();
             return;
         }
         v = v.nextSibling().toElement();
@@ -165,7 +174,7 @@ void VolnaCiara::vyhlad()
         {
             if(((b.x() - _body.back().x())*(b.x() - _body.back().x())
                 +(b.y() - _body.back().y())*(b.y() - _body.back().y()))
-                    >= _vyhladzovanie->hodnota()*_vyhladzovanie->hodnota())
+                    >= _vyhladzovanie->Hodnota()*_vyhladzovanie->Hodnota())
                 _body.push_back(b);
         }
 
@@ -179,9 +188,9 @@ void VolnaCiara::vyhlad()
 
 void VolnaCiara::prepocitajSpline()
 {
-    if(_vykresliAkoSpline->hodnota() && _body.size() > 2){
+    if(_vykresliAkoSpline->Hodnota() && _body.size() > 2){
 
-        size_t n = _body.size() - 1;
+        int n = _body.size() - 1;
         TridiagonalnaMatica matica(n + 1,
                                    QPointF(1,1),
                                    QPointF(4,4),
@@ -190,7 +199,7 @@ void VolnaCiara::prepocitajSpline()
                                    QPointF(0,0),
                                    QPointF(0,0));
 
-        for (size_t i = 1; i < n; i++)
+        for (int i = 1; i < n; i++)
             matica.d(i) = 3.*(_body[i + 1] - _body[i - 1]);
 
         matica.d(0) = 3 * (_body[1] - _body[0]);
@@ -204,8 +213,8 @@ void VolnaCiara::prepocitajSpline()
         _body.clear();
         for (size_t i = 0; i + 1 < stdBody.size(); i++)
         {
-            auto k = SplineGroup::koeficienty(stdBody, riesenie, i);
-            qreal kr = 7. / qMax(_vyhladzovanie->hodnota(), 2.);
+            auto k = SplineGroup::Koeficienty(stdBody, riesenie, i);
+            qreal kr = 7. / qMax(_vyhladzovanie->Hodnota(), 2.);
 
             qreal t = 0;
             do
@@ -222,12 +231,14 @@ void VolnaCiara::prepocitajSpline()
 
 void VolnaCiara::Vykresli(QPainter &painter, QColor c, qreal sirka) const
 {    if(sirka == 0)
-        sirka = _sirkaCiary->hodnota();
+        sirka = _sirkaCiary->Hodnota();
     if(_body.size() > 0)
     {
-        painter.setPen(QPen(c, sirka,Qt::SolidLine));
+        painter.setPen(QPen(c, sirka, Qt::SolidLine, Qt::FlatCap));
         painter.drawPolyline(_body);
     }
+
+    zakresliKonce(painter, c, sirka);
 }
 
 Nastroje::NastrojPtr VolnaCiara::Nastroj(Dokumenty::Dokument *dokument)

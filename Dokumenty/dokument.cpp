@@ -14,9 +14,10 @@
 
 using namespace Dokumenty;
 
-void Dokument::velkostDokumentuZmenena(qreal) { emit prekreslit(); }
+void Dokument::velkostDokumentuZmenena(qreal) { emit Prekresli(); }
 
-Dokument::Dokument() {
+void Dokument::inicializujVlastnostiDokumentu()
+{
     _sirka = std::make_unique<QrealVlastnost>("Šírka", 1189);
     _vyska = std::make_unique<QrealVlastnost>("Výška", 841);
     _okraj = std::make_unique<QrealVlastnost>("Okraj", 50);
@@ -27,6 +28,10 @@ Dokument::Dokument() {
     _zobrazMinimalnuVzdialenost = std::make_unique<BoolVlastnost>("Zobraz minimálnu vzdialenosť komponent", true);
     _nahlad = std::make_unique<BoolVlastnost>("Náhľad", false);
     _siet = std::make_unique<BoolVlastnost>("Sieť", true);
+}
+
+Dokument::Dokument() {
+    inicializujVlastnostiDokumentu();
 
     connect(_sirka.get(), SIGNAL(hodnotaZmenena(qreal)), this,
             SLOT(velkostDokumentuZmenena(qreal)));
@@ -34,43 +39,41 @@ Dokument::Dokument() {
             SLOT(velkostDokumentuZmenena(qreal)));
 }
 
-qreal Dokument::sirka() const { return _sirka->hodnota(); }
+qreal Dokument::Sirka() const { return _sirka->Hodnota(); }
 
-qreal Dokument::vyska() const { return _vyska->hodnota(); }
+qreal Dokument::Vyska() const { return _vyska->Hodnota(); }
 
-QDomDocument Dokument::Uloz()
+QDomDocument Dokument::UlozDokument() const
 {
-    QDomDocument doc("draha");
-    auto root = doc.createElement("draha");
+    QDomDocument xmlDokument("draha");
+    auto root = xmlDokument.createElement("draha");
 
-    auto vlastnosti = doc.createElement("vlastnosti");
-    for(auto& v : Vlastnosti())
-        vlastnosti.appendChild(v->Uloz(doc));
+    auto vlastnosti = xmlDokument.createElement("vlastnosti");
+    for(auto& vlastnost : VlastnostiDokumentu())
+        vlastnosti.appendChild(vlastnost->UlozVlastnost(xmlDokument));
     root.appendChild(vlastnosti);
 
-    auto komponenty = doc.createElement("komponenty");
-    for(auto& k : _komponenty)
-        komponenty.appendChild(k->Uloz(doc));
+    auto komponenty = xmlDokument.createElement("komponenty");
+    for(auto& komponent : _komponenty)
+        komponenty.appendChild(komponent->UlozKomponent(xmlDokument));
     root.appendChild(komponenty);
 
-    auto spojenia = doc.createElement("spojenia");
-    for(auto& s : _spojenia)
-        spojenia.appendChild(s->Uloz(doc));
+    auto spojenia = xmlDokument.createElement("spojenia");
+    for(auto& spojenie : _spojenia)
+        spojenia.appendChild(spojenie->UlozKomponent(xmlDokument));
     root.appendChild(spojenia);
 
-    doc.appendChild(root);
-    return doc;
+    xmlDokument.appendChild(root);
+    return xmlDokument;
 }
 
-void Dokument::Obnov(const QDomDocument &doc)
+void Dokument::najdiBlokVlastnosti(QDomNode blok)
 {
-    _vybranyKomponent = nullptr;
-    QDomNode blok = doc.childNodes().item(0).childNodes().at(0);
     while(!blok.isNull())
     {
         if(blok.nodeName() == "vlastnosti"){
-            for(auto v : Vlastnosti())
-                v->Obnov(blok.childNodes());
+            for(auto v : VlastnostiDokumentu())
+                v->ObnovVlastnost(blok.childNodes());
         }
         else if(blok.nodeName() == "komponenty"){
             obnovKomponenty(blok.childNodes());
@@ -80,66 +83,119 @@ void Dokument::Obnov(const QDomDocument &doc)
         }
         blok = blok.nextSibling();
     }
-    Prepocitaj();
+}
+
+void Dokument::najdiBlokKomponenty(QDomNode blok)
+{
+    while(!blok.isNull())
+    {
+        if(blok.nodeName() == "komponenty"){
+            obnovKomponenty(blok.childNodes());
+        }
+        blok = blok.nextSibling();
+    }
+}
+
+void Dokument::najdiBlokSpojenia(QDomNode blok)
+{
+    while(!blok.isNull())
+    {
+        if(blok.nodeName() == "spojenia"){
+            obnovSpojenia(blok.childNodes());
+        }
+        blok = blok.nextSibling();
+    }
+}
+
+void Dokument::ObnovDokument(const QDomDocument &doc)
+{
+    _vybranyKomponent = nullptr;
+
+    QDomNode blok = doc.childNodes().item(0).childNodes().at(0);
+
+    //nechceme prepocitat dokument po kazdom pridanom komponente
+    _prepocitavanie = false;
+
+    //spojenia sa mozu obnovit az po komponentoch
+    najdiBlokVlastnosti(blok);
+    najdiBlokKomponenty(blok);
+    najdiBlokSpojenia(blok);
+
+    _prepocitavanie = true;
+
+    PrepocitajDokument();
 }
 
 void Dokument::setSirka(qreal sirka) { _sirka->setHodnota(sirka); }
 
 void Dokument::setVyska(qreal vyska) { _vyska->setHodnota(vyska); }
 
-std::vector<Vlastnost *> Dokument::Vlastnosti() const {
+std::vector<Vlastnost *> Dokument::VlastnostiDokumentu() const {
     return {_sirka.get(), _vyska.get(), _okraj.get(), _nahlad.get(), _siet.get(),
                 _minimalnyPolomerZatacky.get(), _minimalnaDlzkaTrate.get(), _maximalnaDlzkaTrate.get(),
                 _minimalnaVzdialenostKomponent.get(), _zobrazMinimalnuVzdialenost.get()
     };
 }
 
-void Dokument::Vykresli(QPainter &painter) {
-    painter.fillRect(0, 0, _sirka->hodnota(), _vyska->hodnota(), Qt::white);
+void Dokument::vykresliMriezkuAOkraj(QPainter &painter)
+{
+    //mriezku vykreslujeme nizsou kvalizou antialiasingu - vyssia rychlost
+    painter.setRenderHint(QPainter::Antialiasing);
 
-    if(!_nahlad->hodnota() && _siet->hodnota()){
-        painter.setRenderHint(QPainter::Antialiasing);
-        painter.fillRect(0, 0, _sirka->hodnota(), _vyska->hodnota(), QColor(255,0,0,150));
-        painter.fillRect(_okraj->hodnota(), _okraj->hodnota(),
-                         _sirka->hodnota() - 2 * _okraj->hodnota(),
-                         _vyska->hodnota() - 2 * _okraj->hodnota(), Qt::white);
+    //okraj
+    painter.fillRect(0, 0, _sirka->Hodnota(), _vyska->Hodnota(), QColor(255,0,0,150));
+    painter.fillRect(_okraj->Hodnota(), _okraj->Hodnota(),
+                     _sirka->Hodnota() - 2 * _okraj->Hodnota(),
+                     _vyska->Hodnota() - 2 * _okraj->Hodnota(), Qt::white);
 
-        for(size_t i = 50; i < _sirka->hodnota(); i += 50)
-        {
-            if(i % 100 == 0)
-                painter.setPen(QPen(QBrush(Qt::gray), 1.5));
-            else
-                painter.setPen(QPen(QBrush(Qt::lightGray), 1));
-            painter.drawLine(i,0,i,_vyska->hodnota());
-        }
-
-        for(size_t i = 50; i < _vyska->hodnota(); i += 50)
-        {
-            if(i % 100 == 0)
-                painter.setPen(QPen(QBrush(Qt::gray), 1.5));
-            else
-                painter.setPen(QPen(QBrush(Qt::lightGray), 1));
-            painter.drawLine(0,i,_sirka->hodnota(),i);
-        }
-        painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
+    for(int i = 50; i < _sirka->Hodnota(); i += 50)
+    {
+        if(i % 100 == 0)
+            painter.setPen(QPen(QBrush(Qt::gray), 1.5));
+        else
+            painter.setPen(QPen(QBrush(Qt::lightGray), 1));
+        painter.drawLine(i,0,i,_vyska->Hodnota());
     }
 
-    if(!_nahlad->hodnota() && _zobrazMinimalnuVzdialenost->hodnota())
+    for(int i = 50; i < _vyska->Hodnota(); i += 50)
+    {
+        if(i % 100 == 0)
+            painter.setPen(QPen(QBrush(Qt::gray), 1.5));
+        else
+            painter.setPen(QPen(QBrush(Qt::lightGray), 1));
+        painter.drawLine(0,i,_sirka->Hodnota(),i);
+    }
+
+    painter.setRenderHint(QPainter::HighQualityAntialiasing);
+}
+
+void Dokument::Vykresli(QPainter &painter) {
+
+    //vykresli mriezku a okraj, alebo vybieli pozadie
+    if(!_nahlad->Hodnota() && _siet->Hodnota())
+        vykresliMriezkuAOkraj(painter);
+    else
+        painter.fillRect(0, 0, _sirka->Hodnota(), _vyska->Hodnota(), Qt::white);
+
+
+    //vykresli okolie ciar
+    if(!_nahlad->Hodnota() && _zobrazMinimalnuVzdialenost->Hodnota())
     {
         for (auto &k : _komponenty)
-            k->Vykresli(painter, QColor(255,153,153,255), _minimalnaVzdialenostKomponent->hodnota());
+            k->Vykresli(painter, QColor(255,153,153,255), _minimalnaVzdialenostKomponent->Hodnota());
     }
 
+    //vykresli komponenty
     for (auto &k : _komponenty)
     {
-        if(_nahlad->hodnota() && dynamic_cast<Komponenty::Prerusenie*>(k.get())){
+        if(_nahlad->Hodnota() && dynamic_cast<Komponenty::Prerusenie*>(k.get())){
             if(auto p = dynamic_cast<Komponenty::Prerusenie*>(k.get()))
                 p->Vykresli(painter, Qt::transparent);
         }
         else
         {
             k->Vykresli(painter);
-            if(!_nahlad->hodnota())
+            if(!_nahlad->Hodnota())
             {
                 for (auto &m : k->Manipulatory())
                     m->Vykresli(painter);
@@ -147,7 +203,8 @@ void Dokument::Vykresli(QPainter &painter) {
         }
     }
 
-    if(_vybranyKomponent && !_nahlad->hodnota())
+    //zvyrazni vybrany komponent
+    if(_vybranyKomponent && !_nahlad->Hodnota())
     {
         _vybranyKomponent->Vykresli(painter, QColor(102, 0, 204, 255));
         for (auto &m : _vybranyKomponent->Manipulatory())
@@ -168,14 +225,19 @@ void Dokument::VytvorSpojenia(QPointF bod) {
         }
     }
 
+    //ak nasiel viac slotov, vytvori spojenie
     if (sloty.size() > 1) {
 
+        //zisti, ci sa uz na danom mieste nenachadza spojenie
         auto spojenieIterator =
                 std::find_if(_spojenia.begin(), _spojenia.end(),
                              [bod](auto &&s) { return s->Obsahuje(bod); });
+
         Komponenty::Komponent* spojenie = nullptr;
+
         if (spojenieIterator != _spojenia.end())
             spojenie = (*spojenieIterator).get();
+
         else
         {
             _spojenia.push_back(std::make_unique<Komponenty::Spojenie>());
@@ -188,7 +250,7 @@ void Dokument::VytvorSpojenia(QPointF bod) {
     }
 }
 
-Komponenty::Komponent * Dokumenty::Dokument::Komponent(QPointF bod)
+Komponenty::Komponent * Dokumenty::Dokument::NajdiKomponentPodBodom(QPointF bod)
 {
     auto&& s = std::find_if(_spojenia.rbegin(), _spojenia.rend(), [bod](auto&& s) {return s->Obsahuje(bod); });
     if (s != _spojenia.rend())
@@ -217,20 +279,27 @@ Komponenty::Komponent * Dokumenty::Dokument::Komponent(QPointF bod)
     return nullptr;
 }
 
+const std::vector<Komponenty::KomponentPtr> &Dokument::Komponenty() const { return _komponenty; }
+
+const std::vector<Komponenty::KomponentPtr> &Dokument::Spojenia() const
+{
+    return _spojenia;
+}
+
 void Dokument::PridajKomponent(Komponenty::KomponentPtr komponent)
 {
     _vybranyKomponent = komponent.get();
     _komponenty.push_back(std::move(komponent));
 }
 
-Komponenty::Komponent *Dokument::vybranyKomponent() const
+Komponenty::Komponent *Dokument::VybranyKomponent() const
 {
     return _vybranyKomponent;
 }
 
 void Dokument::NastavVybranyKomponent(Komponenty::Komponent *k)
 {
-        _vybranyKomponent = k;
+    _vybranyKomponent = k;
 }
 
 void Dokument::VycistiSpojenia()
@@ -249,11 +318,12 @@ void Dokument::VycistiSpojenia()
         }
         return false;
     });
+
     if(s != _spojenia.end())
         _spojenia.erase(s);
 }
 
-void Dokument::Prepocitaj()
+void Dokument::PrepocitajDokument()
 {
     if(_prepocitavanie)
     {
@@ -273,68 +343,77 @@ std::vector<Nastroje::NastrojPresenterPtr> Dokument::DostupneNastroje()
     return nastroje;
 }
 
-std::vector<Komponenty::Komponent *> Dokument::Komponenty()
-{
-    std::vector<Komponenty::Komponent *> v;
-    for(auto& e : _komponenty)
-        v.push_back(e.get());
-    return v;
-}
-
 void Dokument::ZmazVybranyKomponent()
 {
     if(_vybranyKomponent){
         if(auto m = dynamic_cast<Komponenty::Manipulator*>(_vybranyKomponent))
             _vybranyKomponent = m->Vlastnik();
+
         for(auto& s : _vybranyKomponent->SpojenieSloty())
             s->ZrusSpojenie();
+
         VycistiSpojenia();
+
         auto k = std::find_if(_komponenty.begin(), _komponenty.end(),
                               [this](auto& k){
             return k.get() == _vybranyKomponent;
         });
+
         if(k != _komponenty.end())
             _komponenty.erase(k);
+
         _vybranyKomponent = nullptr;
-        Prepocitaj();
+
+        PrepocitajDokument();
     }
+}
+
+qreal Dokument::Okraj() const{
+    return _okraj->Hodnota();
+}
+
+qreal Dokument::MinimalnyPolomer() const{
+    return _minimalnyPolomerZatacky->Hodnota();
 }
 
 void Dokument::obnovKomponenty(QDomNodeList komponenty)
 {
-    _prepocitavanie = false;
     _komponenty.clear();
+
+    //poskytne zoznam typov komponentov
     auto dostupneNastroje = DostupneNastroje();
+
     QDomElement e = komponenty.at(0).toElement();
+
     while(!e.isNull())
     {
         for(auto& n : dostupneNastroje){
             if(n->Nazov() == e.attribute("typ")){
                 auto k = n->Komponent();
-                k->Obnov(e);
+                k->ObnovKomponent(e);
                 _komponenty.push_back(std::move(k));
             }
         }
         e = e.nextSibling().toElement();
     }
-    _prepocitavanie = true;
-    Prepocitaj();
 }
 
 void Dokument::obnovSpojenia(QDomNodeList spojenia)
 {
     _spojenia.clear();
+
     QDomElement e = spojenia.at(0).toElement();
+
     while(!e.isNull())
     {
         auto spojenie = std::make_unique<Komponenty::Spojenie>();
-        spojenie->Obnov(e, this);
+        spojenie->ObnovKomponent(e, this);
         e = e.nextSibling().toElement();
         _spojenia.push_back(std::move(spojenie));
     }
 }
 
-QString Dokument::cestaSubor() const
+QString Dokument::CestaSubor() const
 {
     return _cestaSubor;
 }
@@ -344,20 +423,12 @@ void Dokument::setCestaSubor(const QString &cestaSubor)
     _cestaSubor = cestaSubor;
 }
 
-std::vector<Komponenty::Komponent*> Dokument::spojenia() const
+qreal Dokument::MaximalnaDlzkaTrate() const
 {
-    std::vector<Komponenty::Komponent*> spojenia;
-    for(auto&s : _spojenia)
-        spojenia.push_back(s.get());
-    return spojenia;
+    return _maximalnaDlzkaTrate->Hodnota();
 }
 
-qreal Dokument::maximalnaDlzkaTrate() const
+qreal Dokument::MinimalnaDlzkaTrate() const
 {
-    return _maximalnaDlzkaTrate->hodnota();
-}
-
-qreal Dokument::minimalnaDlzkaTrate() const
-{
-    return _minimalnaDlzkaTrate->hodnota();
+    return _minimalnaDlzkaTrate->Hodnota();
 }

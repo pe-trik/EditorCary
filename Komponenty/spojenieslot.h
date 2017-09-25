@@ -7,32 +7,33 @@
 
 namespace Komponenty {
 class Komponent;
+
 class SpojenieSlot {
 public:
-  SpojenieSlot(Komponent *komponent,
-               Komponent *manipulator,
+  SpojenieSlot(Komponent *Vlastnik,
+               Komponent *Manipulator,
                Dokumenty::QrealVlastnost* nasobok,
                std::function<QPointF()> smer);
 
-  bool JeVolny() const { return _spojenie == nullptr; }
+  bool JeVolny() const;
 
-  void NastavSpojenie(Komponent* spojenie);
+  void NastavSpojenie(Komponent* Spojenie);
 
   void ZrusSpojenie();
 
-  bool Obsahuje(QPointF bod) const;
+  bool Obsahuje(QPointF Bod) const;
 
   QDomElement Uloz(QDomDocument &doc);
 
-  QPointF Smer() const { return _nasobok->hodnota() * _smer(); }
+  QPointF Smer() const;
 
-  Komponent *manipulator();
+  Komponent *Manipulator();
 
-  Komponent *komponent() const;
+  Komponent *Vlastnik() const;
 
-  Komponent *spojenie() const;
+  Komponent *Spojenie() const;
 
-  QPointF bod() const;
+  QPointF Bod() const;
 
   void setSmer(const std::function<QPointF ()> &smer);
 
@@ -43,6 +44,7 @@ private:
   Dokumenty::QrealVlastnost* _nasobok;
   std::function<QPointF()> _smer;
 };
+
 using SpojenieSlotPtr = std::unique_ptr<SpojenieSlot>;
 }
 
